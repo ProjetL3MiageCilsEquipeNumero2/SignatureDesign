@@ -1,5 +1,7 @@
 package org.ProjetL3MiageCilsEquipeNumero2.SignatureDesign;
 
+import java.io.IOException;
+
 import javafx.animation.FadeTransition;
 import javafx.animation.Timeline;
 import javafx.concurrent.Task;
@@ -62,10 +64,11 @@ public class ConnexionPageController {
 		loading.play();
 		//lancement de la connexion dans un nouveau thread
 		new Thread(new Task<Void>() {
-		    @Override public Void call() {
+		    @Override public Void call() throws IOException {
 		    	boolean succes = App.connexion.init(idtxt.getText(), txtPass.getText());
 				if (succes) {
-
+					//changemnt d'UI
+					App.setRoot("primary");
 				} else {
 					loading.stop();
 					anim.setVisible(false);
