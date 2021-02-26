@@ -8,11 +8,14 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
+import org.ProjetL3MiageCilsEquipeNumero2.SQLcommunication.SQLcomm;
+
 /**
  * JavaFX App
  */
 public class App extends Application {
 
+	public static SQLcomm connexion = new SQLcomm();
     private static Scene scene;
 
     @Override
@@ -28,13 +31,31 @@ public class App extends Application {
         stage.setFullScreen(true);
         stage.show();
     }
+    
+    /**
+     * ferme la connexion avec la bdd lors de l'arret de l'application
+     */
+    @Override
+	public void stop() throws Exception {
+		connexion.close();
+		super.stop();
+	}
 
-    //met à jour la racine de scene
+    /**
+     * met à jour la racine de scene
+     * @param fxml
+     * @throws IOException
+     */
     static void setRoot(String fxml) throws IOException {
         scene.setRoot(loadFXML(fxml));
     }
 
-    //charge les UIs
+    /**
+     * charge les UIs
+     * @param fxml
+     * @return
+     * @throws IOException
+     */
     private static Parent loadFXML(String fxml) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource(fxml + ".fxml"));
         return fxmlLoader.load();

@@ -32,3 +32,10 @@
 	-fx-text-inner-color: gold;
 }
 
+.message-connct{
+	-fx-font-family : 'Didot' ;
+	-fx-font-size : 18.0 ;
+	-fx-alignment : bottom-center ;
+	-fx-text-fill : red ;
+}
+
