@@ -8,6 +8,7 @@
 
  .button{
  	-fx-background-radius: 30.0;
+ 	-fx-background-color: gold;
  }
  .button:hover {
         -fx-scale-y: 1.5;

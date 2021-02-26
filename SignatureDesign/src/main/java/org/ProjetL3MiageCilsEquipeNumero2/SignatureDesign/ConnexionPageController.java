@@ -1,5 +1,8 @@
 package org.ProjetL3MiageCilsEquipeNumero2.SignatureDesign;
 
+import javafx.animation.FadeTransition;
+import javafx.animation.Timeline;
+import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 
 import javafx.scene.control.Button;
@@ -12,6 +15,8 @@ import javafx.scene.control.PasswordField;
 
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.shape.Circle;
+import javafx.util.Duration;
 
 public class ConnexionPageController {
 	@FXML
@@ -32,6 +37,10 @@ public class ConnexionPageController {
 	private VBox vboxInput;
 	@FXML
 	private VBox vboxOutput;
+	@FXML
+	private StackPane anim;
+	@FXML
+	private Circle cercle1;
 
 	@FXML
 	public void initialize() {
@@ -39,19 +48,35 @@ public class ConnexionPageController {
 		txtPass.setFocusTraversable(false);
 		logIn.setFocusTraversable(false);
 	}
-	
+
 	@FXML
 	public void logIn() {
-		boolean succes = App.connexion.init(idtxt.getText(),txtPass.getText());
-		if(succes) {
-			
-		}else {
-			vboxInput.setEffect(new GaussianBlur());
-			vboxInput.setDisable(true);
-			vboxOutput.setVisible(true);
-			vboxOutput.setDisable(false);
-		}
+		vboxInput.setEffect(new GaussianBlur());
+		vboxInput.setDisable(true);
+		anim.setVisible(true);
+		FadeTransition loading = new FadeTransition(Duration.seconds(0.8), cercle1);
+		loading.setFromValue(1.0);
+		loading.setToValue(0.1);
+		loading.setCycleCount(Timeline.INDEFINITE);
+		loading.setAutoReverse(true);
+		loading.play();
+		//lancement de la connexion dans un nouveau thread
+		new Thread(new Task<Void>() {
+		    @Override public Void call() {
+		    	boolean succes = App.connexion.init(idtxt.getText(), txtPass.getText());
+				if (succes) {
+
+				} else {
+					loading.stop();
+					anim.setVisible(false);
+					vboxOutput.setVisible(true);
+					vboxOutput.setDisable(false);
+				}
+		        return null;
+		    }
+		}).start();
 	}
+
 	@FXML
 	public void retry() {
 		vboxOutput.setDisable(true);
