@@ -37,7 +37,8 @@ public class App extends Application {
      */
     @Override
 	public void stop() throws Exception {
-		connexion.close();
+		boolean succes = connexion.close();
+		if (succes) System.out.println("Connexion fermee avec succes");
 		super.stop();
 	}
 
