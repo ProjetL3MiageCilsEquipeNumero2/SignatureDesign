@@ -1,0 +1,25 @@
+/*colonnes */
+
+.table-view{
+	-fx-background-color: transparent;
+}
+.table-view .column-header-background{
+    -fx-background-color: cyan;
+    -fx-background-radius: 10px 10px 0px 0px;
+}
+ /*titre colonne */
+.table-view .column-header {
+    -fx-background-color: transparent;
+}
+/*cellule */
+.table-view .table-cell{
+}
+/*hover */
+.table-row-cell: hover {
+}
+/*impair */
+.table-row-cell: odd{
+}
+/*pair */
+.table-row-cell: even{
+}

@@ -69,6 +69,23 @@ public class Article {
 		SQLcomm.ajout("Quantites", "idProduit, taille, couleur, quantite",
 				"'" + taille + "' , '" + couleur + "' , " + qte);
 	}
+	
+	/**
+	 * constructeur d'article, à utiliser pour récuperer les articles de la bdd
+	 * 
+	 * @param id
+	 * @param nom
+	 * @param prix
+	 * @param marque
+	 * @param categorie
+	 */
+	public Article(int id, String nom, Double prix, String marque, String categorie) {
+		this.nom = new SimpleStringProperty(nom);
+		this.prix = new SimpleDoubleProperty(prix);
+		this.marque = new SimpleStringProperty(marque);
+		this.categorie = new SimpleStringProperty(categorie);
+		this.id = new SimpleIntegerProperty(id);
+	}
 
 	/**
 	 * construit un article: l'ajoute a la bdd dans Produits, et ajoute aussi les quantites si param non null
@@ -83,7 +100,7 @@ public class Article {
 		this.categorie = new SimpleStringProperty(categorie);
 		this.id = new SimpleIntegerProperty(
 				ajout("'" + nom + "' , " + prix + " , '" + marque + "' , '" + categorie + "'"));
-		// si l'user a deja insere des tailles, couleurs, qtes, on met à jour la table
+		// si l'utilisateur souhaite inserer des tailles, couleurs, qtes en parallel a la creation de l'artilce, on met à jour la table
 		// qtes
 		if (quantites != null) {
 			this.quantites = new SimpleMapProperty<>(quantites);

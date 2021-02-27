@@ -58,6 +58,25 @@ public class SQLcomm {
 		}
 		return reponse;
 	}
+	
+	/**
+	 * retourne une projection d'une table de la bdd
+	 * 
+	 * @param nomTable = nom de la table souhaitée
+	 * @param nomCol = nom des colonnes
+	 * @return reponse = la table sous la forme ResultSet, null si echec
+	 */
+	public static ResultSet tableCol(String nomTable, String nomCol) {
+		ResultSet reponse = null;
+		try {
+			Statement requete = connexion.createStatement();
+			reponse = requete.executeQuery("SELECT "+nomCol+" FROM " + nomTable + " ;");
+			requete.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return reponse;
+	}
 
 	/**
 	 * ajoute une ligne à une table et retourne la cle autogenerée s'il y en a

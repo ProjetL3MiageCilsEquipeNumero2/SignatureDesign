@@ -62,21 +62,23 @@ public class ConnexionPageController {
 		loading.setCycleCount(Timeline.INDEFINITE);
 		loading.setAutoReverse(true);
 		loading.play();
-		//lancement de la connexion dans un nouveau thread
+		// lancement de la connexion dans un nouveau thread
 		new Thread(new Task<Void>() {
-		    @Override public Void call() throws IOException {
-		    	boolean succes = App.connexion.init(idtxt.getText(), txtPass.getText());
+			@Override
+			public Void call() throws IOException {
+				boolean succes = App.connexion.init(idtxt.getText(), txtPass.getText());
 				if (succes) {
-					//changemnt d'UI
-					App.setRoot("primary");
+					loading.stop();
+					// changemnt d'UI
+					App.setRoot("ongletArticles/Articles_ui");
 				} else {
 					loading.stop();
 					anim.setVisible(false);
 					vboxOutput.setVisible(true);
 					vboxOutput.setDisable(false);
 				}
-		        return null;
-		    }
+				return null;
+			}
 		}).start();
 	}
 
