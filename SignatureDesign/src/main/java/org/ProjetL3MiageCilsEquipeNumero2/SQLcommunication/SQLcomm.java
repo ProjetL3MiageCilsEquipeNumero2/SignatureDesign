@@ -7,8 +7,10 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 public class SQLcomm {
-	public static Connection connexion;
-	
+	private static Connection connexion;
+	private static Statement requete ;
+	private static ResultSet reponse;
+
 	/**
 	 * initialise une connexion
 	 * 
@@ -19,6 +21,7 @@ public class SQLcomm {
 	public boolean init(String nom, String pass) {
 		try {
 			connexion = DriverManager.getConnection("jdbc:mysql://localhost:3306/signaturedesign", nom, pass);
+			requete = connexion.createStatement();
 			return true;
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -34,37 +37,13 @@ public class SQLcomm {
 		if (connexion == null)
 			return false;
 		try {
+			requete.close();
 			connexion.close();
 			return true;
 		} catch (SQLException e) {
 			e.printStackTrace();
 			return false;
 		}
-	}
-	
-	/**
-	 * 
-	 * @return une requete
-	 */
-	public static Statement requete() {
-		Statement requete = null;
-		try {
-			requete = SQLcomm.connexion.createStatement();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return requete;
-	}
-	
-	
-	public static ResultSet tableCond(Statement requete, String table, String cond) {
-		ResultSet reponse = null;
-		try {
-			 reponse = requete.executeQuery("SELECT * FROM " + table + " WHERE "+cond+" ;");
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return reponse;
 	}
 
 	/**
@@ -73,10 +52,9 @@ public class SQLcomm {
 	 * @param nomTable = nom de la table souhaitée
 	 * @return reponse = la table sous la forme ResultSet, null si echec
 	 */
-	public static ResultSet table(Statement requete, String nomTable) {
-		ResultSet reponse = null;
+	public static ResultSet table(String nomTable) {
 		try {
-			 reponse = requete.executeQuery("SELECT * FROM " + nomTable + " ;");
+			reponse = requete.executeQuery("SELECT * FROM " + nomTable + " ;");
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -90,10 +68,9 @@ public class SQLcomm {
 	 * @param nomCol   = nom des colonnes
 	 * @return reponse = la table sous la forme ResultSet, null si echec
 	 */
-	public static ResultSet tableCol(Statement requete, String nomTable, String nomCol) {
-		ResultSet reponse = null;
+	public static ResultSet tableCol(String nomTable, String nomCol) {
 		try {
-			reponse = requete.executeQuery("SELECT " + nomCol + " FROM " + nomTable + " ;");
+			requete.executeQuery("SELECT " + nomCol + " FROM " + nomTable + " ;");
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -108,9 +85,8 @@ public class SQLcomm {
 	 * @param Val      = Valeurs correspondant aux colonnes (v1, v2,...)
 	 * @return cle = la cle s'il y en a, 0 sinon, -1 si echec
 	 */
-	public static int ajout(Statement requete, String nomTable, String nomCol, String val) {
+	public static int ajout(String nomTable, String nomCol, String val) {
 		int cle = 0;
-		ResultSet reponse = null;
 		try {
 			requete.executeUpdate("INSERT INTO nomTable(" + nomCol + ") VALUES (" + val + ") ;",
 					Statement.RETURN_GENERATED_KEYS);
@@ -133,7 +109,7 @@ public class SQLcomm {
 	 * @param condition = la condition de suppression
 	 * @return reponse = le nombre de lignes supprimées, -1 si echec
 	 */
-	public static int delete(Statement requete, String nomTable, String condition) {
+	public static int delete(String nomTable, String condition) {
 		int reponse = 0;
 		try {
 			reponse = requete.executeUpdate("DELETE FROM " + nomTable + " WHERE " + condition + " ;");

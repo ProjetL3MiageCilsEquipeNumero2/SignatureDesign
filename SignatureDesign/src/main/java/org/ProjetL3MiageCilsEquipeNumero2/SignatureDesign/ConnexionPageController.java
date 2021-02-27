@@ -6,7 +6,7 @@ import javafx.animation.FadeTransition;
 import javafx.animation.Timeline;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
-
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 
 import javafx.scene.control.TextField;
@@ -14,7 +14,7 @@ import javafx.scene.effect.GaussianBlur;
 import javafx.scene.control.Label;
 
 import javafx.scene.control.PasswordField;
-
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Circle;
@@ -40,9 +40,9 @@ public class ConnexionPageController {
 	@FXML
 	private VBox vboxOutput;
 	@FXML
-	private StackPane anim;
+	private HBox anim;
 	@FXML
-	private Circle cercle1;
+	private Label load;
 
 	@FXML
 	public void initialize() {
@@ -50,29 +50,24 @@ public class ConnexionPageController {
 		txtPass.setFocusTraversable(false);
 		logIn.setFocusTraversable(false);
 	}
-
+	
 	@FXML
 	public void logIn() {
 		vboxInput.setEffect(new GaussianBlur());
 		vboxInput.setDisable(true);
 		anim.setVisible(true);
-		FadeTransition loading = new FadeTransition(Duration.seconds(0.8), cercle1);
-		loading.setFromValue(1.0);
-		loading.setToValue(0.1);
-		loading.setCycleCount(Timeline.INDEFINITE);
-		loading.setAutoReverse(true);
-		loading.play();
+		loader.play();
 		// lancement de la connexion dans un nouveau thread
 		new Thread(new Task<Void>() {
 			@Override
 			public Void call() throws IOException {
 				boolean succes = App.connexion.init(idtxt.getText(), txtPass.getText());
 				if (succes) {
-					loading.stop();
+					loader.stop();
 					// changemnt d'UI
 					App.setRoot("ongletArticles/Articles_ui");
 				} else {
-					loading.stop();
+					loader.stop();
 					anim.setVisible(false);
 					vboxOutput.setVisible(true);
 					vboxOutput.setDisable(false);
@@ -90,4 +85,16 @@ public class ConnexionPageController {
 		vboxInput.setEffect(null);
 		vboxInput.setVisible(true);
 	}
+	
+
+	public FadeTransition loader(Node anim) {
+		FadeTransition loading = new FadeTransition(Duration.millis(1000.0), anim);
+		loading.setFromValue(1.0);
+		loading.setToValue(0.1);
+		loading.setCycleCount(Timeline.INDEFINITE);
+		loading.setAutoReverse(true);
+		return loading;
+	}
+	
+	private FadeTransition loader = loader(anim);
 }

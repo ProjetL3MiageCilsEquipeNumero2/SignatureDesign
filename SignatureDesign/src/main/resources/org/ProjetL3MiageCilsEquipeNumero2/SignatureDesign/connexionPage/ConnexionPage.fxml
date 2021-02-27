@@ -7,9 +7,9 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
-<?import javafx.scene.shape.Circle?>
 <?import javafx.scene.text.Font?>
 
 <StackPane prefHeight="500.0" prefWidth="500.0" styleClass="bodybg" stylesheets="@connexionPage.css" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.ProjetL3MiageCilsEquipeNumero2.SignatureDesign.ConnexionPageController">
@@ -86,10 +86,10 @@
             </VBox>
          </children>
       </StackPane>
-      <StackPane fx:id="anim" disable="true" prefHeight="150.0" prefWidth="200.0" visible="false">
+      <HBox fx:id="anim" alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="10.0" visible="false">
          <children>
-            <Circle fx:id="cercle1" fill="#ffd400" radius="61.0" stroke="#0000002d" strokeType="INSIDE" strokeWidth="2.0" />
+            <Label fx:id="load" alignment="CENTER" contentDisplay="CENTER" prefHeight="88.0" prefWidth="154.0" styleClass="loader" stylesheets="@connexionPage.css" text="Loading" />
          </children>
-      </StackPane>
+      </HBox>
    </children>
 </StackPane>

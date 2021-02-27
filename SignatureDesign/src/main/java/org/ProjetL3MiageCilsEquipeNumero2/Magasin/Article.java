@@ -2,14 +2,10 @@ package org.ProjetL3MiageCilsEquipeNumero2.Magasin;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Map.Entry;
 import org.ProjetL3MiageCilsEquipeNumero2.SQLcommunication.SQLcomm;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleIntegerProperty;
-import javafx.beans.property.SimpleListProperty;
 import javafx.beans.property.SimpleMapProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
@@ -24,9 +20,22 @@ public class Article {
 	private SimpleDoubleProperty prix;
 	private SimpleStringProperty marque;
 	private SimpleStringProperty categorie;
-	private SimpleListProperty<Quantite> quantites;
+	private SimpleMapProperty<Couple, Integer> quantites;
 
+	/**
+	 * classe interne à Article qui représente le couple taile,couleur pour les
+	 * quantites
+	 *
+	 */
+	private class Couple {
+		String taille;
+		String couleur;
 
+		public Couple(String taille, String couleur) {
+			this.taille = taille;
+			this.couleur = couleur;
+		}
+	}
 
 	/**
 	 * 
@@ -37,22 +46,14 @@ public class Article {
 	}
 
 	public static void articlesUpdate() {
-		Statement requeteTableArticles = SQLcomm.requete();
-		Statement requeteTableQuantites = SQLcomm.requete();
-		ResultSet tmp = table(requeteTableArticles);
+		ResultSet tmp = table();
 		try {
 			while (tmp.next()) {
-				ResultSet tmpqt = idToQts(requeteTableQuantites, tmp.getInt(1));
-				ObservableList<Quantite> quantites = FXCollections.observableArrayList();
-				while(tmpqt.next()) {
-					quantites.add(new Quantite(tmpqt.getString("Taille"), tmpqt.getString("Coleur"), tmpqt.getInt("Quantite")));
-				}
 				articles.add(new Article(tmp.getInt(1), tmp.getString(2), tmp.getDouble(3), tmp.getString(4),
-						tmp.getString(5), quantites));
+						tmp.getString(5)));
 			}
-			requeteTableArticles.close();
-			requeteTableQuantites.close();
 		} catch (SQLException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -65,8 +66,8 @@ public class Article {
 	 *                't-shirt'
 	 * @return rep = le id de l'article
 	 */
-	public static int ajout(Statement requete, String valeurs) {
-		int rep = SQLcomm.ajout(requete, "Produits", "nom, prix, marque, categorie", valeurs);
+	public static int ajout(String valeurs) {
+		int rep = SQLcomm.ajout("Produits", "nom, prix, marque, categorie", valeurs);
 		return rep;
 	}
 
@@ -75,20 +76,9 @@ public class Article {
 	 * 
 	 * @return reponse = la table sous la forme ResultSet
 	 */
-	public static ResultSet table(Statement requete) {
+	public static ResultSet table() {
 		ResultSet reponse;
-		reponse = SQLcomm.table(requete,"Produits");
-		return reponse;
-	}
-	
-	/**
-	 * retourne les quantites d'un produit à partir de son id
-	 * 
-	 * @return reponse = la table sous la forme ResultSet
-	 */
-	public static ResultSet idToQts(Statement requete, int id) {
-		ResultSet reponse = null;
-		reponse = SQLcomm.tableCond(requete, "QUANTITES", "IdProduit="+id);
+		reponse = SQLcomm.table("Produits");
 		return reponse;
 	}
 
@@ -100,9 +90,9 @@ public class Article {
 	 * @param qte
 	 * 
 	 */
-	public void ajoutQtes(Statement requete, String taille, String couleur, int qte) {
-		SQLcomm.ajout(requete, "Quantites", "idProduit, taille, coleur, quantite",
-				getId()+", '" + taille + "' , '" + couleur + "' , " + qte);
+	public void ajoutQtes(String taille, String couleur, int qte) {
+		SQLcomm.ajout("Quantites", "idProduit, taille, couleur, quantite",
+				"'" + taille + "' , '" + couleur + "' , " + qte);
 	}
 
 	/**
@@ -130,33 +120,22 @@ public class Article {
 	 *                  {@link Couple} et integer la qte
 	 * 
 	 */
-	public Article(String nom, Double prix, String marque, String categorie, ObservableList<Quantite> quantites) {
+	public Article(String nom, Double prix, String marque, String categorie, ObservableMap<Couple, Integer> quantites) {
 		this.nom = new SimpleStringProperty(nom);
 		this.prix = new SimpleDoubleProperty(prix);
 		this.marque = new SimpleStringProperty(marque);
 		this.categorie = new SimpleStringProperty(categorie);
-		Statement requete = SQLcomm.requete();
 		this.id = new SimpleIntegerProperty(
-				ajout(requete, "'" + nom + "' , " + prix + " , '" + marque + "' , '" + categorie + "'"));
+				ajout("'" + nom + "' , " + prix + " , '" + marque + "' , '" + categorie + "'"));
 		// si l'utilisateur souhaite inserer des tailles, couleurs, qtes en parallel a
 		// la creation de l'artilce, on met à jour la table
 		// qtes
 		if (quantites != null) {
-			this.quantites = new SimpleListProperty<>(quantites);
-			for (Quantite e : quantites) {
-				this.ajoutQtes(requete, e.getTaille(), e.getCouleur(), e.getQuantite());
+			this.quantites = new SimpleMapProperty<>(quantites);
+			for (Entry<Couple, Integer> e : quantites.entrySet()) {
+				this.ajoutQtes(e.getKey().taille, e.getKey().couleur, e.getValue());
 			}
 		}
-	}
-	
-	
-	public Article(int id, String nom, Double prix, String marque, String categorie, ObservableList<Quantite> quantites) {
-		this.nom = new SimpleStringProperty(nom);
-		this.prix = new SimpleDoubleProperty(prix);
-		this.marque = new SimpleStringProperty(marque);
-		this.categorie = new SimpleStringProperty(categorie);
-		this.id = new SimpleIntegerProperty(id);
-		this.quantites = new SimpleListProperty<>(quantites);
 	}
 
 	public final SimpleIntegerProperty idProperty() {
@@ -219,25 +198,16 @@ public class Article {
 		this.categorieProperty().set(categorie);
 	}
 
-	
-	public final SimpleListProperty<Quantite> quantitesProperty() {
+	public final SimpleMapProperty<Couple, Integer> quantitesProperty() {
 		return this.quantites;
 	}
-	
 
-	
-	public final ObservableList<Quantite> getQuantites() {
+	public final ObservableMap<Couple, Integer> getQuantites() {
 		return this.quantitesProperty().get();
 	}
-	
 
-	
-
-	public final void setQuantites(final ObservableList<Quantite> quantites) {
+	public final void setQuantites(final ObservableMap<Couple, Integer> quantites) {
 		this.quantitesProperty().set(quantites);
 	}
-	
-
-
 
 }
