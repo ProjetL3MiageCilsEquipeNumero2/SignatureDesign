@@ -8,6 +8,7 @@ import java.sql.Statement;
 
 public class SQLcomm {
 	private static Connection connexion;
+	private static Statement requete ;
 
 	/**
 	 * initialise une connexion
@@ -19,6 +20,7 @@ public class SQLcomm {
 	public boolean init(String nom, String pass) {
 		try {
 			connexion = DriverManager.getConnection("jdbc:mysql://localhost:3306/signaturedesign", nom, pass);
+			requete = connexion.createStatement();
 			return true;
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -31,8 +33,10 @@ public class SQLcomm {
 	 * @return true si connexion fermée avec succes
 	 */
 	public boolean close() {
-		if(connexion == null) return false;
+		if (connexion == null)
+			return false;
 		try {
+			requete.close();
 			connexion.close();
 			return true;
 		} catch (SQLException e) {
@@ -50,28 +54,24 @@ public class SQLcomm {
 	public static ResultSet table(String nomTable) {
 		ResultSet reponse = null;
 		try {
-			Statement requete = connexion.createStatement();
 			reponse = requete.executeQuery("SELECT * FROM " + nomTable + " ;");
-			requete.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 		return reponse;
 	}
-	
+
 	/**
 	 * retourne une projection d'une table de la bdd
 	 * 
 	 * @param nomTable = nom de la table souhaitée
-	 * @param nomCol = nom des colonnes
+	 * @param nomCol   = nom des colonnes
 	 * @return reponse = la table sous la forme ResultSet, null si echec
 	 */
 	public static ResultSet tableCol(String nomTable, String nomCol) {
 		ResultSet reponse = null;
 		try {
-			Statement requete = connexion.createStatement();
-			reponse = requete.executeQuery("SELECT "+nomCol+" FROM " + nomTable + " ;");
-			requete.close();
+			requete.executeQuery("SELECT " + nomCol + " FROM " + nomTable + " ;");
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -90,14 +90,12 @@ public class SQLcomm {
 		ResultSet reponse;
 		int cle = 0;
 		try {
-			Statement requete = connexion.createStatement();
 			requete.executeUpdate("INSERT INTO nomTable(" + nomCol + ") VALUES (" + val + ") ;",
 					Statement.RETURN_GENERATED_KEYS);
 			reponse = requete.getGeneratedKeys();
 			if (reponse != null) {
 				cle = reponse.getInt(1);
 			}
-			requete.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 			return -1;
@@ -116,9 +114,7 @@ public class SQLcomm {
 	public static int delete(String nomTable, String condition) {
 		int reponse = 0;
 		try {
-			Statement requete = connexion.createStatement();
 			reponse = requete.executeUpdate("DELETE FROM " + nomTable + " WHERE " + condition + " ;");
-			requete.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 			return -1;

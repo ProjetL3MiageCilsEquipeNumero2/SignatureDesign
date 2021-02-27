@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.sql.SQLException;
 
 import org.ProjetL3MiageCilsEquipeNumero2.Magasin.Article;
-import org.ProjetL3MiageCilsEquipeNumero2.Magasin.DataMagasin;
 
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
