@@ -1,25 +1,49 @@
-/*colonnes */
+.barre{
+	-fx-background-color: linear-gradient(to bottom, #93f9b944, gold);
+}
 
+.card{
+	-fx-background-color: linear-gradient(to bottom, #93f9b944, gold);
+	-fx-background-radius: 10px 10px 0px 0px;
+}
+
+/*colonnes */
 .table-view{
-	-fx-background-color: transparent;
+	-fx-background-color: #FFF9A5;
+	-fx-background-radius: 10px 10px 0px 0px;
 }
 .table-view .column-header-background{
-    -fx-background-color: cyan;
+    -fx-background-color: gold;
     -fx-background-radius: 10px 10px 0px 0px;
 }
  /*titre colonne */
 .table-view .column-header {
     -fx-background-color: transparent;
 }
-/*cellule */
-.table-view .table-cell{
+
+.button{
+ 	-fx-background-radius: 20.0;
+ 	-fx-background-color: gold;
+ }
+ .button:hover {
+        -fx-scale-y: 1.5;
+        -fx-scale-x: 1.5;
+        -fx-background-color: gold;
 }
-/*hover */
-.table-row-cell: hover {
+
+.label1{
+	-fx-font-family : 'Franklin Gothic Heavy' ;
+	-fx-font-size : 15.0 ;
+	-fx-alignment : center-left ;
+	-fx-text-fill : black ;	 
 }
-/*impair */
-.table-row-cell: odd{
+.label2{
+	-fx-font-family : 'Franklin Gothic Heavy' ;
+	-fx-font-size : 15.0 ;
+	-fx-alignment : center-right ;
+	-fx-text-fill : black ;	 
 }
-/*pair */
-.table-row-cell: even{
-}
+.bodybg{
+     -fx-background-image: url('../connexionPage/pexels-tembela-bohle-1884584.jpg');
+     -fx-background-size: 100.0% 100.0%;    
+  }

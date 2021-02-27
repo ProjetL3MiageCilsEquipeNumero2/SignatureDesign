@@ -68,6 +68,8 @@ public class Articles_uiController {
 		id_col.setCellValueFactory(new PropertyValueFactory<Article, Integer>("id"));
 		nom_col.setCellValueFactory(new PropertyValueFactory<Article, String>("nom"));
 		prix_col.setCellValueFactory(new PropertyValueFactory<Article, Double>("prix"));
+		Article.articlesUpdate();
+		main_table.setItems(Article.getArticles());
 		
 		
 	}

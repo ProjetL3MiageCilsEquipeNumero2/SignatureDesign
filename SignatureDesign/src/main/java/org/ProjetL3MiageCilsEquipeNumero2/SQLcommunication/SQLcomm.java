@@ -9,6 +9,7 @@ import java.sql.Statement;
 public class SQLcomm {
 	private static Connection connexion;
 	private static Statement requete ;
+	private static ResultSet reponse;
 
 	/**
 	 * initialise une connexion
@@ -52,7 +53,6 @@ public class SQLcomm {
 	 * @return reponse = la table sous la forme ResultSet, null si echec
 	 */
 	public static ResultSet table(String nomTable) {
-		ResultSet reponse = null;
 		try {
 			reponse = requete.executeQuery("SELECT * FROM " + nomTable + " ;");
 		} catch (SQLException e) {
@@ -69,7 +69,6 @@ public class SQLcomm {
 	 * @return reponse = la table sous la forme ResultSet, null si echec
 	 */
 	public static ResultSet tableCol(String nomTable, String nomCol) {
-		ResultSet reponse = null;
 		try {
 			requete.executeQuery("SELECT " + nomCol + " FROM " + nomTable + " ;");
 		} catch (SQLException e) {
@@ -87,7 +86,6 @@ public class SQLcomm {
 	 * @return cle = la cle s'il y en a, 0 sinon, -1 si echec
 	 */
 	public static int ajout(String nomTable, String nomCol, String val) {
-		ResultSet reponse;
 		int cle = 0;
 		try {
 			requete.executeUpdate("INSERT INTO nomTable(" + nomCol + ") VALUES (" + val + ") ;",

@@ -14,10 +14,10 @@
 
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="466.0" prefWidth="658.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.ProjetL3MiageCilsEquipeNumero2.SignatureDesign.Articles_uiController">
    <left>
-      <VBox prefHeight="400.0" prefWidth="50.0" BorderPane.alignment="CENTER" />
+      <VBox prefHeight="400.0" prefWidth="50.0" styleClass="barre" stylesheets="@articlesUI.css" BorderPane.alignment="CENTER" />
    </left>
    <center>
-      <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+      <AnchorPane prefHeight="200.0" prefWidth="200.0" styleClass="bodybg" stylesheets="@articlesUI.css" BorderPane.alignment="CENTER">
          <children>
             <VBox prefHeight="466.4" prefWidth="608.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                <children>
@@ -36,7 +36,7 @@
                   </HBox>
                   <HBox prefHeight="379.0" prefWidth="608.0" spacing="30.0" VBox.vgrow="ALWAYS">
                      <children>
-                        <TableView fx:id="main_table" prefHeight="332.0" prefWidth="310.0" HBox.hgrow="ALWAYS">
+                        <TableView fx:id="main_table" prefHeight="332.0" prefWidth="310.0" stylesheets="@articlesUI.css" HBox.hgrow="ALWAYS">
                           <columns>
                             <TableColumn fx:id="id_col" prefWidth="75.0" text="Id" />
                             <TableColumn fx:id="nom_col" prefWidth="75.0" text="Nom" />
@@ -47,18 +47,18 @@
                               <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                            </columnResizePolicy>
                         </TableView>
-                        <AnchorPane maxWidth="400.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="336.0" prefWidth="240.0" HBox.hgrow="ALWAYS">
+                        <AnchorPane maxWidth="400.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="336.0" prefWidth="240.0" styleClass="card" HBox.hgrow="ALWAYS">
                            <children>
-                              <Label fx:id="id_label" layoutX="14.0" layoutY="27.0" text="Id" AnchorPane.bottomAnchor="287.4" AnchorPane.leftAnchor="14.0" AnchorPane.topAnchor="27.00000000000002" />
-                              <Label fx:id="v_id" alignment="CENTER_RIGHT" layoutX="143.0" layoutY="24.0" prefHeight="18.0" prefWidth="150.0" text="Label" AnchorPane.bottomAnchor="290.0" AnchorPane.rightAnchor="13.0" AnchorPane.topAnchor="24.0" />
-                              <Label fx:id="nom_label" layoutX="14.0" layoutY="54.0" text="Nom" AnchorPane.bottomAnchor="260.4" AnchorPane.leftAnchor="14.0" AnchorPane.topAnchor="54.00000000000002" />
-                              <Label fx:id="v_nom" alignment="CENTER_RIGHT" layoutX="209.0" layoutY="51.0" prefHeight="18.0" prefWidth="135.0" text="Label" AnchorPane.bottomAnchor="263.0" AnchorPane.rightAnchor="13.0" AnchorPane.topAnchor="51.0" />
-                              <Label fx:id="prix_label" layoutX="14.0" layoutY="85.0" text="Prix" AnchorPane.bottomAnchor="229.4" AnchorPane.leftAnchor="14.0" AnchorPane.topAnchor="85.0" />
-                              <Label fx:id="v_prix" alignment="CENTER_RIGHT" layoutX="209.0" layoutY="82.0" prefHeight="18.0" prefWidth="158.0" text="Label" AnchorPane.bottomAnchor="232.0" AnchorPane.rightAnchor="13.0" AnchorPane.topAnchor="82.0" />
-                              <Label fx:id="marque_label" layoutX="14.0" layoutY="118.0" text="Marque" AnchorPane.bottomAnchor="196.4" AnchorPane.leftAnchor="14.0" AnchorPane.topAnchor="118.0" />
-                              <Label fx:id="cat_label" layoutX="14.0" layoutY="149.0" text="Catégorie" AnchorPane.bottomAnchor="165.4" AnchorPane.leftAnchor="14.0" AnchorPane.topAnchor="149.0" />
-                              <Label fx:id="v_marque" alignment="CENTER_RIGHT" layoutX="209.0" layoutY="115.0" prefHeight="18.0" prefWidth="146.0" text="Label" AnchorPane.bottomAnchor="199.0" AnchorPane.rightAnchor="13.0" AnchorPane.topAnchor="115.0" />
-                              <Label fx:id="v_cat" alignment="CENTER_RIGHT" layoutX="209.0" layoutY="146.0" prefHeight="18.0" prefWidth="153.0" text="Label" AnchorPane.bottomAnchor="168.0" AnchorPane.rightAnchor="13.0" AnchorPane.topAnchor="146.0" />
+                              <Label fx:id="id_label" layoutX="14.0" layoutY="27.0" styleClass="label1" text="Id" AnchorPane.bottomAnchor="287.4" AnchorPane.leftAnchor="14.0" AnchorPane.topAnchor="27.00000000000002" />
+                              <Label fx:id="v_id" alignment="CENTER_RIGHT" layoutX="143.0" layoutY="24.0" prefHeight="18.0" prefWidth="150.0" styleClass="label2" text="Label" AnchorPane.bottomAnchor="290.0" AnchorPane.rightAnchor="13.0" AnchorPane.topAnchor="24.0" />
+                              <Label fx:id="nom_label" layoutX="14.0" layoutY="54.0" styleClass="label1" text="Nom" AnchorPane.bottomAnchor="260.4" AnchorPane.leftAnchor="14.0" AnchorPane.topAnchor="54.00000000000002" />
+                              <Label fx:id="v_nom" alignment="CENTER_RIGHT" layoutX="209.0" layoutY="51.0" prefHeight="18.0" prefWidth="135.0" styleClass="label2" text="Label" AnchorPane.bottomAnchor="263.0" AnchorPane.rightAnchor="13.0" AnchorPane.topAnchor="51.0" />
+                              <Label fx:id="prix_label" layoutX="14.0" layoutY="85.0" styleClass="label1" text="Prix" AnchorPane.bottomAnchor="229.4" AnchorPane.leftAnchor="14.0" AnchorPane.topAnchor="85.0" />
+                              <Label fx:id="v_prix" alignment="CENTER_RIGHT" layoutX="209.0" layoutY="82.0" prefHeight="18.0" prefWidth="158.0" styleClass="label2" text="Label" AnchorPane.bottomAnchor="232.0" AnchorPane.rightAnchor="13.0" AnchorPane.topAnchor="82.0" />
+                              <Label fx:id="marque_label" layoutX="14.0" layoutY="118.0" styleClass="label1" text="Marque" AnchorPane.bottomAnchor="196.4" AnchorPane.leftAnchor="14.0" AnchorPane.topAnchor="118.0" />
+                              <Label fx:id="cat_label" layoutX="14.0" layoutY="149.0" styleClass="label1" text="Catégorie" AnchorPane.bottomAnchor="165.4" AnchorPane.leftAnchor="14.0" AnchorPane.topAnchor="149.0" />
+                              <Label fx:id="v_marque" alignment="CENTER_RIGHT" layoutX="209.0" layoutY="115.0" prefHeight="18.0" prefWidth="146.0" styleClass="label2" text="Label" AnchorPane.bottomAnchor="199.0" AnchorPane.rightAnchor="13.0" AnchorPane.topAnchor="115.0" />
+                              <Label fx:id="v_cat" alignment="CENTER_RIGHT" layoutX="209.0" layoutY="146.0" prefHeight="18.0" prefWidth="153.0" styleClass="label2" text="Label" AnchorPane.bottomAnchor="168.0" AnchorPane.rightAnchor="13.0" AnchorPane.topAnchor="146.0" />
                               <TableView fx:id="sec_table" layoutX="16.0" layoutY="179.0" prefHeight="124.0" prefWidth="222.0" AnchorPane.bottomAnchor="31.0" AnchorPane.leftAnchor="16.0" AnchorPane.rightAnchor="12.0">
                                 <columns>
                                   <TableColumn fx:id="taille_col" prefWidth="75.0" text="Taille" />

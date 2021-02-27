@@ -1,24 +1,30 @@
 package org.ProjetL3MiageCilsEquipeNumero2.Magasin;
 
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.Map.Entry;
 import org.ProjetL3MiageCilsEquipeNumero2.SQLcommunication.SQLcomm;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleMapProperty;
 import javafx.beans.property.SimpleStringProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.collections.ObservableMap;
 
 public class Article {
+	private static ObservableList<Article> articles = FXCollections.observableArrayList();
+
 	private SimpleIntegerProperty id;
 	private SimpleStringProperty nom;
 	private SimpleDoubleProperty prix;
 	private SimpleStringProperty marque;
 	private SimpleStringProperty categorie;
 	private SimpleMapProperty<Couple, Integer> quantites;
-	
+
 	/**
-	 * classe interne à Article qui représente le couple taile,couleur pour les quantites
+	 * classe interne à Article qui représente le couple taile,couleur pour les
+	 * quantites
 	 *
 	 */
 	private class Couple {
@@ -31,7 +37,26 @@ public class Article {
 		}
 	}
 
-	
+	/**
+	 * 
+	 * @return la liste observable contenant tous les articles
+	 */
+	public static ObservableList<Article> getArticles() {
+		return articles;
+	}
+
+	public static void articlesUpdate() {
+		ResultSet tmp = table();
+		try {
+			while (tmp.next()) {
+				articles.add(new Article(tmp.getInt(1), tmp.getString(2), tmp.getDouble(3), tmp.getString(4),
+						tmp.getString(5)));
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 
 	/**
 	 * ajoute 1 article a la bdd
@@ -69,7 +94,7 @@ public class Article {
 		SQLcomm.ajout("Quantites", "idProduit, taille, couleur, quantite",
 				"'" + taille + "' , '" + couleur + "' , " + qte);
 	}
-	
+
 	/**
 	 * constructeur d'article, à utiliser pour récuperer les articles de la bdd
 	 * 
@@ -88,9 +113,11 @@ public class Article {
 	}
 
 	/**
-	 * construit un article: l'ajoute a la bdd dans Produits, et ajoute aussi les quantites si param non null
+	 * construit un article: l'ajoute a la bdd dans Produits, et ajoute aussi les
+	 * quantites si param non null
 	 * 
-	 * @param quantites = observableMap<\Couple, Integer\> avec couple {@link Couple} et integer la qte
+	 * @param quantites = observableMap<\Couple, Integer\> avec couple
+	 *                  {@link Couple} et integer la qte
 	 * 
 	 */
 	public Article(String nom, Double prix, String marque, String categorie, ObservableMap<Couple, Integer> quantites) {
@@ -100,7 +127,8 @@ public class Article {
 		this.categorie = new SimpleStringProperty(categorie);
 		this.id = new SimpleIntegerProperty(
 				ajout("'" + nom + "' , " + prix + " , '" + marque + "' , '" + categorie + "'"));
-		// si l'utilisateur souhaite inserer des tailles, couleurs, qtes en parallel a la creation de l'artilce, on met à jour la table
+		// si l'utilisateur souhaite inserer des tailles, couleurs, qtes en parallel a
+		// la creation de l'artilce, on met à jour la table
 		// qtes
 		if (quantites != null) {
 			this.quantites = new SimpleMapProperty<>(quantites);
@@ -110,92 +138,73 @@ public class Article {
 		}
 	}
 
-	
-	
 	public final SimpleIntegerProperty idProperty() {
 		return this.id;
 	}
-	
 
 	public final int getId() {
 		return this.idProperty().get();
 	}
-	
 
 	public final void setId(final int id) {
 		this.idProperty().set(id);
 	}
-	
 
 	public final SimpleStringProperty nomProperty() {
 		return this.nom;
 	}
-	
 
 	public final String getNom() {
 		return this.nomProperty().get();
 	}
-	
 
 	public final void setNom(final String nom) {
 		this.nomProperty().set(nom);
 	}
-	
 
 	public final SimpleDoubleProperty prixProperty() {
 		return this.prix;
 	}
-	
 
 	public final double getPrix() {
 		return this.prixProperty().get();
 	}
-	
 
 	public final void setPrix(final double prix) {
 		this.prixProperty().set(prix);
 	}
-	
 
 	public final SimpleStringProperty marqueProperty() {
 		return this.marque;
 	}
-	
 
 	public final String getMarque() {
 		return this.marqueProperty().get();
 	}
-	
 
 	public final void setMarque(final String marque) {
 		this.marqueProperty().set(marque);
 	}
-	
 
 	public final SimpleStringProperty categorieProperty() {
 		return this.categorie;
 	}
-	
 
 	public final String getCategorie() {
 		return this.categorieProperty().get();
 	}
-	
 
 	public final void setCategorie(final String categorie) {
 		this.categorieProperty().set(categorie);
 	}
-	
 
 	public final SimpleMapProperty<Couple, Integer> quantitesProperty() {
 		return this.quantites;
 	}
-	
 
 	public final ObservableMap<Couple, Integer> getQuantites() {
 		return this.quantitesProperty().get();
 	}
-	
 
 	public final void setQuantites(final ObservableMap<Couple, Integer> quantites) {
 		this.quantitesProperty().set(quantites);
