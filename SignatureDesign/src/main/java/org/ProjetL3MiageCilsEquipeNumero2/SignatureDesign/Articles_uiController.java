@@ -5,6 +5,8 @@ import java.sql.SQLException;
 
 import org.ProjetL3MiageCilsEquipeNumero2.Magasin.Article;
 
+import javafx.collections.ListChangeListener;
+import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 
@@ -15,7 +17,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.Label;
 
 import javafx.scene.control.TableView;
-
+import javafx.scene.control.TableView.TableViewSelectionModel;
 import javafx.scene.control.TableColumn;
 
 public class Articles_uiController {
@@ -71,7 +73,20 @@ public class Articles_uiController {
 		Article.articlesUpdate();
 		main_table.setItems(Article.getArticles());
 		
-		
+		//lorsque l'utilisateur clique sur un article le card lateral s'actualise
+		TableViewSelectionModel<Article> selectionModel = main_table.getSelectionModel();
+		ObservableList<Article> selection = selectionModel.getSelectedItems();
+		selection.addListener(new ListChangeListener<Article>() {
+			  @Override
+			  public void onChanged(Change<? extends Article> change) {
+			    Article focus = selection.get(0);
+			    v_id.setText(Integer.toString(focus.getId()));
+			    v_nom.setText(focus.getNom());
+			    v_prix.setText(Double.toString(focus.getPrix()));
+			    v_marque.setText(focus.getMarque());
+			    v_cat.setText(focus.getCategorie());
+			  }
+			});
 	}
 	
 	
