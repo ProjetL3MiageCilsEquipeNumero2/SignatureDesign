@@ -1,20 +1,20 @@
 .barre{
-	-fx-background-color: linear-gradient(to bottom, #93f9b944, gold);
+	-fx-background-color: linear-gradient(to bottom, #BDFDF6, gold);
 }
 
 .card{
-	-fx-background-color: linear-gradient(to bottom, #93f9b944, gold);
-	-fx-background-radius: 10px 10px 0px 0px;
+	-fx-background-color: linear-gradient(to bottom, #BDFDF6, gold);
+	-fx-background-radius: 10.0px 10.0px 0.0px 0.0px;
 }
 
 /*colonnes */
 .table-view{
 	-fx-background-color: #FFF9A5;
-	-fx-background-radius: 10px 10px 0px 0px;
+	-fx-background-radius: 10.0px 10.0px 0.0px 0.0px;
 }
 .table-view .column-header-background{
     -fx-background-color: gold;
-    -fx-background-radius: 10px 10px 0px 0px;
+    -fx-background-radius: 10.0px 10.0px 0.0px 0.0px;
 }
  /*titre colonne */
 .table-view .column-header {
@@ -46,4 +46,26 @@
 .bodybg{
      -fx-background-image: url('../connexionPage/pexels-tembela-bohle-1884584.jpg');
      -fx-background-size: 100.0% 100.0%;    
-  }
+ }
+  
+.buttonmenu{
+    -fx-background-radius: 0.0;
+ 	-fx-background-color: transparent;
+ }
+  
+ .buttonmenu:hover{
+ 	-fx-background-radius: 0.0;
+  	-fx-scale-y: 1.0;
+    -fx-scale-x: 1.0;
+ 	-fx-background-color: gold;
+ }
+  
+ .label3{
+ 	-fx-background-radius: 10.0;
+ 	-fx-background-color: linear-gradient(to bottom, #BDFDF6, gold);
+	-fx-font-family : 'Franklin Gothic Heavy' ;
+	-fx-font-size : 15.0 ;
+	-fx-alignment : center ;
+	-fx-text-fill : black ;	 
+}
+  
