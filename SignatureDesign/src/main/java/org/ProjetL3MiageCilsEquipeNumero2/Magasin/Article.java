@@ -7,6 +7,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 import org.ProjetL3MiageCilsEquipeNumero2.SQLcommunication.SQLcomm;
+
+
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleListProperty;
@@ -36,6 +38,9 @@ public class Article {
 		return articles;
 	}
 
+
+	//TODO: à modifier après avoir fait les differentes fonctions
+	/*
 	public static void articlesUpdate() {
 		Statement requeteTableArticles = SQLcomm.requete();
 		Statement requeteTableQuantites = SQLcomm.requete();
@@ -56,42 +61,29 @@ public class Article {
 			e.printStackTrace();
 		}
 	}
+	*/
 
+	//TODO: fct ajout article
 	/**
 	 * ajoute 1 article a la bdd
 	 * 
-	 * @param valeurs = nom, prix, marque, categorie. lorsqu'un type de val est
-	 *                varchar dans la bdd, indiquer entre guillemets simples ie
-	 *                't-shirt'
-	 * @return rep = le id de l'article
+	 * @param valeurs = nom, prix, marque, categorie
+	 * 
 	 */
-	public static int ajout(Statement requete, String valeurs) {
-		int rep = SQLcomm.ajout(requete, "Produits", "nom, prix, marque, categorie", valeurs);
-		return rep;
-	}
 
+	//TODO: get table article
 	/**
 	 * retourne la table Produits
 	 * 
-	 * @return reponse = la table sous la forme ResultSet
 	 */
-	public static ResultSet table(Statement requete) {
-		ResultSet reponse;
-		reponse = SQLcomm.table(requete,"Produits");
-		return reponse;
-	}
 	
+	//TODO:get quantites à partir d'id
 	/**
 	 * retourne les quantites d'un produit à partir de son id
 	 * 
-	 * @return reponse = la table sous la forme ResultSet
 	 */
-	public static ResultSet idToQts(Statement requete, int id) {
-		ResultSet reponse = null;
-		reponse = SQLcomm.tableCond(requete, "QUANTITES", "IdProduit="+id);
-		return reponse;
-	}
 
+	//TODO: ajout qte
 	/**
 	 * ajoute une ligne a la table Quantites
 	 * 
@@ -100,55 +92,7 @@ public class Article {
 	 * @param qte
 	 * 
 	 */
-	public void ajoutQtes(Statement requete, String taille, String couleur, int qte) {
-		SQLcomm.ajout(requete, "Quantites", "idProduit, taille, coleur, quantite",
-				getId()+", '" + taille + "' , '" + couleur + "' , " + qte);
-	}
 
-	/**
-	 * constructeur d'article, à utiliser pour récuperer les articles de la bdd
-	 * 
-	 * @param id
-	 * @param nom
-	 * @param prix
-	 * @param marque
-	 * @param categorie
-	 */
-	public Article(int id, String nom, Double prix, String marque, String categorie) {
-		this.nom = new SimpleStringProperty(nom);
-		this.prix = new SimpleDoubleProperty(prix);
-		this.marque = new SimpleStringProperty(marque);
-		this.categorie = new SimpleStringProperty(categorie);
-		this.id = new SimpleIntegerProperty(id);
-	}
-
-	/**
-	 * construit un article: l'ajoute a la bdd dans Produits, et ajoute aussi les
-	 * quantites si param non null
-	 * 
-	 * @param quantites = observableMap<\Couple, Integer\> avec couple
-	 *                  {@link Couple} et integer la qte
-	 * 
-	 */
-	public Article(String nom, Double prix, String marque, String categorie, ObservableList<Quantite> quantites) {
-		this.nom = new SimpleStringProperty(nom);
-		this.prix = new SimpleDoubleProperty(prix);
-		this.marque = new SimpleStringProperty(marque);
-		this.categorie = new SimpleStringProperty(categorie);
-		Statement requete = SQLcomm.requete();
-		this.id = new SimpleIntegerProperty(
-				ajout(requete, "'" + nom + "' , " + prix + " , '" + marque + "' , '" + categorie + "'"));
-		// si l'utilisateur souhaite inserer des tailles, couleurs, qtes en parallel a
-		// la creation de l'artilce, on met à jour la table
-		// qtes
-		if (quantites != null) {
-			this.quantites = new SimpleListProperty<>(quantites);
-			for (Quantite e : quantites) {
-				this.ajoutQtes(requete, e.getTaille(), e.getCouleur(), e.getQuantite());
-			}
-		}
-	}
-	
 	
 	public Article(int id, String nom, Double prix, String marque, String categorie, ObservableList<Quantite> quantites) {
 		this.nom = new SimpleStringProperty(nom);

@@ -44,7 +44,7 @@
 	-fx-text-fill : black ;	 
 }
 .bodybg{
-     -fx-background-image: url('../connexionPage/pexels-tembela-bohle-1884584.jpg');
+     -fx-background-image: url('pexels-tembela-bohle-1884584.jpg');
      -fx-background-size: 100.0% 100.0%;    
  }
   

@@ -71,7 +71,8 @@ public class Articles_uiController {
 		taille_col.setCellValueFactory(new PropertyValueFactory<Quantite, String>("taille"));
 		coleur_col.setCellValueFactory(new PropertyValueFactory<Quantite, String>("couleur"));
 		qt_col.setCellValueFactory(new PropertyValueFactory<Quantite, Integer>("quantite"));
-		Article.articlesUpdate();
+		//TODO: verifier apres avoir modifie classe Article
+		//Article.articlesUpdate();
 		main_table.setItems(Article.getArticles());
 
 		// lorsque l'utilisateur clique sur un article le card lateral s'actualise

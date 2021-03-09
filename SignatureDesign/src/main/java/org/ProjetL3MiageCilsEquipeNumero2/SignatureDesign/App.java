@@ -26,7 +26,7 @@ public class App extends Application {
 		} catch (ClassNotFoundException e) {
 			System.err.println("Driver non present dans classpath");
 		}
-		scene = new Scene(loadFXML("connexionPage/ConnexionPage"), 640, 480);
+		scene = new Scene(loadFXML("ConnexionPage"), 640, 480);
 		stage.setScene(scene);
 		stage.setFullScreen(true);
 		stage.show();

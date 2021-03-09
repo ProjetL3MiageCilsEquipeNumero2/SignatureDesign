@@ -70,7 +70,7 @@ public class ConnexionPageController {
 				if (succes) {
 					loading.stop();
 					// changemnt d'UI
-					App.setRoot("ongletArticles/Articles_ui");
+					App.setRoot("Articles_ui");
 				} else {
 					loading.stop();
 					anim.setVisible(false);
