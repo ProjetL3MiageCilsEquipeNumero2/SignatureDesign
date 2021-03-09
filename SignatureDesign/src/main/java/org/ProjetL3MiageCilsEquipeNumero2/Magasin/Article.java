@@ -92,6 +92,13 @@ public class Article {
 	 * @param qte
 	 * 
 	 */
+	
+	//TODO: get somme qtes produit
+	/**
+	 * 
+	 * @param id_produit
+	 * @return int qte
+	 */
 
 	
 	public Article(int id, String nom, Double prix, String marque, String categorie, ObservableList<Quantite> quantites) {
