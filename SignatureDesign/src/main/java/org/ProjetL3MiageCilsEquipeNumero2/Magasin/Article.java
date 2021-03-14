@@ -41,15 +41,11 @@ public class Article {
 		return articles;
 	}
 
-
-	//TODO: à modifier après avoir fait les differentes fonctions
 	/*
 	public static void articlesUpdate() {
-		Statement requeteTableArticles = SQLcomm.requete();
-		Statement requeteTableQuantites = SQLcomm.requete();
-		ResultSet tmp = table(requeteTableArticles);
+		ResultSet tableArticles = Article.getTableArticles();
 		try {
-			while (tmp.next()) {
+			while (tableArticles.next()) {
 				ResultSet tmpqt = idToQts(requeteTableQuantites, tmp.getInt(1));
 				ObservableList<Quantite> quantites = FXCollections.observableArrayList();
 				while(tmpqt.next()) {

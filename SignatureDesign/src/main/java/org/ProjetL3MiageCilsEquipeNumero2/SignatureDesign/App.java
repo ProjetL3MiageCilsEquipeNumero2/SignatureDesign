@@ -9,6 +9,7 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Scanner;
 
 import org.ProjetL3MiageCilsEquipeNumero2.Magasin.Article;
 import org.ProjetL3MiageCilsEquipeNumero2.SQLcommunication.DataBase;
@@ -71,8 +72,17 @@ public class App extends Application {
 
 	public static void main(String[] args) {
 		//launch();
-		DataBase db = new DataBase("root", "Zo0M84./f5TrP");
-		ResultSet rs = Article.getTableArticles();
+		//test creation bdd
+		Scanner input = new Scanner(System.in);
+		System.out.println("Nom?");
+		String nom = input.nextLine();
+		Scanner input2 = new Scanner(System.in);
+		System.out.println("Password?");
+		String pass = input2.nextLine();
+		input.close();
+		input2.close();
+		DataBase db = new DataBase(nom, pass);
+		/*ResultSet rs = Article.getTableArticles();
 		try {
 			while (rs.next()) {
 			    String id = rs.getString("Id_Article");
@@ -81,7 +91,7 @@ public class App extends Application {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		System.out.println("FIN");
+		System.out.println("FIN");*/
 	}
 
 }

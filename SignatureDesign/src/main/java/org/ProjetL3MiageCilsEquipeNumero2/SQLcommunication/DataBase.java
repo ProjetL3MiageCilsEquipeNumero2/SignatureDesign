@@ -6,6 +6,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 public class DataBase {
 	public static Connection connexion;
@@ -47,6 +48,7 @@ public class DataBase {
 		createTableApprovisionnementArticles();
 		// stored procedures
 		createGetProcedures();
+		createGetProceduresId();
 	}
 
 	/**
@@ -54,7 +56,7 @@ public class DataBase {
 	 */
 	public void createTableArticles() {
 		String create = "CREATE TABLE IF NOT EXISTS `ARTICLES`" + " ( `Id_Article` int NOT NULL AUTO_INCREMENT,"
-				+ "`Nom_Article` varchar(45) DEFAULT NULL," + "`Prix_Article` double DEFAULT NULL,"
+				+ "`Nom_Article` varchar(45) DEFAULT NULL," + "`Prix_Article` double NOT NULL,"
 				+ "`Marque_Article` varchar(45) DEFAULT NULL," + "`Categorie_Article` varchar(45) DEFAULT NULL,"
 				+ "PRIMARY KEY (`Id_Article`) );";
 		try (Statement stmt = connexion.createStatement()) {
@@ -69,7 +71,7 @@ public class DataBase {
 	 */
 	public void createTableQuantites() {
 		String create = "CREATE TABLE IF NOT EXISTS `QUANTITES`" + "( `Taille` varchar(45) NOT NULL,"
-				+ "`Couleur` varchar(45) NOT NULL," + "`Quantite` int DEFAULT NULL," + " `Id_Article` int NOT NULL,"
+				+ "`Couleur` varchar(45) NOT NULL," + "`Quantite` int NOT NULL," + " `Id_Article` int NOT NULL,"
 				+ " PRIMARY KEY (`Taille`,`Couleur`,`Id_Article`),"
 				+ "FOREIGN KEY (`Id_Article`) REFERENCES `ARTICLES` (`Id_Article`)" + ");";
 		try (Statement stmt = connexion.createStatement()) {
@@ -85,7 +87,7 @@ public class DataBase {
 	public void createTableVendeurs() {
 		String create = "CREATE TABLE IF NOT EXISTS `VENDEURS`" + "(  `NSS_Vendeur` int NOT NULL,"
 				+ "`Nom_Vendeur` varchar(45) DEFAULT NULL," + "`Prenom_Vendeur` varchar(45) DEFAULT NULL,"
-				+ "`Salaire_Vendeur` double DEFAULT NULL," + "PRIMARY KEY (`NSS_Vendeur`)" + ");";
+				+ "`Salaire_Vendeur` double NOT NULL," + "PRIMARY KEY (`NSS_Vendeur`)" + ");";
 		try (Statement stmt = connexion.createStatement()) {
 			stmt.executeUpdate(create);
 		} catch (SQLException e) {
@@ -128,8 +130,8 @@ public class DataBase {
 	 */
 	public void createTableVentes() {
 		String create = "CREATE TABLE IF NOT EXISTS `VENTES` (" + "`Id_Vente` int NOT NULL AUTO_INCREMENT,"
-				+ "`Id_Vendeur` int DEFAULT NULL," + "`Id_Client` int DEFAULT NULL,"
-				+ "`PrixTotal` double DEFAULT NULL," + "`Date` datetime DEFAULT NULL," + "PRIMARY KEY (`Id_Vente`),"
+				+ "`Id_Vendeur` int NOT NULL," + "`Id_Client` int NOT NULL,"
+				+ "`PrixTotal` double NOT NULL," + "`Date` datetime NOT NULL," + "PRIMARY KEY (`Id_Vente`),"
 				+ "FOREIGN KEY (`Id_Client`) REFERENCES `CLIENTS` (`NSS_Client`),"
 				+ "FOREIGN KEY (`Id_Vendeur`) REFERENCES `VENDEURS` (`NSS_Vendeur`)" + ");";
 		try (Statement stmt = connexion.createStatement()) {
@@ -145,7 +147,7 @@ public class DataBase {
 	public void createTableVenteArticles() {
 		String create = "CREATE TABLE IF NOT EXISTS `VENTES_ARTICLES` (" + "`Id_Produit` int NOT NULL,"
 				+ "`Id_Vente` int NOT NULL," + "`Taille` varchar(45) NOT NULL," + "`Couleur` varchar(45) NOT NULL,"
-				+ "`Quantite` varchar(45) NOT NULL," + "PRIMARY KEY (`Id_Produit`,`Id_Vente`,`Taille`,`Couleur`),"
+				+ "`Quantite` int NOT NULL," + "PRIMARY KEY (`Id_Produit`,`Id_Vente`,`Taille`,`Couleur`),"
 				+ "FOREIGN KEY (`Id_Produit`) REFERENCES `ARTICLES` (`Id_Article`),"
 				+ "FOREIGN KEY (`Id_Vente`) REFERENCES `VENTES` (`Id_Vente`)" + " ); ";
 		try (Statement stmt = connexion.createStatement()) {
@@ -160,7 +162,7 @@ public class DataBase {
 	 */
 	public void createTableDepenses() {
 		String create = "CREATE TABLE IF NOT EXISTS `DEPENSES` (" + "`Id_Depense` int NOT NULL,"
-				+ "`Nom_Depense` varchar(45) DEFAULT NULL," + "`Montant_Depense` varchar(45) DEFAULT NULL,"
+				+ "`Nom_Depense` varchar(45) DEFAULT NULL," + "`Montant_Depense` double NOT NULL,"
 				+ "`Type_Depense` varchar(45) DEFAULT NULL," + "`Date_Depense` date DEFAULT NULL,"
 				+ "PRIMARY KEY (`Id_Depense`)" + ");";
 		try (Statement stmt = connexion.createStatement()) {
@@ -175,8 +177,8 @@ public class DataBase {
 	 */
 	public void createTableCommande() {
 		String create = "CREATE TABLE IF NOT EXISTS `COMMANDES` (" + "`Id_Commande` int NOT NULL AUTO_INCREMENT,"
-				+ "`Id_Vente` int NOT NULL," + "`DatePassageCommande` datetime DEFAULT NULL,"
-				+ "`DateVentePrevue` datetime DEFAULT NULL," + "PRIMARY KEY (`Id_Commande`,`Id_Vente`),"
+				+ "`Id_Vente` int NOT NULL," + "`DatePassageCommande` datetime NOT NULL,"
+				+ "`DateVentePrevue` datetime NOT NULL," + "PRIMARY KEY (`Id_Commande`,`Id_Vente`),"
 				+ "FOREIGN KEY (`Id_Vente`) REFERENCES `VENTES` (`Id_Vente`)" + ");";
 		try (Statement stmt = connexion.createStatement()) {
 			stmt.executeUpdate(create);
@@ -190,8 +192,8 @@ public class DataBase {
 	 */
 	public void createTableApprovisionnements() {
 		String create = "CREATE TABLE IF NOT EXISTS `APPROVISIONNEMENTS` ("
-				+ "`Id_Approvisionnement` int NOT NULL AUTO_INCREMENT," + "`Id_Fournisseur` int DEFAULT NULL,"
-				+ "`Prix_Approvisionnement` double DEFAULT NULL," + "`Date_Reception` datetime DEFAULT NULL,"
+				+ "`Id_Approvisionnement` int NOT NULL AUTO_INCREMENT," + "`Id_Fournisseur` int NOT NULL,"
+				+ "`Prix_Approvisionnement` double NOT NULL," + "`Date_Reception` datetime NOT NULL,"
 				+ "PRIMARY KEY (`Id_Approvisionnement`),"
 				+ "FOREIGN KEY (`Id_Fournisseur`) REFERENCES `FOURNISSEURS` (`NSS_Fournisseur`)" + ");";
 		try (Statement stmt = connexion.createStatement()) {
@@ -205,9 +207,10 @@ public class DataBase {
 	 * cree la table ApprovisionnementArticles
 	 */
 	public void createTableApprovisionnementArticles() {
-		String create = "CREATE TABLE IF NOT EXISTS `APPROVISIONNEMENT_ARTICLES` (" + "`Id_Approvisionnement` int NOT NULL,"
-				+ "`Id_Produit` int NOT NULL," + "`Taille` varchar(45) NOT NULL," + "`Couleur` varchar(45) NOT NULL,"
-				+ "`Quantite` varchar(45) DEFAULT NULL,"
+		String create = "CREATE TABLE IF NOT EXISTS `APPROVISIONNEMENT_ARTICLES` ("
+				+ "`Id_Approvisionnement` int NOT NULL," + "`Id_Produit` int NOT NULL,"
+				+ "`Taille` varchar(45) NOT NULL," + "`Couleur` varchar(45) NOT NULL,"
+				+ "`Quantite` int NOT NULL,"
 				+ "PRIMARY KEY (`Id_Approvisionnement`,`Id_Produit`,`Taille`,`Couleur`),"
 				+ "FOREIGN KEY (`Id_Approvisionnement`) REFERENCES `APPROVISIONNEMENTS` (`Id_Approvisionnement`),"
 				+ "FOREIGN KEY (`Id_Produit`) REFERENCES `ARTICLES` (`Id_Article`)" + ");";
@@ -218,6 +221,9 @@ public class DataBase {
 		}
 	}
 
+	/*
+	 * cree des procedures GET<NOMTABLE>() qui retournent une table entiere
+	 */
 	public void createGetProcedures() {
 		String[] nom_tables = { "ARTICLES", "CLIENTS", "VENDEURS", "FOURNISSEURS", "DEPENSES", "APPROVISIONNEMENTS",
 				"COMMANDES" };
@@ -225,16 +231,39 @@ public class DataBase {
 		for (String s : nom_tables) {
 			// on supprime la procedure si elle existe deja
 			String drop = "DROP PROCEDURE IF EXISTS GET_" + s;
-			//String del_proc = "DELIMITER | ";
-			//String del_sql = "DELIMITER ;";
 			// on la cree
-			String createProcedure = " create procedure GET_" + s + "() begin " + "SELECT * FROM " + s + "; "
-					+ "end  ";
+			String createProcedure = " create procedure GET_" + s + "() begin " + "SELECT * FROM " + s + "; " + "end  ";
 			try (Statement stmt = connexion.createStatement()) {
 				stmt.execute(drop);
-				//stmt.execute(del_proc);
 				stmt.executeUpdate(createProcedure);
-				//stmt.execute(del_sql);
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+
+	/*
+	 * cree des procedures GET<NOMTABLE>_ID qui retournent des entrees d'une table
+	 * associées à un id ie. GETQUANTITES_ID(1) retourne un result set <id_article,
+	 * taille, couleur, quantite> associe à l'article dont l'id est 1
+	 */
+	public void createGetProceduresId() {
+		//association table1=>table details
+		Map<String, String> tables = new HashMap<String, String>();
+		tables.put("QUANTITES", "Article");
+		tables.put("VENTES_ARTICLES", "Vente");
+		tables.put("APPROVISIONNEMNET_ARTICLES", "Approvisionnement");
+		Set<Map.Entry<String, String>> couples = tables.entrySet();
+		for (Map.Entry<String, String> s : couples) {
+			String t = s.getKey(); //table
+			String att = s.getValue(); //nom attribut associe ie. quantites=id_article
+			// on supprime la procedure si elle existe deja
+			String drop = "DROP PROCEDURE IF EXISTS GET_" + t + "_ID";
+			// on la cree
+			String createProcedure = " create procedure GET_" + t + "_ID(IN id int) begin " + "SELECT * FROM " + t + " WHERE Id_"+att+" = id; " + "end  ";
+			try (Statement stmt = connexion.createStatement()) {
+				stmt.execute(drop);
+				stmt.executeUpdate(createProcedure);
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
