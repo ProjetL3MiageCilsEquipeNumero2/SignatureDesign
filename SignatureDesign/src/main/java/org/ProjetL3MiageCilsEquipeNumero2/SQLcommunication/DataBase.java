@@ -1,8 +1,8 @@
 package org.ProjetL3MiageCilsEquipeNumero2.SQLcommunication;
 
-import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.HashMap;
@@ -10,7 +10,6 @@ import java.util.Map;
 import java.util.Set;
 
 import org.ProjetL3MiageCilsEquipeNumero2.Magasin.Article;
-import org.ProjetL3MiageCilsEquipeNumero2.SignatureDesign.App;
 
 public class DataBase {
 	private Connection connexion;
@@ -30,14 +29,32 @@ public class DataBase {
 		try {
 			connexion = DriverManager.getConnection("jdbc:mysql://localhost:3306/", nom, pass);
 			Statement requete = connexion.createStatement();
-			requete.executeUpdate("CREATE DATABASE IF NOT EXISTS SignatureDesign;");
+			if (!bddExiste()) {
+				requete.executeUpdate("CREATE DATABASE IF NOT EXISTS SignatureDesign;");
+				createSchemaBdd();
+			}
 			requete.execute("Use SignatureDesign;");
-			createSchemaBdd();
 			return true;
 		} catch (SQLException e) {
 			e.printStackTrace();
 			return false;
 		}
+	}
+
+	private boolean bddExiste() {
+		ResultSet rs;
+		try {
+			rs = connexion.getMetaData().getCatalogs();
+			while (rs.next()) {
+				String catalogs = rs.getString(1);
+
+				if ("signaturedesign".equals(catalogs))
+					return true;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return false;
 	}
 
 	/**
@@ -60,8 +77,9 @@ public class DataBase {
 		createGetProcedures();
 		createGetProceduresId();
 		createAjoutProcedures();
-		
-		//populer la bdd
+		createDeleteIdProcedures();
+
+		// populer la bdd
 		populateBdd();
 	}
 
@@ -284,6 +302,10 @@ public class DataBase {
 		}
 	}
 
+	/*
+	 * remplit la bdd pour l'exemple d'execution
+	 * 
+	 */
 	public void populateBdd() {
 		Article.createArticle("article1", 12.5, "marque1", "categorie1");
 		Article.createArticle("article2", 50.40, "marque1", "categorie2");
@@ -291,14 +313,16 @@ public class DataBase {
 		Article.createQuantite(1, "S", "rouge", 15);
 		Article.createQuantite(2, "M", "jaune", 20);
 	}
-	
+
+	/*
+	 * cree une procedure de creation d'article
+	 */
 	public void createAjoutArticleProc() {
 		String drop = "DROP PROCEDURE IF EXISTS AJOUT_ARTICLE";
 		String createProcedure = " create procedure AJOUT_ARTICLE(IN vnom_article varchar(45), IN vprix_article double,"
-				+ " IN vmarque_article varchar(45)," + " IN vcategorie_article varchar(45) " + ")" + "begin " +
-				"INSERT INTO ARTICLES ( nom_article ,  prix_article , marque_article , categorie_article ) " +
-				"VALUES ( vnom_article ,  vprix_article , vmarque_article , vcategorie_article)"+"; "
-				+ "end  ";
+				+ " IN vmarque_article varchar(45)," + " IN vcategorie_article varchar(45) " + ")" + "begin "
+				+ "INSERT INTO ARTICLES ( nom_article ,  prix_article , marque_article , categorie_article ) "
+				+ "VALUES ( vnom_article ,  vprix_article , vmarque_article , vcategorie_article)" + "; " + "end  ";
 		// createProcedure
 		try (Statement stmt = connexion.createStatement()) {
 			stmt.execute(drop);
@@ -308,13 +332,15 @@ public class DataBase {
 		}
 	}
 
+	/*
+	 * cree procedure de creation de quantite associée à un article
+	 */
 	public void createAjoutQuantiteProc() {
 		String drop = "DROP PROCEDURE IF EXISTS AJOUT_QUANTITE";
 		String createProcedure = " create procedure AJOUT_QUANTITE(IN vId_article int, IN vtaille varchar(45),"
-				+ " IN vcouleurs varchar(45)," + " IN vquantite int " + ")" + "begin " +
-				"INSERT INTO QUANTITES ( Id_article ,  Taille , Couleur , Quantite ) " +
-				"VALUES ( vId_article ,  vtaille , vcouleurs , vquantite)"+"; "
-				+ "end  ";
+				+ " IN vcouleurs varchar(45)," + " IN vquantite int " + ")" + "begin "
+				+ "INSERT INTO QUANTITES ( Id_article ,  Taille , Couleur , Quantite ) "
+				+ "VALUES ( vId_article ,  vtaille , vcouleurs , vquantite)" + "; " + "end  ";
 		// createProcedure
 		try (Statement stmt = connexion.createStatement()) {
 			stmt.execute(drop);
@@ -323,7 +349,7 @@ public class DataBase {
 			e.printStackTrace();
 		}
 	}
-	
+
 	// TODO ajouter les autres tables
 	/*
 	 * cree des procedures qui permettent de populer une table ie.
@@ -332,7 +358,29 @@ public class DataBase {
 	public void createAjoutProcedures() {
 		createAjoutArticleProc();
 		createAjoutQuantiteProc();
+	}
+
+	// TODO: delete des clients, vendeurs, fournisseurs
+	public void createDeleteIdProcedures() {
+		String[] nom_tables = { "ARTICLE", "DEPENSE", "APPROVISIONNEMENT", "COMMANDE" };
+		// clients, vendeurs et fournisseurs identifies par leur NSS donc cette approche
+		// ne marche pas.
+		// pour chacune de ces tables on cree une procedure qui supprimme une entree en
+		// fction d'un id
+		for (String s : nom_tables) {
+			// on supprime la procedure si elle existe deja
+			String drop = "DROP PROCEDURE IF EXISTS DELETE_" + s;
+			// on la cree
+			String createProcedure = " create procedure DELETE_" + s + "(IN id int) begin " + "DELETE FROM " + s
+					+ "S WHERE Id_" + s + " = id; " + "end  ";
+			try (Statement stmt = connexion.createStatement()) {
+				stmt.execute(drop);
+				stmt.executeUpdate(createProcedure);
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 		}
+	}
 
 	/**
 	 * 

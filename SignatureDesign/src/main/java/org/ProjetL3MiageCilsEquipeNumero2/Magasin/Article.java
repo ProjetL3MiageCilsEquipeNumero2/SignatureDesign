@@ -4,7 +4,6 @@ import java.sql.CallableStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import org.ProjetL3MiageCilsEquipeNumero2.SQLcommunication.DataBase;
 import org.ProjetL3MiageCilsEquipeNumero2.SignatureDesign.App;
 
 import javafx.beans.property.SimpleDoubleProperty;
