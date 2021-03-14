@@ -1,5 +1,6 @@
 package org.ProjetL3MiageCilsEquipeNumero2.SQLcommunication;
 
+import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -8,8 +9,15 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
+import org.ProjetL3MiageCilsEquipeNumero2.Magasin.Article;
+import org.ProjetL3MiageCilsEquipeNumero2.SignatureDesign.App;
+
 public class DataBase {
-	public static Connection connexion;
+	private Connection connexion;
+
+	public Connection getConnection() {
+		return connexion;
+	}
 
 	/**
 	 * initialise une connexion en tant que admin du serveur mysql et creé la bdd
@@ -18,15 +26,17 @@ public class DataBase {
 	 * @param nom  = le nom de l'admin
 	 * @param pass = le mot de passe de l'admin
 	 */
-	public DataBase(String nom, String pass) {
+	public boolean DataBase(String nom, String pass) {
 		try {
 			connexion = DriverManager.getConnection("jdbc:mysql://localhost:3306/", nom, pass);
 			Statement requete = connexion.createStatement();
 			requete.executeUpdate("CREATE DATABASE IF NOT EXISTS SignatureDesign;");
 			requete.execute("Use SignatureDesign;");
 			createSchemaBdd();
+			return true;
 		} catch (SQLException e) {
 			e.printStackTrace();
+			return false;
 		}
 	}
 
@@ -49,6 +59,10 @@ public class DataBase {
 		// stored procedures
 		createGetProcedures();
 		createGetProceduresId();
+		createAjoutProcedures();
+		
+		//populer la bdd
+		populateBdd();
 	}
 
 	/**
@@ -130,8 +144,8 @@ public class DataBase {
 	 */
 	public void createTableVentes() {
 		String create = "CREATE TABLE IF NOT EXISTS `VENTES` (" + "`Id_Vente` int NOT NULL AUTO_INCREMENT,"
-				+ "`Id_Vendeur` int NOT NULL," + "`Id_Client` int NOT NULL,"
-				+ "`PrixTotal` double NOT NULL," + "`Date` datetime NOT NULL," + "PRIMARY KEY (`Id_Vente`),"
+				+ "`Id_Vendeur` int NOT NULL," + "`Id_Client` int NOT NULL," + "`PrixTotal` double NOT NULL,"
+				+ "`Date` datetime NOT NULL," + "PRIMARY KEY (`Id_Vente`),"
 				+ "FOREIGN KEY (`Id_Client`) REFERENCES `CLIENTS` (`NSS_Client`),"
 				+ "FOREIGN KEY (`Id_Vendeur`) REFERENCES `VENDEURS` (`NSS_Vendeur`)" + ");";
 		try (Statement stmt = connexion.createStatement()) {
@@ -209,8 +223,7 @@ public class DataBase {
 	public void createTableApprovisionnementArticles() {
 		String create = "CREATE TABLE IF NOT EXISTS `APPROVISIONNEMENT_ARTICLES` ("
 				+ "`Id_Approvisionnement` int NOT NULL," + "`Id_Produit` int NOT NULL,"
-				+ "`Taille` varchar(45) NOT NULL," + "`Couleur` varchar(45) NOT NULL,"
-				+ "`Quantite` int NOT NULL,"
+				+ "`Taille` varchar(45) NOT NULL," + "`Couleur` varchar(45) NOT NULL," + "`Quantite` int NOT NULL,"
 				+ "PRIMARY KEY (`Id_Approvisionnement`,`Id_Produit`,`Taille`,`Couleur`),"
 				+ "FOREIGN KEY (`Id_Approvisionnement`) REFERENCES `APPROVISIONNEMENTS` (`Id_Approvisionnement`),"
 				+ "FOREIGN KEY (`Id_Produit`) REFERENCES `ARTICLES` (`Id_Article`)" + ");";
@@ -248,19 +261,20 @@ public class DataBase {
 	 * taille, couleur, quantite> associe à l'article dont l'id est 1
 	 */
 	public void createGetProceduresId() {
-		//association table1=>table details
+		// association table1=>table details
 		Map<String, String> tables = new HashMap<String, String>();
 		tables.put("QUANTITES", "Article");
 		tables.put("VENTES_ARTICLES", "Vente");
 		tables.put("APPROVISIONNEMNET_ARTICLES", "Approvisionnement");
 		Set<Map.Entry<String, String>> couples = tables.entrySet();
 		for (Map.Entry<String, String> s : couples) {
-			String t = s.getKey(); //table
-			String att = s.getValue(); //nom attribut associe ie. quantites=id_article
+			String t = s.getKey(); // table
+			String att = s.getValue(); // nom attribut associe ie. quantites=id_article
 			// on supprime la procedure si elle existe deja
 			String drop = "DROP PROCEDURE IF EXISTS GET_" + t + "_ID";
 			// on la cree
-			String createProcedure = " create procedure GET_" + t + "_ID(IN id int) begin " + "SELECT * FROM " + t + " WHERE Id_"+att+" = id; " + "end  ";
+			String createProcedure = " create procedure GET_" + t + "_ID(IN id int) begin " + "SELECT * FROM " + t
+					+ " WHERE Id_" + att + " = id; " + "end  ";
 			try (Statement stmt = connexion.createStatement()) {
 				stmt.execute(drop);
 				stmt.executeUpdate(createProcedure);
@@ -270,22 +284,55 @@ public class DataBase {
 		}
 	}
 
-	/**
-	 * initialise une connexion
-	 * 
-	 * @param nom  = le nom de l'user
-	 * @param pass = le mot de passe de l'user
-	 * @return true si connexion etablie, faux sinon
-	 */
-	public boolean init(String nom, String pass) {
-		try {
-			connexion = DriverManager.getConnection("jdbc:mysql://localhost:3306/SignatureDesign", nom, pass);
-			return true;
+	public void populateBdd() {
+		Article.createArticle("article1", 12.5, "marque1", "categorie1");
+		Article.createArticle("article2", 50.40, "marque1", "categorie2");
+		Article.createQuantite(1, "S", "vert", 20);
+		Article.createQuantite(1, "S", "rouge", 15);
+		Article.createQuantite(2, "M", "jaune", 20);
+	}
+	
+	public void createAjoutArticleProc() {
+		String drop = "DROP PROCEDURE IF EXISTS AJOUT_ARTICLE";
+		String createProcedure = " create procedure AJOUT_ARTICLE(IN vnom_article varchar(45), IN vprix_article double,"
+				+ " IN vmarque_article varchar(45)," + " IN vcategorie_article varchar(45) " + ")" + "begin " +
+				"INSERT INTO ARTICLES ( nom_article ,  prix_article , marque_article , categorie_article ) " +
+				"VALUES ( vnom_article ,  vprix_article , vmarque_article , vcategorie_article)"+"; "
+				+ "end  ";
+		// createProcedure
+		try (Statement stmt = connexion.createStatement()) {
+			stmt.execute(drop);
+			stmt.executeUpdate(createProcedure);
 		} catch (SQLException e) {
 			e.printStackTrace();
-			return false;
 		}
 	}
+
+	public void createAjoutQuantiteProc() {
+		String drop = "DROP PROCEDURE IF EXISTS AJOUT_QUANTITE";
+		String createProcedure = " create procedure AJOUT_QUANTITE(IN vId_article int, IN vtaille varchar(45),"
+				+ " IN vcouleurs varchar(45)," + " IN vquantite int " + ")" + "begin " +
+				"INSERT INTO QUANTITES ( Id_article ,  Taille , Couleur , Quantite ) " +
+				"VALUES ( vId_article ,  vtaille , vcouleurs , vquantite)"+"; "
+				+ "end  ";
+		// createProcedure
+		try (Statement stmt = connexion.createStatement()) {
+			stmt.execute(drop);
+			stmt.executeUpdate(createProcedure);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	// TODO ajouter les autres tables
+	/*
+	 * cree des procedures qui permettent de populer une table ie.
+	 * AJOUT_ARTICLE("nom", prix, "marque", "cat")
+	 */
+	public void createAjoutProcedures() {
+		createAjoutArticleProc();
+		createAjoutQuantiteProc();
+		}
 
 	/**
 	 * 

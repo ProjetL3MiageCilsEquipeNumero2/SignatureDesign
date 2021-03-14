@@ -7,20 +7,13 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.Scanner;
-
-import org.ProjetL3MiageCilsEquipeNumero2.Magasin.Article;
 import org.ProjetL3MiageCilsEquipeNumero2.SQLcommunication.DataBase;
-import org.ProjetL3MiageCilsEquipeNumero2.SQLcommunication.SQLcomm;
-
 /**
  * JavaFX App
  */
 public class App extends Application {
 
-	public static SQLcomm connexion = new SQLcomm();
+	public static DataBase db = new DataBase();
 	private static Scene scene;
 
 	@Override
@@ -42,7 +35,7 @@ public class App extends Application {
 	 */
 	@Override
 	public void stop() throws Exception {
-		boolean succes = connexion.close();
+		boolean succes = db.close();
 		if (succes)
 			System.out.println("Connexion fermee avec succes");
 		super.stop();
@@ -71,22 +64,23 @@ public class App extends Application {
 	}
 
 	public static void main(String[] args) {
-		//launch();
+		launch();
 		//test creation bdd
-		Scanner input = new Scanner(System.in);
+		/*Scanner input = new Scanner(System.in);
 		System.out.println("Nom?");
 		String nom = input.nextLine();
-		Scanner input2 = new Scanner(System.in);
+		input = new Scanner(System.in);
 		System.out.println("Password?");
-		String pass = input2.nextLine();
+		String pass = input.nextLine();
 		input.close();
-		input2.close();
 		DataBase db = new DataBase(nom, pass);
-		/*ResultSet rs = Article.getTableArticles();
+		ResultSet rs = Article.getQuantitesId(1);
 		try {
 			while (rs.next()) {
 			    String id = rs.getString("Id_Article");
+			    String t = rs.getString("taille");
 			    System.out.println(id);
+			    System.out.println(t);
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();

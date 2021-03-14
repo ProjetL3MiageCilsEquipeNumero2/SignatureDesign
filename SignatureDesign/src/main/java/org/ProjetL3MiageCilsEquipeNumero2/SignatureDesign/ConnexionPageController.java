@@ -2,6 +2,8 @@ package org.ProjetL3MiageCilsEquipeNumero2.SignatureDesign;
 
 import java.io.IOException;
 
+import org.ProjetL3MiageCilsEquipeNumero2.SQLcommunication.DataBase;
+
 import javafx.animation.FadeTransition;
 import javafx.animation.Timeline;
 import javafx.concurrent.Task;
@@ -66,7 +68,7 @@ public class ConnexionPageController {
 		new Thread(new Task<Void>() {
 			@Override
 			public Void call() throws IOException {
-				boolean succes = App.connexion.init(idtxt.getText(), txtPass.getText());
+				boolean succes = App.db.DataBase(idtxt.getText(), txtPass.getText());
 				if (succes) {
 					loading.stop();
 					// changemnt d'UI
