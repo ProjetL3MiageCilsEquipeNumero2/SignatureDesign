@@ -6,8 +6,11 @@ import java.sql.Statement;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
+
+import org.ProjetL3MiageCilsEquipeNumero2.SQLcommunication.DataBase;
 import org.ProjetL3MiageCilsEquipeNumero2.SQLcommunication.SQLcomm;
 
+import com.mysql.cj.jdbc.CallableStatement;
 
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleIntegerProperty;
@@ -73,9 +76,19 @@ public class Article {
 
 	//TODO: get table article
 	/**
-	 * retourne la table Produits
-	 * 
+	 * retourne la table ARTICLES
 	 */
+	public static ResultSet getTableArticles() {
+		ResultSet rs = null;
+		try {
+			java.sql.CallableStatement cs = DataBase.connexion.prepareCall("{call GET_ARTICLES}");
+			rs = cs.executeQuery();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return rs;
+	}
+	
 	
 	//TODO:get quantites à partir d'id
 	/**

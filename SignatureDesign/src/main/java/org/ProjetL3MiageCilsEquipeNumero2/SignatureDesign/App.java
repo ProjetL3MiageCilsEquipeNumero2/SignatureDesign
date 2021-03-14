@@ -7,7 +7,11 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
+import org.ProjetL3MiageCilsEquipeNumero2.Magasin.Article;
+import org.ProjetL3MiageCilsEquipeNumero2.SQLcommunication.DataBase;
 import org.ProjetL3MiageCilsEquipeNumero2.SQLcommunication.SQLcomm;
 
 /**
@@ -66,7 +70,18 @@ public class App extends Application {
 	}
 
 	public static void main(String[] args) {
-		launch();
+		//launch();
+		DataBase db = new DataBase("root", "Zo0M84./f5TrP");
+		ResultSet rs = Article.getTableArticles();
+		try {
+			while (rs.next()) {
+			    String id = rs.getString("Id_Article");
+			    System.out.println(id);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		System.out.println("FIN");
 	}
 
 }
