@@ -1,26 +1,18 @@
 package org.ProjetL3MiageCilsEquipeNumero2.Magasin;
 
+import java.sql.CallableStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Map.Entry;
 
 import org.ProjetL3MiageCilsEquipeNumero2.SQLcommunication.DataBase;
-import org.ProjetL3MiageCilsEquipeNumero2.SQLcommunication.SQLcomm;
-
-import com.mysql.cj.jdbc.CallableStatement;
+import org.ProjetL3MiageCilsEquipeNumero2.SignatureDesign.App;
 
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleListProperty;
-import javafx.beans.property.SimpleMapProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.collections.ObservableMap;
-
 public class Article {
 	private static ObservableList<Article> articles = FXCollections.observableArrayList();
 
@@ -41,26 +33,23 @@ public class Article {
 		return articles;
 	}
 
-	/*
+	
 	public static void articlesUpdate() {
 		ResultSet tableArticles = Article.getTableArticles();
 		try {
 			while (tableArticles.next()) {
-				ResultSet tmpqt = idToQts(requeteTableQuantites, tmp.getInt(1));
+				ResultSet tableQuantites = getQuantitesId(tableArticles.getInt("Id_Article"));
 				ObservableList<Quantite> quantites = FXCollections.observableArrayList();
-				while(tmpqt.next()) {
-					quantites.add(new Quantite(tmpqt.getString("Taille"), tmpqt.getString("Coleur"), tmpqt.getInt("Quantite")));
+				while(tableQuantites.next()) {
+					quantites.add(new Quantite(tableQuantites.getString("Taille"), tableQuantites.getString("Couleur"), tableQuantites.getInt("Quantite")));
 				}
-				articles.add(new Article(tmp.getInt(1), tmp.getString(2), tmp.getDouble(3), tmp.getString(4),
-						tmp.getString(5), quantites));
+				articles.add(new Article(tableArticles.getInt("Id_Article"), tableArticles.getString("nom_article"), tableArticles.getDouble("prix_article"), tableArticles.getString("marque_article"),
+						tableArticles.getString("categorie_article"), quantites));
 			}
-			requeteTableArticles.close();
-			requeteTableQuantites.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 	}
-	*/
 
 	//TODO: fct ajout article
 	/**
@@ -70,14 +59,13 @@ public class Article {
 	 * 
 	 */
 
-	//TODO: get table article
 	/**
 	 * retourne la table ARTICLES
 	 */
 	public static ResultSet getTableArticles() {
 		ResultSet rs = null;
 		try {
-			java.sql.CallableStatement cs = DataBase.connexion.prepareCall("{call GET_ARTICLES}");
+			CallableStatement cs = App.db.getConnection().prepareCall("{call GET_ARTICLES}");
 			rs = cs.executeQuery();
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -85,12 +73,49 @@ public class Article {
 		return rs;
 	}
 	
+	public static void createArticle(String nom, double prix, String marque, String cat) {
+		CallableStatement cs;
+		try {
+			cs = App.db.getConnection().prepareCall("{call AJOUT_ARTICLE(?,?,?,?)}");
+			cs.setString(1, nom);
+			cs.setDouble(2, prix);
+			cs.setString(3, marque);
+			cs.setString(4, cat);
+			cs.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
 	
-	//TODO:get quantites à partir d'id
+	public static void createQuantite(int id, String taille, String couleur, int qte) {
+		CallableStatement cs;
+		try {
+			cs = App.db.getConnection().prepareCall("{call AJOUT_QUANTITE(?,?,?,?)}");
+			cs.setInt(1, id);
+			cs.setString(2, taille);
+			cs.setString(3, couleur);
+			cs.setInt(4, qte);
+			cs.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
 	/**
-	 * retourne les quantites d'un produit à partir de son id
+	 * retourne les quantites d'un article à partir de son id
 	 * 
 	 */
+	public static ResultSet getQuantitesId(int id) {
+		ResultSet rs = null;
+		try {
+			CallableStatement cs = App.db.getConnection().prepareCall("{call GET_QUANTITES_ID(?)}");
+			cs.setInt(1, id);
+			rs = cs.executeQuery();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return rs;
+	}
 
 	//TODO: ajout qte
 	/**
@@ -104,8 +129,8 @@ public class Article {
 	
 	//TODO: get somme qtes produit
 	/**
-	 * 
-	 * @param id_produit
+	 * retourne la qté totale d'un article
+	 * @param id_article
 	 * @return int qte
 	 */
 
