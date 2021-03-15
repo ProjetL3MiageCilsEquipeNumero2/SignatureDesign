@@ -1,8 +1,8 @@
 package org.ProjetL3MiageCilsEquipeNumero2.SQLcommunication;
 
-import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.HashMap;
@@ -10,7 +10,6 @@ import java.util.Map;
 import java.util.Set;
 
 import org.ProjetL3MiageCilsEquipeNumero2.Magasin.Article;
-import org.ProjetL3MiageCilsEquipeNumero2.SignatureDesign.App;
 
 public class DataBase {
 	private Connection connexion;
@@ -30,14 +29,33 @@ public class DataBase {
 		try {
 			connexion = DriverManager.getConnection("jdbc:mysql://localhost:3306/", nom, pass);
 			Statement requete = connexion.createStatement();
-			requete.executeUpdate("CREATE DATABASE IF NOT EXISTS SignatureDesign;");
-			requete.execute("Use SignatureDesign;");
-			createSchemaBdd();
+			if (!bddExiste()) {
+				requete.executeUpdate("CREATE DATABASE IF NOT EXISTS SignatureDesign;");
+				requete.execute("Use SignatureDesign;");
+				createSchemaBdd();
+			} else
+				requete.execute("Use SignatureDesign;");
 			return true;
 		} catch (SQLException e) {
 			e.printStackTrace();
 			return false;
 		}
+	}
+
+	private boolean bddExiste() {
+		ResultSet rs;
+		try {
+			rs = connexion.getMetaData().getCatalogs();
+			while (rs.next()) {
+				String catalogs = rs.getString(1);
+
+				if ("signaturedesign".equals(catalogs))
+					return true;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return false;
 	}
 
 	/**
@@ -60,8 +78,9 @@ public class DataBase {
 		createGetProcedures();
 		createGetProceduresId();
 		createAjoutProcedures();
-		
-		//populer la bdd
+		createDeleteIdProcedures();
+
+		// populer la bdd
 		populateBdd();
 	}
 
@@ -87,7 +106,7 @@ public class DataBase {
 		String create = "CREATE TABLE IF NOT EXISTS `QUANTITES`" + "( `Taille` varchar(45) NOT NULL,"
 				+ "`Couleur` varchar(45) NOT NULL," + "`Quantite` int NOT NULL," + " `Id_Article` int NOT NULL,"
 				+ " PRIMARY KEY (`Taille`,`Couleur`,`Id_Article`),"
-				+ "FOREIGN KEY (`Id_Article`) REFERENCES `ARTICLES` (`Id_Article`)" + ");";
+				+ "FOREIGN KEY (`Id_Article`) REFERENCES `ARTICLES` (`Id_Article`) ON DELETE CASCADE" + ");";
 		try (Statement stmt = connexion.createStatement()) {
 			stmt.executeUpdate(create);
 		} catch (SQLException e) {
@@ -99,9 +118,9 @@ public class DataBase {
 	 * cree la table Vendeurs
 	 */
 	public void createTableVendeurs() {
-		String create = "CREATE TABLE IF NOT EXISTS `VENDEURS`" + "(  `NSS_Vendeur` int NOT NULL,"
+		String create = "CREATE TABLE IF NOT EXISTS `VENDEURS`" + "(  `Id_Vendeur` int NOT NULL AUTO_INCREMENT,"
 				+ "`Nom_Vendeur` varchar(45) DEFAULT NULL," + "`Prenom_Vendeur` varchar(45) DEFAULT NULL,"
-				+ "`Salaire_Vendeur` double NOT NULL," + "PRIMARY KEY (`NSS_Vendeur`)" + ");";
+				+ "`Salaire_Vendeur` double NOT NULL," + "PRIMARY KEY (`Id_Vendeur`)" + ");";
 		try (Statement stmt = connexion.createStatement()) {
 			stmt.executeUpdate(create);
 		} catch (SQLException e) {
@@ -113,10 +132,10 @@ public class DataBase {
 	 * cree la table Fournisseurs
 	 */
 	public void createTableFournisseurs() {
-		String create = "CREATE TABLE IF NOT EXISTS `FOURNISSEURS`" + "( `NSS_Fournisseur` int NOT NULL,"
+		String create = "CREATE TABLE IF NOT EXISTS `FOURNISSEURS`" + "( `Id_Fournisseur` int NOT NULL AUTO_INCREMENT,"
 				+ "`Adresse_Fournisseur` varchar(60) DEFAULT NULL," + "`NTel_Fournisseur` varchar(45) DEFAULT NULL,"
 				+ "`Email_Fournisseur` varchar(45) DEFAULT NULL," + "`URL_Fournisseur` varchar(150) DEFAULT NULL,"
-				+ "PRIMARY KEY (`NSS_Fournisseur`)" + ");";
+				+ "PRIMARY KEY (`Id_Fournisseur`)" + ");";
 		try (Statement stmt = connexion.createStatement()) {
 			stmt.executeUpdate(create);
 		} catch (SQLException e) {
@@ -128,10 +147,10 @@ public class DataBase {
 	 * cree la table CLIENTS
 	 */
 	public void createTableClients() {
-		String create = "CREATE TABLE IF NOT EXISTS `CLIENTS`" + "( `NSS_Client` int NOT NULL,"
+		String create = "CREATE TABLE IF NOT EXISTS `CLIENTS`" + "( `Id_Client` int NOT NULL AUTO_INCREMENT,"
 				+ "`Nom_Client` varchar(45) DEFAULT NULL," + "`Prenom_Client` varchar(45) DEFAULT NULL,"
 				+ "`Adresse_Client` varchar(60) DEFAULT NULL," + "`NTel_Client` varchar(45) DEFAULT NULL,"
-				+ "`Email_Client` varchar(45) DEFAULT NULL," + "PRIMARY KEY (`NSS_Client`)" + "); ";
+				+ "`Email_Client` varchar(45) DEFAULT NULL," + "PRIMARY KEY (`Id_Client`)" + "); ";
 		try (Statement stmt = connexion.createStatement()) {
 			stmt.executeUpdate(create);
 		} catch (SQLException e) {
@@ -146,8 +165,8 @@ public class DataBase {
 		String create = "CREATE TABLE IF NOT EXISTS `VENTES` (" + "`Id_Vente` int NOT NULL AUTO_INCREMENT,"
 				+ "`Id_Vendeur` int NOT NULL," + "`Id_Client` int NOT NULL," + "`PrixTotal` double NOT NULL,"
 				+ "`Date` datetime NOT NULL," + "PRIMARY KEY (`Id_Vente`),"
-				+ "FOREIGN KEY (`Id_Client`) REFERENCES `CLIENTS` (`NSS_Client`),"
-				+ "FOREIGN KEY (`Id_Vendeur`) REFERENCES `VENDEURS` (`NSS_Vendeur`)" + ");";
+				+ "FOREIGN KEY (`Id_Client`) REFERENCES `CLIENTS` (`Id_Client`),"
+				+ "FOREIGN KEY (`Id_Vendeur`) REFERENCES `VENDEURS` (`Id_Vendeur`)" + ");";
 		try (Statement stmt = connexion.createStatement()) {
 			stmt.executeUpdate(create);
 		} catch (SQLException e) {
@@ -209,7 +228,7 @@ public class DataBase {
 				+ "`Id_Approvisionnement` int NOT NULL AUTO_INCREMENT," + "`Id_Fournisseur` int NOT NULL,"
 				+ "`Prix_Approvisionnement` double NOT NULL," + "`Date_Reception` datetime NOT NULL,"
 				+ "PRIMARY KEY (`Id_Approvisionnement`),"
-				+ "FOREIGN KEY (`Id_Fournisseur`) REFERENCES `FOURNISSEURS` (`NSS_Fournisseur`)" + ");";
+				+ "FOREIGN KEY (`Id_Fournisseur`) REFERENCES `FOURNISSEURS` (`Id_Fournisseur`)" + ");";
 		try (Statement stmt = connexion.createStatement()) {
 			stmt.executeUpdate(create);
 		} catch (SQLException e) {
@@ -284,6 +303,10 @@ public class DataBase {
 		}
 	}
 
+	/*
+	 * remplit la bdd pour l'exemple d'execution
+	 * 
+	 */
 	public void populateBdd() {
 		Article.createArticle("article1", 12.5, "marque1", "categorie1");
 		Article.createArticle("article2", 50.40, "marque1", "categorie2");
@@ -291,14 +314,16 @@ public class DataBase {
 		Article.createQuantite(1, "S", "rouge", 15);
 		Article.createQuantite(2, "M", "jaune", 20);
 	}
-	
+
+	/*
+	 * cree une procedure de creation d'article
+	 */
 	public void createAjoutArticleProc() {
 		String drop = "DROP PROCEDURE IF EXISTS AJOUT_ARTICLE";
 		String createProcedure = " create procedure AJOUT_ARTICLE(IN vnom_article varchar(45), IN vprix_article double,"
-				+ " IN vmarque_article varchar(45)," + " IN vcategorie_article varchar(45) " + ")" + "begin " +
-				"INSERT INTO ARTICLES ( nom_article ,  prix_article , marque_article , categorie_article ) " +
-				"VALUES ( vnom_article ,  vprix_article , vmarque_article , vcategorie_article)"+"; "
-				+ "end  ";
+				+ " IN vmarque_article varchar(45)," + " IN vcategorie_article varchar(45) " + ")" + "begin "
+				+ "INSERT INTO ARTICLES ( nom_article ,  prix_article , marque_article , categorie_article ) "
+				+ "VALUES ( vnom_article ,  vprix_article , vmarque_article , vcategorie_article)" + "; " + "end  ";
 		// createProcedure
 		try (Statement stmt = connexion.createStatement()) {
 			stmt.execute(drop);
@@ -308,13 +333,15 @@ public class DataBase {
 		}
 	}
 
+	/*
+	 * cree procedure de creation de quantite associée à un article
+	 */
 	public void createAjoutQuantiteProc() {
 		String drop = "DROP PROCEDURE IF EXISTS AJOUT_QUANTITE";
 		String createProcedure = " create procedure AJOUT_QUANTITE(IN vId_article int, IN vtaille varchar(45),"
-				+ " IN vcouleurs varchar(45)," + " IN vquantite int " + ")" + "begin " +
-				"INSERT INTO QUANTITES ( Id_article ,  Taille , Couleur , Quantite ) " +
-				"VALUES ( vId_article ,  vtaille , vcouleurs , vquantite)"+"; "
-				+ "end  ";
+				+ " IN vcouleurs varchar(45)," + " IN vquantite int " + ")" + "begin "
+				+ "INSERT INTO QUANTITES ( Id_article ,  Taille , Couleur , Quantite ) "
+				+ "VALUES ( vId_article ,  vtaille , vcouleurs , vquantite)" + "; " + "end  ";
 		// createProcedure
 		try (Statement stmt = connexion.createStatement()) {
 			stmt.execute(drop);
@@ -323,8 +350,7 @@ public class DataBase {
 			e.printStackTrace();
 		}
 	}
-	
-	// TODO ajouter les autres tables
+
 	/*
 	 * cree des procedures qui permettent de populer une table ie.
 	 * AJOUT_ARTICLE("nom", prix, "marque", "cat")
@@ -332,7 +358,31 @@ public class DataBase {
 	public void createAjoutProcedures() {
 		createAjoutArticleProc();
 		createAjoutQuantiteProc();
+	}
+
+	/*
+	 * cree des procedures qui permettent de supprimmer des entrees d'un table en
+	 * fction d'un id ie. DELETE_ARTICLE(1) supprime l'article dont l'id est 1
+	 */
+	public void createDeleteIdProcedures() {
+		String[] nom_tables = { "ARTICLE", "DEPENSE", "APPROVISIONNEMENT", "COMMANDE", "CLIENT", "VENDEUR",
+				"FOURNISSEUR" };
+		// pour chacune de ces tables on cree une procedure qui supprimme une entree en
+		// fction d'un id
+		for (String s : nom_tables) {
+			// on supprime la procedure si elle existe deja
+			String drop = "DROP PROCEDURE IF EXISTS DELETE_" + s;
+			// on la cree
+			String createProcedure = " create procedure DELETE_" + s + "(IN id int) begin " + "DELETE FROM " + s
+					+ "S WHERE Id_" + s + " = id; " + "end  ";
+			try (Statement stmt = connexion.createStatement()) {
+				stmt.execute(drop);
+				stmt.executeUpdate(createProcedure);
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 		}
+	}
 
 	/**
 	 * 

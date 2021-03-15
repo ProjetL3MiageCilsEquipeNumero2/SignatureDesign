@@ -1,15 +1,24 @@
 .barre{
-	-fx-background-color: linear-gradient(to bottom, #BDFDF6, gold);
+	-fx-border-color : gold;
+	-fx-border-width: 5.0px;
+}
+
+.createPanel{
+	-fx-background-color: #F4ECEC;
+	-fx-border-color : gold;
+	-fx-border-width: 5.0px;
+	-fx-border-radius: 20.0; 
+	-fx-background-radius: 20.0;
 }
 
 .card{
-	-fx-background-color: linear-gradient(to bottom, #BDFDF6, gold);
-	-fx-background-radius: 10.0px 10.0px 0.0px 0.0px;
+	-fx-border-color : gold;
+	-fx-border-width: 5.0px;
+	-fx-border-radius: 20.0; 
 }
 
 /*colonnes */
 .table-view{
-	-fx-background-color: #FFF9A5;
 	-fx-background-radius: 10.0px 10.0px 0.0px 0.0px;
 }
 .table-view .column-header-background{

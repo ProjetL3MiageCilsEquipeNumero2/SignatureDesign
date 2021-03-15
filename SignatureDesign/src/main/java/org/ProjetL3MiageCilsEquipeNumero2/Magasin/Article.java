@@ -4,7 +4,6 @@ import java.sql.CallableStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import org.ProjetL3MiageCilsEquipeNumero2.SQLcommunication.DataBase;
 import org.ProjetL3MiageCilsEquipeNumero2.SignatureDesign.App;
 
 import javafx.beans.property.SimpleDoubleProperty;
@@ -13,6 +12,7 @@ import javafx.beans.property.SimpleListProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+
 public class Article {
 	private static ObservableList<Article> articles = FXCollections.observableArrayList();
 
@@ -23,8 +23,6 @@ public class Article {
 	private SimpleStringProperty categorie;
 	private SimpleListProperty<Quantite> quantites;
 
-
-
 	/**
 	 * 
 	 * @return la liste observable contenant tous les articles
@@ -33,31 +31,25 @@ public class Article {
 		return articles;
 	}
 
-	
 	public static void articlesUpdate() {
+		articles.clear();
 		ResultSet tableArticles = Article.getTableArticles();
 		try {
 			while (tableArticles.next()) {
 				ResultSet tableQuantites = getQuantitesId(tableArticles.getInt("Id_Article"));
 				ObservableList<Quantite> quantites = FXCollections.observableArrayList();
-				while(tableQuantites.next()) {
-					quantites.add(new Quantite(tableQuantites.getString("Taille"), tableQuantites.getString("Couleur"), tableQuantites.getInt("Quantite")));
+				while (tableQuantites.next()) {
+					quantites.add(new Quantite(tableQuantites.getString("Taille"), tableQuantites.getString("Couleur"),
+							tableQuantites.getInt("Quantite")));
 				}
-				articles.add(new Article(tableArticles.getInt("Id_Article"), tableArticles.getString("nom_article"), tableArticles.getDouble("prix_article"), tableArticles.getString("marque_article"),
+				articles.add(new Article(tableArticles.getInt("Id_Article"), tableArticles.getString("nom_article"),
+						tableArticles.getDouble("prix_article"), tableArticles.getString("marque_article"),
 						tableArticles.getString("categorie_article"), quantites));
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 	}
-
-	//TODO: fct ajout article
-	/**
-	 * ajoute 1 article a la bdd
-	 * 
-	 * @param valeurs = nom, prix, marque, categorie
-	 * 
-	 */
 
 	/**
 	 * retourne la table ARTICLES
@@ -72,7 +64,13 @@ public class Article {
 		}
 		return rs;
 	}
-	
+
+	/**
+	 * ajoute 1 article a la bdd
+	 * 
+	 * @param
+	 * 
+	 */
 	public static void createArticle(String nom, double prix, String marque, String cat) {
 		CallableStatement cs;
 		try {
@@ -87,6 +85,29 @@ public class Article {
 		}
 	}
 	
+	public void createQuantite(String taille, String couleur, int qte) {
+		CallableStatement cs;
+		try {
+			cs = App.db.getConnection().prepareCall("{call AJOUT_QUANTITE(?,?,?,?)}");
+			cs.setInt(1, this.getId());
+			cs.setString(2, taille);
+			cs.setString(3, couleur);
+			cs.setInt(4, qte);
+			cs.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
+	/**
+	 * ajoute une ligne a la table Quantites
+	 * 
+	 * @param id
+	 * @param taille
+	 * @param couleur
+	 * @param qte
+	 * 
+	 */
 	public static void createQuantite(int id, String taille, String couleur, int qte) {
 		CallableStatement cs;
 		try {
@@ -101,6 +122,21 @@ public class Article {
 		}
 	}
 	
+	/*
+	 * supprime l'article
+	 */
+	public void delete() {
+		CallableStatement cs;
+		try {
+			cs = App.db.getConnection().prepareCall("{call DELETE_ARTICLE(?)}");
+			cs.setInt(1, this.getId());
+			cs.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+	}
+
 	/**
 	 * retourne les quantites d'un article à partir de son id
 	 * 
@@ -117,25 +153,9 @@ public class Article {
 		return rs;
 	}
 
-	//TODO: ajout qte
-	/**
-	 * ajoute une ligne a la table Quantites
-	 * 
-	 * @param taille
-	 * @param couleur
-	 * @param qte
-	 * 
-	 */
 	
-	//TODO: get somme qtes produit
-	/**
-	 * retourne la qté totale d'un article
-	 * @param id_article
-	 * @return int qte
-	 */
-
-	
-	public Article(int id, String nom, Double prix, String marque, String categorie, ObservableList<Quantite> quantites) {
+	public Article(int id, String nom, Double prix, String marque, String categorie,
+			ObservableList<Quantite> quantites) {
 		this.nom = new SimpleStringProperty(nom);
 		this.prix = new SimpleDoubleProperty(prix);
 		this.marque = new SimpleStringProperty(marque);
@@ -204,25 +224,16 @@ public class Article {
 		this.categorieProperty().set(categorie);
 	}
 
-	
 	public final SimpleListProperty<Quantite> quantitesProperty() {
 		return this.quantites;
 	}
-	
 
-	
 	public final ObservableList<Quantite> getQuantites() {
 		return this.quantitesProperty().get();
 	}
-	
-
-	
 
 	public final void setQuantites(final ObservableList<Quantite> quantites) {
 		this.quantitesProperty().set(quantites);
 	}
-	
-
-
 
 }
