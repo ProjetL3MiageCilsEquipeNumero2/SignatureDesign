@@ -31,9 +31,9 @@ public class DataBase {
 			Statement requete = connexion.createStatement();
 			if (!bddExiste()) {
 				requete.executeUpdate("CREATE DATABASE IF NOT EXISTS SignatureDesign;");
+				requete.execute("Use SignatureDesign;");
 				createSchemaBdd();
-			}
-			requete.execute("Use SignatureDesign;");
+			}else requete.execute("Use SignatureDesign;");
 			return true;
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -117,9 +117,9 @@ public class DataBase {
 	 * cree la table Vendeurs
 	 */
 	public void createTableVendeurs() {
-		String create = "CREATE TABLE IF NOT EXISTS `VENDEURS`" + "(  `NSS_Vendeur` int NOT NULL,"
+		String create = "CREATE TABLE IF NOT EXISTS `VENDEURS`" + "(  `Id_Vendeur` int NOT NULL AUTO_INCREMENT,"
 				+ "`Nom_Vendeur` varchar(45) DEFAULT NULL," + "`Prenom_Vendeur` varchar(45) DEFAULT NULL,"
-				+ "`Salaire_Vendeur` double NOT NULL," + "PRIMARY KEY (`NSS_Vendeur`)" + ");";
+				+ "`Salaire_Vendeur` double NOT NULL," + "PRIMARY KEY (`Id_Vendeur`)" + ");";
 		try (Statement stmt = connexion.createStatement()) {
 			stmt.executeUpdate(create);
 		} catch (SQLException e) {
@@ -131,10 +131,10 @@ public class DataBase {
 	 * cree la table Fournisseurs
 	 */
 	public void createTableFournisseurs() {
-		String create = "CREATE TABLE IF NOT EXISTS `FOURNISSEURS`" + "( `NSS_Fournisseur` int NOT NULL,"
+		String create = "CREATE TABLE IF NOT EXISTS `FOURNISSEURS`" + "( `Id_Fournisseur` int NOT NULL AUTO_INCREMENT,"
 				+ "`Adresse_Fournisseur` varchar(60) DEFAULT NULL," + "`NTel_Fournisseur` varchar(45) DEFAULT NULL,"
 				+ "`Email_Fournisseur` varchar(45) DEFAULT NULL," + "`URL_Fournisseur` varchar(150) DEFAULT NULL,"
-				+ "PRIMARY KEY (`NSS_Fournisseur`)" + ");";
+				+ "PRIMARY KEY (`Id_Fournisseur`)" + ");";
 		try (Statement stmt = connexion.createStatement()) {
 			stmt.executeUpdate(create);
 		} catch (SQLException e) {
@@ -146,10 +146,10 @@ public class DataBase {
 	 * cree la table CLIENTS
 	 */
 	public void createTableClients() {
-		String create = "CREATE TABLE IF NOT EXISTS `CLIENTS`" + "( `NSS_Client` int NOT NULL,"
+		String create = "CREATE TABLE IF NOT EXISTS `CLIENTS`" + "( `Id_Client` int NOT NULL AUTO_INCREMENT,"
 				+ "`Nom_Client` varchar(45) DEFAULT NULL," + "`Prenom_Client` varchar(45) DEFAULT NULL,"
 				+ "`Adresse_Client` varchar(60) DEFAULT NULL," + "`NTel_Client` varchar(45) DEFAULT NULL,"
-				+ "`Email_Client` varchar(45) DEFAULT NULL," + "PRIMARY KEY (`NSS_Client`)" + "); ";
+				+ "`Email_Client` varchar(45) DEFAULT NULL," + "PRIMARY KEY (`Id_Client`)" + "); ";
 		try (Statement stmt = connexion.createStatement()) {
 			stmt.executeUpdate(create);
 		} catch (SQLException e) {
@@ -164,8 +164,8 @@ public class DataBase {
 		String create = "CREATE TABLE IF NOT EXISTS `VENTES` (" + "`Id_Vente` int NOT NULL AUTO_INCREMENT,"
 				+ "`Id_Vendeur` int NOT NULL," + "`Id_Client` int NOT NULL," + "`PrixTotal` double NOT NULL,"
 				+ "`Date` datetime NOT NULL," + "PRIMARY KEY (`Id_Vente`),"
-				+ "FOREIGN KEY (`Id_Client`) REFERENCES `CLIENTS` (`NSS_Client`),"
-				+ "FOREIGN KEY (`Id_Vendeur`) REFERENCES `VENDEURS` (`NSS_Vendeur`)" + ");";
+				+ "FOREIGN KEY (`Id_Client`) REFERENCES `CLIENTS` (`Id_Client`),"
+				+ "FOREIGN KEY (`Id_Vendeur`) REFERENCES `VENDEURS` (`Id_Vendeur`)" + ");";
 		try (Statement stmt = connexion.createStatement()) {
 			stmt.executeUpdate(create);
 		} catch (SQLException e) {
@@ -227,7 +227,7 @@ public class DataBase {
 				+ "`Id_Approvisionnement` int NOT NULL AUTO_INCREMENT," + "`Id_Fournisseur` int NOT NULL,"
 				+ "`Prix_Approvisionnement` double NOT NULL," + "`Date_Reception` datetime NOT NULL,"
 				+ "PRIMARY KEY (`Id_Approvisionnement`),"
-				+ "FOREIGN KEY (`Id_Fournisseur`) REFERENCES `FOURNISSEURS` (`NSS_Fournisseur`)" + ");";
+				+ "FOREIGN KEY (`Id_Fournisseur`) REFERENCES `FOURNISSEURS` (`Id_Fournisseur`)" + ");";
 		try (Statement stmt = connexion.createStatement()) {
 			stmt.executeUpdate(create);
 		} catch (SQLException e) {
@@ -350,7 +350,6 @@ public class DataBase {
 		}
 	}
 
-	// TODO ajouter les autres tables
 	/*
 	 * cree des procedures qui permettent de populer une table ie.
 	 * AJOUT_ARTICLE("nom", prix, "marque", "cat")
@@ -362,9 +361,7 @@ public class DataBase {
 
 	// TODO: delete des clients, vendeurs, fournisseurs
 	public void createDeleteIdProcedures() {
-		String[] nom_tables = { "ARTICLE", "DEPENSE", "APPROVISIONNEMENT", "COMMANDE" };
-		// clients, vendeurs et fournisseurs identifies par leur NSS donc cette approche
-		// ne marche pas.
+		String[] nom_tables = { "ARTICLE", "DEPENSE", "APPROVISIONNEMENT", "COMMANDE", "CLIENT", "VENDEUR", "FOURNISSEUR" };
 		// pour chacune de ces tables on cree une procedure qui supprimme une entree en
 		// fction d'un id
 		for (String s : nom_tables) {
