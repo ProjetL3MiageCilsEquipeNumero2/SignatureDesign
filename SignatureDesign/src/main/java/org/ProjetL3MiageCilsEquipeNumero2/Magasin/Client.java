@@ -22,16 +22,20 @@ public class Client {
     private SimpleStringProperty nom;
     private SimpleStringProperty prenom;
     private SimpleIntegerProperty num_tel;
+    private SimpleStringProperty adresse;
+    private SimpleStringProperty email;
 
     public static ObservableList<Client> getClients(){
         return clients;
     }
 
-    public Client(int id, String prenom, String nom, int num_tel){
+    public Client(int id, String prenom, String nom, int num_tel, String adresse, String email){
     	this.id =  new SimpleIntegerProperty(id);
         this.prenom = new SimpleStringProperty(prenom);
         this.nom = new SimpleStringProperty(nom);
         this.num_tel = new SimpleIntegerProperty(num_tel);
+        this.adresse = new SimpleStringProperty(adresse);
+        this.email = new SimpleStringProperty(email);
     }
 
     public static void addClient(){
@@ -90,6 +94,30 @@ public class Client {
 
     public final void setNum_tel(final int num_tel){
         return;
+    }
+
+    public final int getAdresse() {
+		return this.adresseProperty().get();
+	}
+
+	public final void setId(final String adresse) {
+		this.adresseProperty().set(adresse);
+	}
+
+    public final SimpleStringProperty urlProperty() {
+		return this.url;
+	}
+
+    public final SimpleStringProperty emailProperty(){
+        return this.email;
+    }
+
+    public final String getEmail() {
+        return this.emailProperty().get();
+    }
+
+    public final void setEmail(final String email){
+        this.emailProperty().set(email);
     }
 
 }

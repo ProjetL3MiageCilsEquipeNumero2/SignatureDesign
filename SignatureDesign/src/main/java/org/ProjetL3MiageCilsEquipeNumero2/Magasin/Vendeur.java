@@ -16,4 +16,8 @@ import javafx.collections.ObservableList;
 
 public class Vendeur {
 
+    private static ObservableList<Vendeur> vendeurs = FXCollections.observableArrayList();
+
+    
+
 }

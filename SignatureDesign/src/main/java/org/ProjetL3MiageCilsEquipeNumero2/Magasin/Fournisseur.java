@@ -23,17 +23,21 @@ public class Fournisseur {
     private SimpleStringProperty nom;
     private SimpleIntegerProperty num_tel;
     private SimpleStringProperty email;
+    private SimpleStringProperty adresse;
+    private SimpleStringProperty url;
 
 
     public static ObservableList<Fournisseur> getFournisseurs(){
         return fournisseurs;
     }
 
-    public Fournisseur(int id, String nom, int num_tel, String email){
+    public Fournisseur(int id, String nom, int num_tel, String email, String adresse, String url){
         this.id = new SimpleIntegerProperty(id);
+        this.adresse = new SimpleStringProperty(adresse);
         this.email = new SimpleStringProperty(email);
         this.nom = new SimpleStringProperty(nom);
         this.num_tel = new SimpleIntegerProperty(num_tel);
+        this.url = new SimpleIntegerProperty(url);
     }
 
     public final SimpleIntegerProperty idProperty() {
@@ -84,4 +88,27 @@ public class Fournisseur {
         this.emailProperty().set(email);
     }
 
+    public final SimpleStringProperty adresseProperty() {
+		return this.adresse;
+	}
+
+	public final int getAdresse() {
+		return this.adresseProperty().get();
+	}
+
+	public final void setId(final String adresse) {
+		this.adresseProperty().set(adresse);
+	}
+
+    public final SimpleStringProperty urlProperty() {
+		return this.url;
+	}
+
+	public final int getUrl() {
+		return this.urlProperty().get();
+	}
+
+	public final void setId(final int url) {
+		this.urlProperty().set(url);
+	}
 }
