@@ -64,8 +64,8 @@ public class Client {
         return this.nomProperty().get();
     }
 
-    public final void setNom(){
-        return this.nomProperty().set();
+    public final void setNom(final String nom){
+        return this.nomProperty().set(nom);
     }
 
     public final SimpleStringProperty prenomProperty(){
@@ -76,8 +76,8 @@ public class Client {
         return this.prenomProperty().get();
     }
 
-    public final void setPrenom(){
-        return this.prenomProperty().set();
+    public final void setPrenom(final String prenom){
+        return this.prenomProperty().set(prenom);
     }
 
     public final SimpleIntegerProperty num_telProperty(){
@@ -88,8 +88,8 @@ public class Client {
         return this.num_telProperty().get();
     }
 
-    public final void setNum_tel(à{
-        return this.num_Property().get();
+    public final void setNum_tel(final int num_tel){
+        return this.num_Property().set(num_tel);
     }
 
 }
