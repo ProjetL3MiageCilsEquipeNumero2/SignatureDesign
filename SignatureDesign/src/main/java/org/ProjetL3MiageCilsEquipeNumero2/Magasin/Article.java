@@ -84,6 +84,20 @@ public class Article {
 			e.printStackTrace();
 		}
 	}
+	
+	public void createQuantite(String taille, String couleur, int qte) {
+		CallableStatement cs;
+		try {
+			cs = App.db.getConnection().prepareCall("{call AJOUT_QUANTITE(?,?,?,?)}");
+			cs.setInt(1, this.getId());
+			cs.setString(2, taille);
+			cs.setString(3, couleur);
+			cs.setInt(4, qte);
+			cs.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
 
 	/**
 	 * ajoute une ligne a la table Quantites

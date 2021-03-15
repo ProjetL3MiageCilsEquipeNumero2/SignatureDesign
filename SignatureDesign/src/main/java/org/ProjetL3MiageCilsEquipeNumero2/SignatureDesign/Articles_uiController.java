@@ -16,6 +16,7 @@ import javafx.scene.effect.GaussianBlur;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.util.converter.DoubleStringConverter;
+import javafx.util.converter.IntegerStringConverter;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TableView;
@@ -75,6 +76,8 @@ public class Articles_uiController {
 
 	// nouveau article / modif article
 	@FXML
+	private Label option;
+	@FXML
 	private TextField nom;
 	@FXML
 	private TextField prix;
@@ -85,13 +88,30 @@ public class Articles_uiController {
 	@FXML
 	private Button create;
 	@FXML
+	private Button annuler;
+	@FXML
 	private Label msgerreur;
 	@FXML
 	private Button modif;
 
-	// Create/modif article
+	// ajout QTE
+	@FXML
+	private TextField taille;
+	@FXML
+	private TextField couleur;
+	@FXML
+	private TextField quantite;
+	@FXML
+	private Label msgerreurQTE;
+	@FXML
+	private Button validerAjoutQte;
+
+	// Panel Create/modif article
 	@FXML
 	private AnchorPane createpanel;
+	// Panel ajoutQTE
+	@FXML
+	private AnchorPane qtepanel;
 
 	TableViewSelectionModel<Article> selectionModel = null;
 	ObservableList<Article> selection = null;
@@ -99,10 +119,11 @@ public class Articles_uiController {
 	// initialisation
 	@FXML
 	public void initialize() {
-		//formatters input double (prix)
+		// formatters input double (prix)
 		prix.setTextFormatter(new TextFormatter<>(new DoubleStringConverter()));
-		
-		//afficahge tables
+		quantite.setTextFormatter(new TextFormatter<>(new IntegerStringConverter()));
+
+		// afficahge tables
 		id_col.setCellValueFactory(new PropertyValueFactory<Article, Integer>("id"));
 		nom_col.setCellValueFactory(new PropertyValueFactory<Article, String>("nom"));
 		prix_col.setCellValueFactory(new PropertyValueFactory<Article, Double>("prix"));
@@ -167,7 +188,6 @@ public class Articles_uiController {
 		}
 	}
 
-	
 	public void panelDefault() {
 		nom.setText(null);
 		prix.setText(null);
@@ -175,11 +195,13 @@ public class Articles_uiController {
 		marque.setText(null);
 		msgerreur.setVisible(false);
 	}
+
 	/*
 	 * ouvre un panel de création d'article
 	 */
 	@FXML
 	public void createPanel() {
+		option.setText("Ajout Article");
 		affichage.setEffect(new GaussianBlur());
 		affichage.setDisable(true);
 		panelDefault();
@@ -193,28 +215,85 @@ public class Articles_uiController {
 	 */
 	@FXML
 	public void createArticle() {
-		if(prix.getText()==""
-				|| prix.getText()==null
-				|| nom.getText()==null
-				|| marque.getText()==null
-				|| categorie.getText()==null){
-			//prix n'est pas un chiffre
+		if (prix.getText() == "" || prix.getText() == null || nom.getText() == null || marque.getText() == null
+				|| categorie.getText() == null) {
+			// prix n'est pas un chiffre
 			msgerreur.setVisible(true);
-		}else {
-			Article.createArticle(nom.getText(), Double.parseDouble(prix.getText()), marque.getText(), categorie.getText());
+		} else {
+			Article.createArticle(nom.getText(), Double.parseDouble(prix.getText()), marque.getText(),
+					categorie.getText());
 			Article.articlesUpdate();
 			createpanel.setVisible(false);
 			affichage.setDisable(false);
 			affichage.setEffect(null);
 			affichage.setVisible(true);
 		}
-		
-		
+	}
+
+	// TODO: procedure modifier
+	@FXML
+	public void modifierPanel() {
+		if (!selection.isEmpty()) {
+			option.setText("Modifier Article");
+			affichage.setEffect(new GaussianBlur());
+			affichage.setDisable(true);
+			// focus = article selectionne
+			Article focus = selection.get(0);
+			nom.setText(focus.getNom());
+			prix.setText(Double.toString(focus.getPrix()));
+			marque.setText(focus.getMarque());
+			categorie.setText(focus.getCategorie());
+			createpanel.setVisible(true);
+		}
 
 	}
-	
+
+	/*
+	 * ouvre un panel de création de qte
+	 */
 	@FXML
-	public void annuller() {
+	public void qtePanel() {
+		if (!selection.isEmpty()) {
+			msgerreurQTE.setVisible(false);
+			taille.setText(null);
+			couleur.setText(null);
+			quantite.setText(null);
+			affichage.setEffect(new GaussianBlur());
+			affichage.setDisable(true);
+			qtepanel.setVisible(true);
+		}
+
+	}
+
+	@FXML
+	public void ajoutQte() {
+		if (quantite.getText() == "" || quantite.getText() == null || taille.getText() == null
+				|| couleur.getText() == null || quantite.getText() == null) {
+			msgerreurQTE.setText("Les données introduites ne permettent pas d'ajouter une quantité à cet article.");
+			msgerreurQTE.setVisible(true);
+		} else {
+			// focus = article selectionne
+			Article focus = selection.get(0);
+			for (Quantite q : focus.getQuantites()) {
+				if (q.getCouleur().equals(couleur.getText()) && q.getTaille().equals(taille.getText())) {
+					msgerreurQTE.setText("Cette association taille-couleur-quantité existe déjà.");
+					msgerreurQTE.setVisible(true);
+					return;
+				}
+			}
+			focus.createQuantite(taille.getText(), couleur.getText(), Integer.parseInt(quantite.getText()));
+			Article.articlesUpdate();
+			qtepanel.setVisible(false);
+			affichage.setDisable(false);
+			affichage.setEffect(null);
+			affichage.setVisible(true);
+
+		}
+	}
+
+	@FXML
+	public void annuler() {
+		qtepanel.setVisible(false);
 		createpanel.setVisible(false);
 		affichage.setDisable(false);
 		affichage.setEffect(null);

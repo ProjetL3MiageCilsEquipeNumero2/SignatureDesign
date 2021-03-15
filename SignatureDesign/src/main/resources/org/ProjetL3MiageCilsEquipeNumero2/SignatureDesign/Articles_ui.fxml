@@ -16,7 +16,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="466.0" prefWidth="658.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.ProjetL3MiageCilsEquipeNumero2.SignatureDesign.Articles_uiController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="466.0" prefWidth="658.0" styleClass="bodybg" stylesheets="@articlesUI.css" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.ProjetL3MiageCilsEquipeNumero2.SignatureDesign.Articles_uiController">
    <left>
       <VBox alignment="CENTER_LEFT" prefHeight="466.0" prefWidth="78.0" styleClass="barre" stylesheets="@articlesUI.css" BorderPane.alignment="CENTER">
          <children>
@@ -56,7 +56,7 @@
          </children></VBox>
    </left>
    <center>
-      <AnchorPane prefHeight="200.0" prefWidth="200.0" styleClass="bodybg" stylesheets="@articlesUI.css" BorderPane.alignment="CENTER">
+      <AnchorPane prefHeight="200.0" prefWidth="200.0" stylesheets="@articlesUI.css" BorderPane.alignment="CENTER">
          <children>
             <VBox fx:id="affichage" prefHeight="466.4" prefWidth="608.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                <children>
@@ -114,9 +114,9 @@
                               </TableView>
                               <MenuButton contentDisplay="RIGHT" layoutX="17.0" layoutY="303.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="210.0" style="-fx-background-color: gold; -fx-background-radius: 10;" text="Options" AnchorPane.bottomAnchor="7.400000000000034" AnchorPane.leftAnchor="17.0" AnchorPane.rightAnchor="12.599999999999994">
                                 <items>
-                                  <MenuItem fx:id="modifier" mnemonicParsing="false" text="Modifier" />
+                                  <MenuItem fx:id="modifier" mnemonicParsing="false" onAction="#modifierPanel" text="Modifier" />
                                     <SeparatorMenuItem mnemonicParsing="false" />
-                                    <MenuItem fx:id="ajoutQT" mnemonicParsing="false" text="Ajout Quantite" />
+                                    <MenuItem fx:id="ajoutQT" mnemonicParsing="false" onAction="#qtePanel" text="Ajout Quantite" />
                                     <SeparatorMenuItem mnemonicParsing="false" />
                                   <MenuItem fx:id="supprimer" mnemonicParsing="false" onAction="#supprimer" text="Supprimer" />
                                     <SeparatorMenuItem mnemonicParsing="false" />
@@ -147,9 +147,25 @@
                   <TextField fx:id="prix" layoutX="87.0" layoutY="79.0" prefHeight="30.0" prefWidth="245.0" />
                   <TextField fx:id="marque" layoutX="87.0" layoutY="118.0" prefHeight="30.0" prefWidth="245.0" />
                   <TextField fx:id="categorie" layoutX="87.0" layoutY="165.0" prefHeight="30.0" prefWidth="245.0" />
-                  <Button fx:id="create" layoutX="177.0" layoutY="212.0" mnemonicParsing="false" onAction="#createArticle" prefHeight="40.0" prefWidth="82.0" text="Valider" />
+                  <Button fx:id="create" layoutX="177.0" layoutY="212.0" mnemonicParsing="false" onAction="#createArticle" prefHeight="40.0" prefWidth="82.0" text="Valider" visible="false" />
                   <Label fx:id="msgerreur" layoutX="24.0" layoutY="210.0" prefHeight="57.0" prefWidth="166.0" text="Les données entrées ne permettent pas de créer un article" visible="false" wrapText="true" />
-                  <Button fx:id="create1" layoutX="263.0" layoutY="212.0" mnemonicParsing="false" onAction="#createArticle" prefHeight="40.0" prefWidth="82.0" text="Annuler" />
+                  <Button fx:id="annuler" layoutX="263.0" layoutY="212.0" mnemonicParsing="false" onAction="#annuler" prefHeight="40.0" prefWidth="82.0" text="Annuler" />
+                  <Button layoutX="177.0" layoutY="212.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="82.0" text="Valider" />
+                  <Label fx:id="option" alignment="CENTER" layoutX="132.0" layoutY="14.0" prefHeight="18.0" prefWidth="116.0" text="Label" />
+               </children>
+            </AnchorPane>
+            <AnchorPane fx:id="qtepanel" layoutX="135.0" layoutY="86.0" prefHeight="294.0" prefWidth="300.0" styleClass="createPanel" visible="false" AnchorPane.bottomAnchor="86.0" AnchorPane.rightAnchor="133.79999999999995">
+               <children>
+                  <Label layoutX="88.0" layoutY="14.0" styleClass="label1" text="Ajout de Quantité" />
+                  <Label layoutX="44.0" layoutY="48.0" styleClass="label1" text="Taille:" />
+                  <Label layoutX="26.0" layoutY="85.0" styleClass="label1" text="Couleur:" />
+                  <Label layoutX="23.0" layoutY="126.0" styleClass="label1" text="Quantité:" />
+                  <TextField fx:id="taille" layoutX="93.0" layoutY="44.0" prefHeight="26.0" prefWidth="175.0" />
+                  <TextField fx:id="couleur" layoutX="93.0" layoutY="81.0" prefHeight="26.0" prefWidth="175.0" />
+                  <TextField fx:id="quantite" layoutX="95.0" layoutY="122.0" prefHeight="26.0" prefWidth="175.0" />
+                  <Button fx:id="validerAjoutQte" layoutX="95.0" layoutY="157.0" mnemonicParsing="false" onAction="#ajoutQte" prefHeight="40.0" prefWidth="80.0" text="Valider" />
+                  <Button layoutX="183.0" layoutY="157.0" mnemonicParsing="false" onAction="#annuler" prefHeight="40.0" prefWidth="80.0" text="Annuler" />
+                  <Label fx:id="msgerreurQTE" alignment="TOP_CENTER" layoutX="31.0" layoutY="210.0" prefHeight="69.0" prefWidth="243.0" text="Label" visible="false" wrapText="true" />
                </children>
             </AnchorPane>
          </children>
