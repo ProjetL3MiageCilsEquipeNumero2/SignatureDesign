@@ -202,6 +202,8 @@ public class Articles_uiController {
 	@FXML
 	public void createPanel() {
 		option.setText("Ajout Article");
+		create.setVisible(true);
+		modif.setVisible(false);
 		affichage.setEffect(new GaussianBlur());
 		affichage.setDisable(true);
 		panelDefault();
@@ -235,6 +237,8 @@ public class Articles_uiController {
 	public void modifierPanel() {
 		if (!selection.isEmpty()) {
 			option.setText("Modifier Article");
+			create.setVisible(false);
+			modif.setVisible(true);
 			affichage.setEffect(new GaussianBlur());
 			affichage.setDisable(true);
 			// focus = article selectionne
