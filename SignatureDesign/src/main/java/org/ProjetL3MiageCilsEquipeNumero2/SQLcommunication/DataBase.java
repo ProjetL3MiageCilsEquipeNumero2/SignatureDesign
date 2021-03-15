@@ -33,7 +33,8 @@ public class DataBase {
 				requete.executeUpdate("CREATE DATABASE IF NOT EXISTS SignatureDesign;");
 				requete.execute("Use SignatureDesign;");
 				createSchemaBdd();
-			}else requete.execute("Use SignatureDesign;");
+			} else
+				requete.execute("Use SignatureDesign;");
 			return true;
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -105,7 +106,7 @@ public class DataBase {
 		String create = "CREATE TABLE IF NOT EXISTS `QUANTITES`" + "( `Taille` varchar(45) NOT NULL,"
 				+ "`Couleur` varchar(45) NOT NULL," + "`Quantite` int NOT NULL," + " `Id_Article` int NOT NULL,"
 				+ " PRIMARY KEY (`Taille`,`Couleur`,`Id_Article`),"
-				+ "FOREIGN KEY (`Id_Article`) REFERENCES `ARTICLES` (`Id_Article`)" + ");";
+				+ "FOREIGN KEY (`Id_Article`) REFERENCES `ARTICLES` (`Id_Article`) ON DELETE CASCADE" + ");";
 		try (Statement stmt = connexion.createStatement()) {
 			stmt.executeUpdate(create);
 		} catch (SQLException e) {
@@ -359,9 +360,13 @@ public class DataBase {
 		createAjoutQuantiteProc();
 	}
 
-	// TODO: delete des clients, vendeurs, fournisseurs
+	/*
+	 * cree des procedures qui permettent de supprimmer des entrees d'un table en
+	 * fction d'un id ie. DELETE_ARTICLE(1) supprime l'article dont l'id est 1
+	 */
 	public void createDeleteIdProcedures() {
-		String[] nom_tables = { "ARTICLE", "DEPENSE", "APPROVISIONNEMENT", "COMMANDE", "CLIENT", "VENDEUR", "FOURNISSEUR" };
+		String[] nom_tables = { "ARTICLE", "DEPENSE", "APPROVISIONNEMENT", "COMMANDE", "CLIENT", "VENDEUR",
+				"FOURNISSEUR" };
 		// pour chacune de ces tables on cree une procedure qui supprimme une entree en
 		// fction d'un id
 		for (String s : nom_tables) {
