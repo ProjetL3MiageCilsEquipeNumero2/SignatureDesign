@@ -20,8 +20,8 @@ public class Commande {
     private SimpleIntegerProperty id;
     private SimpleStringProperty nom_client;
     private SimpleIntegerProperty id_vente;
-    private SimpleDateProperty date_commande;
-    private SimpleDateProperty date_vente_prevue;
+//    private SimpleDateProperty date_commande;
+//    private SimpleDateProperty date_vente_prevue;
 
     public Commande(int id, String nom_client, int id_vente){
         this.id = new SimpleIntegerProperty(id);

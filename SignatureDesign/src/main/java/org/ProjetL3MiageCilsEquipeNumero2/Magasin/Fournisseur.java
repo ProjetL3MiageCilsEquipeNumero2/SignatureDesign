@@ -37,7 +37,7 @@ public class Fournisseur {
         this.email = new SimpleStringProperty(email);
         this.nom = new SimpleStringProperty(nom);
         this.num_tel = new SimpleIntegerProperty(num_tel);
-        this.url = new SimpleIntegerProperty(url);
+        this.url = new SimpleStringProperty(url);
     }
 
     public final SimpleIntegerProperty idProperty() {
@@ -48,7 +48,7 @@ public class Fournisseur {
 		return this.idProperty().get();
 	}
 
-	public final void setId(final int id) {
+	public final void setId(final int id){
 		this.idProperty().set(id);
 	}
 
@@ -92,11 +92,11 @@ public class Fournisseur {
 		return this.adresse;
 	}
 
-	public final int getAdresse() {
+	public final String getAdresse() {
 		return this.adresseProperty().get();
 	}
 
-	public final void setId(final String adresse) {
+	public final void setAdresse(final String adresse) {
 		this.adresseProperty().set(adresse);
 	}
 
@@ -104,11 +104,11 @@ public class Fournisseur {
 		return this.url;
 	}
 
-	public final int getUrl() {
+	public final String getUrl() {
 		return this.urlProperty().get();
 	}
 
-	public final void setId(final int url) {
+	public final void setUrl(final String url) {
 		this.urlProperty().set(url);
 	}
 }

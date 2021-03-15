@@ -61,9 +61,11 @@ public class Client {
     public final void setId(final int id){
         this.idProperty().set(id);
     }
+    
     public final SimpleStringProperty nomProperty(){
         return this.nom;
     }
+    
     public final String getNom(){
         return this.nomProperty().get();
     }
@@ -95,17 +97,16 @@ public class Client {
     public final void setNum_tel(final int num_tel){
         return;
     }
-
-    public final int getAdresse() {
+    
+    public final SimpleStringProperty adresseProperty() {
+    return this.adresse;
+    }
+    public final String getAdresse() {
 		return this.adresseProperty().get();
 	}
 
 	public final void setId(final String adresse) {
 		this.adresseProperty().set(adresse);
-	}
-
-    public final SimpleStringProperty urlProperty() {
-		return this.url;
 	}
 
     public final SimpleStringProperty emailProperty(){
