@@ -15,7 +15,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 public class Commande {
-    private static ObservableList<Article> commandes = FXCollections.observablearrayList();
+    private static ObservableList<Article> commandes = FXCollections.observableArrayList();
 
     private SimpleIntegerProperty id;
     private SimpleStringProperty nom_client;

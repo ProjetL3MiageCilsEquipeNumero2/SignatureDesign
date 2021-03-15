@@ -23,15 +23,15 @@ public class Client {
     private SimpleStringProperty prenom;
     private SimpleIntegerProperty num_tel;
 
-    public static ObservableList<Article> getClients(){
+    public static ObservableList<Client> getClients(){
         return clients;
     }
 
     public Client(int id, String prenom, String nom, int num_tel){
-        this.nom = new SimpleStringProperty(nom);
+    	this.id =  new SimpleIntegerProperty(id);
         this.prenom = new SimpleStringProperty(prenom);
+        this.nom = new SimpleStringProperty(nom);
         this.num_tel = new SimpleIntegerProperty(num_tel);
-        this.id =  new SimpleIntegerProperty(id);
     }
 
     public static void addClient(){
@@ -65,7 +65,7 @@ public class Client {
     }
 
     public final void setNom(final String nom){
-        return this.nomProperty().set(nom);
+        return;
     }
 
     public final SimpleStringProperty prenomProperty(){
@@ -77,7 +77,7 @@ public class Client {
     }
 
     public final void setPrenom(final String prenom){
-        return this.prenomProperty().set(prenom);
+        return;
     }
 
     public final SimpleIntegerProperty num_telProperty(){
@@ -89,7 +89,7 @@ public class Client {
     }
 
     public final void setNum_tel(final int num_tel){
-        return this.num_Property().set(num_tel);
+        return;
     }
 
 }

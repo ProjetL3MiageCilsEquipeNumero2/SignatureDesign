@@ -49,7 +49,7 @@ public class Fournisseur {
 	}
 
     public final SimpleIntegerProperty num_telProperty() {
-		return this.num_tel;
+		return this.id;
 	}
 
 	public final int getNum_tel() {
@@ -61,7 +61,7 @@ public class Fournisseur {
 	}
 
     public final SimpleStringProperty nomProperty() {
-		return this.id;
+		return this.nom;
 	}
 
 	public final String getNom() {
@@ -81,7 +81,7 @@ public class Fournisseur {
     }
 
     public final void setEmail(final String email){
-        this.emailProperty.set(email);
+        this.emailProperty().set(email);
     }
 
 }
