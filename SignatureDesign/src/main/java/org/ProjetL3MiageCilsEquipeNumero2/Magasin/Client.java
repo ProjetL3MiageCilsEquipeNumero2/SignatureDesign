@@ -38,6 +38,10 @@ public class Client {
         this.adresse = new SimpleStringProperty(adresse);
         this.email = new SimpleStringProperty(email);
     }
+    
+    /*
+     * met à jour les clients
+     */
 
 	public static void clientsUpdate() {
 		clients.clear();
@@ -54,7 +58,7 @@ public class Client {
 	}
     
     /**
-	 * retourne la table ARTICLES
+	 * retourne la table Client
 	 */
 	public static ResultSet getTableClient() {
 		ResultSet rs = null;
@@ -67,6 +71,9 @@ public class Client {
 		return rs;
 	}
 	
+	/*
+	 * retourne les IDclients
+	 */
 	public static ResultSet getClientsId(int id) {
 		ResultSet rs = null;
 		try {
@@ -87,16 +94,23 @@ public class Client {
 
     }
 
-    public static void modifierClient(){
+    public void modifierClient(){
     	
-//    	ResultSet rs = null;
-//    	
-//    	try { 
-//    	PreparedStatement ps = App.db.getConnection("")
-//    		
-//    	}catch(SQLException e1){
-//    		e1.printStackTrace();
-//    	}
+    	try {
+			PreparedStatement ps = App.db.getConnection().prepareStatement("UPDATE ARTICLES SET Nom_Client = ?,"
+					+ " Prenom_Client = ?, Adresse_Client = ? , NTel_Client = ?, Email_Client = ?  WHERE Id_Client = ?");
+			ps.setString(1, this.getNom());
+			ps.setString(2,this.getPrenom());
+			ps.setString(3,this.getAdresse());
+			ps.setInt(4, this.getNum_tel());
+			ps.setString(5, this.getEmail());
+			ps.setInt(6,this.getId());
+			ps.executeUpdate();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	
 
     }
 

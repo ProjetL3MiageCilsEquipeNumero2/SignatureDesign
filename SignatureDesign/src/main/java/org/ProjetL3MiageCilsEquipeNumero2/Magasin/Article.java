@@ -31,7 +31,9 @@ public class Article {
 	public static ObservableList<Article> getArticles() {
 		return articles;
 	}
-
+	/*
+	 * met à jour les articles
+	 */
 	public static void articlesUpdate() {
 		articles.clear();
 		ResultSet tableArticles = Article.getTableArticles();
