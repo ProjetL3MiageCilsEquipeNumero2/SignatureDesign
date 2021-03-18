@@ -1,6 +1,7 @@
 package org.ProjetL3MiageCilsEquipeNumero2.Magasin;
 
 import java.sql.CallableStatement;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
@@ -38,6 +39,46 @@ public class Client {
         this.email = new SimpleStringProperty(email);
     }
 
+	public static void clientsUpdate() {
+		clients.clear();
+		ResultSet tableClient = Client.getTableClient();
+		try {
+				ObservableList<Client> clients = FXCollections.observableArrayList();
+				clients.add(new Client(tableClient.getInt("Id_Client"), tableClient.getString("Prenom_Client") , 
+						tableClient.getString("Nom_Client"), tableClient.getInt("NTel_Client"),
+						tableClient.getString("Adresse_Client"), tableClient.getString("Email_Client")));
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+    
+    /**
+	 * retourne la table ARTICLES
+	 */
+	public static ResultSet getTableClient() {
+		ResultSet rs = null;
+		try {
+			CallableStatement cs = App.db.getConnection().prepareCall("{call GET_CLIENTS}");
+			rs = cs.executeQuery();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return rs;
+	}
+	
+	public static ResultSet getClientsId(int id) {
+		ResultSet rs = null;
+		try {
+			CallableStatement cs = App.db.getConnection().prepareCall("{call GET_CLIENTS_ID(?)}");
+			cs.setInt(1, id);
+			rs = cs.executeQuery();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return rs;
+	}
+    
     public static void addClient(){
 
     }
@@ -47,6 +88,15 @@ public class Client {
     }
 
     public static void modifierClient(){
+    	
+//    	ResultSet rs = null;
+//    	
+//    	try { 
+//    	PreparedStatement ps = App.db.getConnection("")
+//    		
+//    	}catch(SQLException e1){
+//    		e1.printStackTrace();
+//    	}
 
     }
 

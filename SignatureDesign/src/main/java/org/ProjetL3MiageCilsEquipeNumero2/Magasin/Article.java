@@ -1,6 +1,7 @@
 package org.ProjetL3MiageCilsEquipeNumero2.Magasin;
 
 import java.sql.CallableStatement;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
@@ -136,6 +137,43 @@ public class Article {
 		}
 		
 	}
+	
+	/*
+	 * modifier l'article
+	 */
+	public void modifierArticle() {
+		try {
+			PreparedStatement ps = App.db.getConnection().prepareStatement("UPDATE ARTICLES SET Nom_Article = ?,"
+					+ " Prix_Article = ?, Marque_Article = ? , Categorie_Article = ? WHERE Id_Article = ?");
+			ps.setString(1, this.getNom());
+			ps.setDouble(2,this.getPrix());
+			ps.setString(3,this.getMarque());
+			ps.setString(4, this.getCategorie());
+			ps.setInt(5,this.getId());
+			ps.executeUpdate();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	/*
+	 * modifier la quantité d'un article
+	 */
+	public void modifierQte(int id, String taille, String couleur, int qte) {
+		try {
+			PreparedStatement ps = App.db.getConnection().prepareStatement("UPDATE QUANTITES SET taille = ?,"
+					+ " couleur = ? , Quantite = ? WHERE Id_Article = ?");
+			ps.setString(1,taille);
+			ps.setString(2,couleur);
+			ps.setInt(3,qte);
+			ps.setInt(4,this.getId());
+			ps.executeUpdate();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 
 	/**
 	 * retourne les quantites d'un article à partir de son id
@@ -153,7 +191,6 @@ public class Article {
 		return rs;
 	}
 
-	
 	public Article(int id, String nom, Double prix, String marque, String categorie,
 			ObservableList<Quantite> quantites) {
 		this.nom = new SimpleStringProperty(nom);
