@@ -368,7 +368,6 @@ public class Articles_uiController {
 		} else {
 			// focus = article selectionne
 			Article focus = selection.get(0);
-			Quantite focusqte = selectionqte.get(0);
 			focus.modifierQuantite(taille.getText(), couleur.getText(), Integer.parseInt(quantite.getText()));
 			Article.articlesUpdate();
 			qtepanel.setVisible(false);
