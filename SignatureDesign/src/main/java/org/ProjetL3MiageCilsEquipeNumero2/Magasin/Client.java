@@ -5,12 +5,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import org.ProjetL3MiageCilsEquipeNumero2.SQLcommunication.DataBase;
 import org.ProjetL3MiageCilsEquipeNumero2.SignatureDesign.App;
 
-import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleIntegerProperty;
-import javafx.beans.property.SimpleListProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -45,12 +42,13 @@ public class Client {
 
 	public static void clientsUpdate() {
 		clients.clear();
-		ResultSet tableClient = Client.getTableClient();
+		ResultSet tableClients = Client.getTableClient();
 		try {
-				ObservableList<Client> clients = FXCollections.observableArrayList();
-				clients.add(new Client(tableClient.getInt("Id_Client"), tableClient.getString("Prenom_Client") , 
-						tableClient.getString("Nom_Client"), tableClient.getInt("NTel_Client"),
-						tableClient.getString("Adresse_Client"), tableClient.getString("Email_Client")));
+			while (tableClients.next()) {
+				clients.add(new Client(tableClients.getInt("Id_Client"), tableClients.getString("Prenom_Client") , 
+						tableClients.getString("Nom_Client"), tableClients.getInt("NTel_Client"),
+						tableClients.getString("Adresse_Client"), tableClients.getString("Email_Client")));
+			}
 			
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -86,33 +84,57 @@ public class Client {
 		return rs;
 	}
     
-    public static void addClient(){
-
+    public static void addClient(String nom, String prenom, int tel, String adr, String mail){
+    	CallableStatement cs;
+		try {
+			cs = App.db.getConnection().prepareCall("{call AJOUT_CLIENT(?,?,?,?,?)}");
+			cs.setString(1, nom);
+			cs.setString(2, prenom);
+			cs.setInt(3, tel);
+			cs.setString(4, adr);
+			cs.setString(5, mail);
+			cs.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
     }
 
     public static void suppClient(){
 
     }
 
-    public void modifierClient(){
+    public void modifierClient(String nom, String prenom, int portable, String adr, String mail){
     	
     	try {
-			PreparedStatement ps = App.db.getConnection().prepareStatement("UPDATE ARTICLES SET Nom_Client = ?,"
+			PreparedStatement ps = App.db.getConnection().prepareStatement("UPDATE CLIENTS SET Nom_Client = ?,"
 					+ " Prenom_Client = ?, Adresse_Client = ? , NTel_Client = ?, Email_Client = ?  WHERE Id_Client = ?");
-			ps.setString(1, this.getNom());
-			ps.setString(2,this.getPrenom());
-			ps.setString(3,this.getAdresse());
-			ps.setInt(4, this.getNum_tel());
-			ps.setString(5, this.getEmail());
+			ps.setString(1, nom);
+			ps.setString(2,prenom);
+			ps.setString(3,adr);
+			ps.setInt(4, portable);
+			ps.setString(5, mail);
 			ps.setInt(6,this.getId());
 			ps.executeUpdate();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-	
-
     }
+    
+    /*
+	 * supprime le client
+	 */
+	public void delete() {
+		CallableStatement cs;
+		try {
+			cs = App.db.getConnection().prepareCall("{call DELETE_CLIENT(?)}");
+			cs.setInt(1, this.getId());
+			cs.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+	}
 
     public final SimpleIntegerProperty idProperty(){
         return this.id;

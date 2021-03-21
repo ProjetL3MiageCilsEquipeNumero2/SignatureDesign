@@ -10,6 +10,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.ProjetL3MiageCilsEquipeNumero2.Magasin.Article;
+import org.ProjetL3MiageCilsEquipeNumero2.Magasin.Client;
 
 public class DataBase {
 	private Connection connexion;
@@ -313,6 +314,10 @@ public class DataBase {
 		Article.createQuantite(1, "S", "vert", 20);
 		Article.createQuantite(1, "S", "rouge", 15);
 		Article.createQuantite(2, "M", "jaune", 20);
+		Client.addClient("nom1", "prenom1", 123456789, "adr1", "mail@test.com");
+		Client.addClient("nom2", "prenom2", 125757, "adr2", "mail22@test.com");
+		Client.addClient("nom3", "prenom3", 1447289, "adr3", "mail47.7@test.com");
+		
 	}
 
 	/*
@@ -352,12 +357,32 @@ public class DataBase {
 	}
 
 	/*
+	 * cree une procedure de creation de client
+	 */
+	public void createAjoutClientProc() {
+		String drop = "DROP PROCEDURE IF EXISTS AJOUT_CLIENT";
+		String createProcedure = " create procedure AJOUT_CLIENT(IN vnom_client varchar(45), IN vprenom_client varchar(45),"
+				+ " IN vnumtel_client int," + " IN vadr_client varchar(60), IN vmail_client varchar(45)" + ")" + "begin "
+				+ "INSERT INTO CLIENTS ( nom_client ,  prenom_client , ntel_client , adresse_client, email_client ) "
+				+ "VALUES ( vnom_client ,  vprenom_client , vnumtel_client , vadr_client, vmail_client)" + "; " + "end  ";
+		// createProcedure
+		try (Statement stmt = connexion.createStatement()) {
+			stmt.execute(drop);
+			stmt.executeUpdate(createProcedure);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	
+	/*
 	 * cree des procedures qui permettent de populer une table ie.
 	 * AJOUT_ARTICLE("nom", prix, "marque", "cat")
 	 */
 	public void createAjoutProcedures() {
 		createAjoutArticleProc();
 		createAjoutQuantiteProc();
+		createAjoutClientProc();
 	}
 
 	/*

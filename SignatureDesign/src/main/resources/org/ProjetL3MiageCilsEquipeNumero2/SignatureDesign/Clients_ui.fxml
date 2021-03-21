@@ -16,7 +16,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="466.0" prefWidth="658.0" styleClass="bodybg" stylesheets="@articlesUI.css" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.ProjetL3MiageCilsEquipeNumero2.SignatureDesign.Articles_uiController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="466.0" prefWidth="658.0" styleClass="bodybg" stylesheets="@articlesUI.css" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.ProjetL3MiageCilsEquipeNumero2.SignatureDesign.Clients_uiController">
    <left>
       <VBox alignment="CENTER_LEFT" prefHeight="466.0" prefWidth="78.0" styleClass="barre" stylesheets="@articlesUI.css" BorderPane.alignment="CENTER">
          <children>
@@ -84,7 +84,7 @@
                           <columns>
                             <TableColumn fx:id="id_col" prefWidth="75.0" text="Id" />
                             <TableColumn fx:id="nom_col" prefWidth="75.0" text="Nom" />
-                              <TableColumn fx:id="prix_col" prefWidth="75.0" text="Prix" />
+                              <TableColumn fx:id="prenom_col" prefWidth="75.0" text="Prénom" />
                           </columns>
                            <columnResizePolicy>
                               <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
@@ -93,34 +93,24 @@
                         <AnchorPane maxWidth="400.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="348.0" prefWidth="240.0" styleClass="card" HBox.hgrow="ALWAYS">
                            <children>
                               <Label layoutX="14.0" layoutY="27.0" styleClass="label1" text="Id" AnchorPane.bottomAnchor="287.4" AnchorPane.leftAnchor="14.0" AnchorPane.topAnchor="27.00000000000002" />
-                              <Label fx:id="v_id" alignment="CENTER_RIGHT" layoutX="143.0" layoutY="24.0" prefHeight="18.0" prefWidth="150.0" styleClass="label2" text="N/A" AnchorPane.bottomAnchor="290.0" AnchorPane.rightAnchor="13.0" AnchorPane.topAnchor="24.0" />
+                              <Label fx:id="v_id" alignment="CENTER_RIGHT" layoutX="143.0" layoutY="24.0" prefHeight="18.0" prefWidth="150.0" styleClass="label2" text="N/A" wrapText="true" AnchorPane.bottomAnchor="290.0" AnchorPane.rightAnchor="13.0" AnchorPane.topAnchor="24.0" />
                               <Label layoutX="14.0" layoutY="54.0" styleClass="label1" text="Nom" AnchorPane.bottomAnchor="260.4" AnchorPane.leftAnchor="14.0" AnchorPane.topAnchor="54.00000000000002" />
-                              <Label fx:id="v_nom" alignment="CENTER_RIGHT" layoutX="209.0" layoutY="51.0" prefHeight="18.0" prefWidth="135.0" styleClass="label2" text="N/A" AnchorPane.bottomAnchor="263.0" AnchorPane.rightAnchor="13.0" AnchorPane.topAnchor="51.0" />
-                              <Label layoutX="14.0" layoutY="85.0" styleClass="label1" text="Prix" AnchorPane.bottomAnchor="229.4" AnchorPane.leftAnchor="14.0" AnchorPane.topAnchor="85.0" />
-                              <Label fx:id="v_prix" alignment="CENTER_RIGHT" layoutX="209.0" layoutY="82.0" prefHeight="18.0" prefWidth="158.0" styleClass="label2" text="N/A" AnchorPane.bottomAnchor="232.0" AnchorPane.rightAnchor="13.0" AnchorPane.topAnchor="82.0" />
-                              <Label layoutX="14.0" layoutY="118.0" styleClass="label1" text="Marque" AnchorPane.bottomAnchor="196.4" AnchorPane.leftAnchor="14.0" AnchorPane.topAnchor="118.0" />
-                              <Label layoutX="14.0" layoutY="149.0" styleClass="label1" text="Catégorie" AnchorPane.bottomAnchor="165.4" AnchorPane.leftAnchor="14.0" AnchorPane.topAnchor="149.0" />
-                              <Label fx:id="v_marque" alignment="CENTER_RIGHT" layoutX="209.0" layoutY="115.0" prefHeight="18.0" prefWidth="146.0" styleClass="label2" text="N/A" AnchorPane.bottomAnchor="199.0" AnchorPane.rightAnchor="13.0" AnchorPane.topAnchor="115.0" />
-                              <Label fx:id="v_cat" alignment="CENTER_RIGHT" layoutX="209.0" layoutY="146.0" prefHeight="18.0" prefWidth="153.0" styleClass="label2" text="N/A" AnchorPane.bottomAnchor="168.0" AnchorPane.rightAnchor="13.0" AnchorPane.topAnchor="146.0" />
-                              <TableView fx:id="sec_table" layoutX="16.0" layoutY="179.0" prefHeight="129.0" prefWidth="212.0" AnchorPane.bottomAnchor="34.0" AnchorPane.leftAnchor="16.0" AnchorPane.rightAnchor="12.0">
-                                <columns>
-                                  <TableColumn fx:id="taille_col" prefWidth="75.0" text="Taille" />
-                                  <TableColumn fx:id="coleur_col" prefWidth="75.0" text="Couleur" />
-                                    <TableColumn fx:id="qt_col" prefWidth="75.0" text="Quantité" />
-                                </columns>
-                                 <columnResizePolicy>
-                                    <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
-                                 </columnResizePolicy>
-                              </TableView>
+                              <Label fx:id="v_nom" alignment="CENTER_RIGHT" layoutX="209.0" layoutY="51.0" prefHeight="18.0" prefWidth="135.0" styleClass="label2" text="N/A" wrapText="true" AnchorPane.bottomAnchor="263.0" AnchorPane.rightAnchor="13.0" AnchorPane.topAnchor="51.0" />
+                              <Label layoutX="14.0" layoutY="85.0" styleClass="label1" text="Prénom" AnchorPane.bottomAnchor="229.4" AnchorPane.leftAnchor="14.0" AnchorPane.topAnchor="85.0" />
+                              <Label fx:id="v_prenom" alignment="CENTER_RIGHT" layoutX="209.0" layoutY="82.0" prefHeight="18.0" prefWidth="158.0" styleClass="label2" text="N/A" AnchorPane.bottomAnchor="232.0" AnchorPane.rightAnchor="13.0" AnchorPane.topAnchor="82.0" />
+                              <Label layoutX="14.0" layoutY="118.0" styleClass="label1" text="Portable" AnchorPane.bottomAnchor="196.4" AnchorPane.leftAnchor="14.0" AnchorPane.topAnchor="118.0" />
+                              <Label layoutX="14.0" layoutY="149.0" styleClass="label1" text="Adresse" AnchorPane.bottomAnchor="165.4" AnchorPane.leftAnchor="14.0" AnchorPane.topAnchor="149.0" />
+                              <Label fx:id="v_portable" alignment="CENTER_RIGHT" layoutX="209.0" layoutY="115.0" prefHeight="18.0" prefWidth="146.0" styleClass="label2" text="N/A" wrapText="true" AnchorPane.bottomAnchor="199.0" AnchorPane.rightAnchor="13.0" AnchorPane.topAnchor="115.0" />
+                              <Label fx:id="v_adresse" alignment="CENTER_RIGHT" layoutX="209.0" layoutY="146.0" prefHeight="18.0" prefWidth="153.0" styleClass="label2" text="N/A" wrapText="true" AnchorPane.bottomAnchor="168.0" AnchorPane.rightAnchor="13.0" AnchorPane.topAnchor="146.0" />
+                              <Label layoutX="22.0" layoutY="182.0" prefHeight="28.0" prefWidth="58.0" styleClass="label1" text="Email" AnchorPane.bottomAnchor="135.0" AnchorPane.leftAnchor="14.0" AnchorPane.topAnchor="180.0" />
+                              <Label fx:id="v_mail" alignment="CENTER_RIGHT" layoutX="70.0" layoutY="187.0" prefHeight="18.0" prefWidth="153.0" styleClass="label2" text="N/A" wrapText="true" AnchorPane.bottomAnchor="135.0" AnchorPane.rightAnchor="13.0" AnchorPane.topAnchor="180.0" />
                               <MenuButton contentDisplay="RIGHT" layoutX="17.0" layoutY="303.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="210.0" style="-fx-background-color: gold; -fx-background-radius: 10;" text="Options" AnchorPane.bottomAnchor="7.400000000000034" AnchorPane.leftAnchor="17.0" AnchorPane.rightAnchor="12.599999999999994">
                                 <items>
                                   <MenuItem fx:id="modifier" mnemonicParsing="false" onAction="#modifierPanel" text="Modifier" />
                                     <SeparatorMenuItem mnemonicParsing="false" />
-                                    <MenuItem fx:id="ajoutQT" mnemonicParsing="false" onAction="#qtePanel" text="Ajout Quantite" />
-                                    <SeparatorMenuItem mnemonicParsing="false" />
                                   <MenuItem fx:id="supprimer" mnemonicParsing="false" onAction="#supprimer" text="Supprimer" />
                                     <SeparatorMenuItem mnemonicParsing="false" />
-                                    <MenuItem fx:id="nouveau" mnemonicParsing="false" onAction="#createPanel" text="Nouveau Article" />
+                                    <MenuItem fx:id="nouveau" mnemonicParsing="false" onAction="#createPanel" text="Nouveau Client" />
                                 </items>
                               </MenuButton>
                            </children>
@@ -137,35 +127,23 @@
                   </HBox>
                </children>
             </VBox>
-            <AnchorPane fx:id="createpanel" layoutX="113.0" layoutY="54.0" prefHeight="286.0" prefWidth="366.0" styleClass="createPanel" stylesheets="@articlesUI.css" visible="false" AnchorPane.bottomAnchor="126.0" AnchorPane.rightAnchor="126.0">
+            <AnchorPane fx:id="createpanel" layoutX="87.0" layoutY="66.0" prefHeight="286.0" prefWidth="366.0" styleClass="createPanel" stylesheets="@articlesUI.css" visible="false" AnchorPane.bottomAnchor="114.0" AnchorPane.rightAnchor="115.39999999999998">
                <children>
-                  <Label layoutX="51.0" layoutY="41.0" prefHeight="18.0" prefWidth="49.0" styleClass="label1" text="Nom:" />
-                  <Label layoutX="51.0" layoutY="85.0" prefHeight="18.0" prefWidth="37.0" styleClass="label1" text="Prix:" />
-                  <Label layoutX="24.0" layoutY="124.0" prefHeight="18.0" prefWidth="68.0" styleClass="label1" text="Marque:" />
-                  <Label layoutX="12.0" layoutY="171.0" prefHeight="18.0" prefWidth="78.0" styleClass="label1" text="Catégorie:" />
+                  <Label layoutX="45.0" layoutY="41.0" prefHeight="18.0" prefWidth="42.0" styleClass="label1" text="Nom:" />
+                  <Label layoutX="24.0" layoutY="85.0" prefHeight="18.0" prefWidth="65.0" styleClass="label1" text="Prénom:" />
+                  <Label layoutX="18.0" layoutY="124.0" prefHeight="18.0" prefWidth="74.0" styleClass="label1" text="Portable:" />
+                  <Label alignment="CENTER_RIGHT" layoutX="22.0" layoutY="162.0" prefHeight="18.0" prefWidth="65.0" styleClass="label1" text="Adresse:" />
                   <TextField fx:id="nom" layoutX="87.0" layoutY="35.0" prefHeight="30.0" prefWidth="245.0" />
-                  <TextField fx:id="prix" layoutX="87.0" layoutY="79.0" prefHeight="30.0" prefWidth="245.0" />
-                  <TextField fx:id="marque" layoutX="87.0" layoutY="118.0" prefHeight="30.0" prefWidth="245.0" />
-                  <TextField fx:id="categorie" layoutX="87.0" layoutY="165.0" prefHeight="30.0" prefWidth="245.0" />
-                  <Button fx:id="create" layoutX="177.0" layoutY="212.0" mnemonicParsing="false" onAction="#createArticle" prefHeight="40.0" prefWidth="82.0" text="Valider" />
-                  <Label fx:id="msgerreur" layoutX="24.0" layoutY="210.0" prefHeight="57.0" prefWidth="166.0" text="Les données entrées ne permettent pas de créer un article" visible="false" wrapText="true" />
-                  <Button fx:id="annuler" layoutX="263.0" layoutY="212.0" mnemonicParsing="false" onAction="#annuler" prefHeight="40.0" prefWidth="82.0" text="Annuler" />
-                  <Button fx:id="modif" layoutX="177.0" layoutY="212.0" mnemonicParsing="false" onAction="#modifierArticle" prefHeight="40.0" prefWidth="82.0" text="Valider" visible="false" />
+                  <TextField fx:id="prenom" layoutX="87.0" layoutY="79.0" prefHeight="30.0" prefWidth="245.0" />
+                  <TextField fx:id="portable" layoutX="87.0" layoutY="118.0" prefHeight="30.0" prefWidth="245.0" />
+                  <TextField fx:id="adresse" layoutX="87.0" layoutY="156.0" prefHeight="30.0" prefWidth="245.0" />
+                  <Button fx:id="create" layoutX="177.0" layoutY="232.0" mnemonicParsing="false" onAction="#createClient" prefHeight="40.0" prefWidth="82.0" text="Valider" />
+                  <Label fx:id="msgerreur" layoutX="12.0" layoutY="233.0" prefHeight="57.0" prefWidth="162.0" text="Les données entrées ne permettent pas de créer un client" visible="false" wrapText="true" />
+                  <Button fx:id="annuler" layoutX="269.0" layoutY="232.0" mnemonicParsing="false" onAction="#annuler" prefHeight="40.0" prefWidth="82.0" text="Annuler" />
+                  <Button fx:id="modif" layoutX="177.0" layoutY="232.0" mnemonicParsing="false" onAction="#modifierClient" prefHeight="40.0" prefWidth="82.0" text="Valider" visible="false" />
                   <Label fx:id="option" alignment="CENTER" layoutX="132.0" layoutY="14.0" prefHeight="18.0" prefWidth="116.0" text="Label" />
-               </children>
-            </AnchorPane>
-            <AnchorPane fx:id="qtepanel" layoutX="135.0" layoutY="86.0" prefHeight="294.0" prefWidth="300.0" styleClass="createPanel" visible="false" AnchorPane.bottomAnchor="86.0" AnchorPane.rightAnchor="133.79999999999995">
-               <children>
-                  <Label layoutX="88.0" layoutY="14.0" styleClass="label1" text="Ajout de Quantité" />
-                  <Label layoutX="44.0" layoutY="48.0" styleClass="label1" text="Taille:" />
-                  <Label layoutX="26.0" layoutY="85.0" styleClass="label1" text="Couleur:" />
-                  <Label layoutX="23.0" layoutY="126.0" styleClass="label1" text="Quantité:" />
-                  <TextField fx:id="taille" layoutX="93.0" layoutY="44.0" prefHeight="26.0" prefWidth="175.0" />
-                  <TextField fx:id="couleur" layoutX="93.0" layoutY="81.0" prefHeight="26.0" prefWidth="175.0" />
-                  <TextField fx:id="quantite" layoutX="95.0" layoutY="122.0" prefHeight="26.0" prefWidth="175.0" />
-                  <Button fx:id="validerAjoutQte" layoutX="95.0" layoutY="157.0" mnemonicParsing="false" onAction="#ajoutQte" prefHeight="40.0" prefWidth="80.0" text="Valider" />
-                  <Button layoutX="183.0" layoutY="157.0" mnemonicParsing="false" onAction="#annuler" prefHeight="40.0" prefWidth="80.0" text="Annuler" />
-                  <Label fx:id="msgerreurQTE" alignment="TOP_CENTER" layoutX="31.0" layoutY="210.0" prefHeight="69.0" prefWidth="243.0" text="Label" visible="false" wrapText="true" />
+                  <TextField fx:id="email" layoutX="87.0" layoutY="195.0" prefHeight="30.0" prefWidth="245.0" />
+                  <Label alignment="CENTER_RIGHT" layoutX="37.0" layoutY="200.0" prefHeight="18.0" prefWidth="51.0" styleClass="label1" text="Email:" />
                </children>
             </AnchorPane>
          </children>
