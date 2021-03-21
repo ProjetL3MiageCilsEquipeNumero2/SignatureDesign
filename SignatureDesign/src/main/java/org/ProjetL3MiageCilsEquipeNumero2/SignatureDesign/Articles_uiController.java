@@ -87,6 +87,8 @@ public class Articles_uiController {
 	@FXML
 	private MenuItem supprimer;
 	@FXML
+	private MenuItem modifierqte;
+	@FXML
 	private MenuItem modifier;
 	@FXML
 	private MenuItem nouveau;
@@ -125,6 +127,8 @@ public class Articles_uiController {
 	@FXML
 	private Button validerAjoutQte;
 	@FXML
+	private Button annulerqte;
+	@FXML
 	private Button validerModifQte;
 
 	// Panel Create/modif article
@@ -133,9 +137,13 @@ public class Articles_uiController {
 	// Panel ajoutQTE
 	@FXML
 	private AnchorPane qtepanel;
+	@FXML
+	private Label optionqte;
 
 	TableViewSelectionModel<Article> selectionModel = null;
 	ObservableList<Article> selection = null;
+	TableViewSelectionModel<Quantite> selectionqteModel = null;
+	ObservableList<Quantite> selectionqte = null;
 
 	// initialisation
 	@FXML
@@ -156,6 +164,8 @@ public class Articles_uiController {
 		// lorsque l'utilisateur clique sur un article le card lateral s'actualise
 		selectionModel = main_table.getSelectionModel();
 		selection = selectionModel.getSelectedItems();
+		selectionqteModel = sec_table.getSelectionModel();
+		selectionqte = selectionqteModel.getSelectedItems();
 		selection.addListener(new ListChangeListener<Article>() {
 			@Override
 			public void onChanged(Change<? extends Article> change) {
@@ -303,6 +313,7 @@ public class Articles_uiController {
 	@FXML
 	public void qtePanel() {
 		if (!selection.isEmpty()) {
+			optionqte.setText("Ajout de quantité");
 			msgerreurQTE.setVisible(false);
 			validerModifQte.setVisible(false);
 			validerAjoutQte.setVisible(true);
@@ -315,7 +326,8 @@ public class Articles_uiController {
 		}
 
 	}
-
+	
+	
 	@FXML
 	public void ajoutQte() {
 		if (quantite.getText() == "" || quantite.getText() == null || taille.getText() == null
@@ -341,59 +353,54 @@ public class Articles_uiController {
 
 		}
 	}
+
 	/*
 	 * ouvre un panel modifierqte
 	 */
 	@FXML
 	public void modifierQtePanel() {
-		if (!selection.isEmpty()) {
+		if (!selectionqte.isEmpty()) {
+			optionqte.setText("ModifierQte");
 			msgerreurQTE.setVisible(false);
 			validerModifQte.setVisible(true);
 			validerAjoutQte.setVisible(false);
 			taille.setText(null);
 			couleur.setText(null);
 			quantite.setText(null);
-			Article focus = selection.get(0);
-			
+			Quantite focus = selectionqte.get(0);
 			taille.setText(focus.getTaille());
 			couleur.setText(focus.getCouleur());
-			quantite.setText(Integer.parseInt(focus.getQuantites()));
+			quantite.setText(Integer.toString(focus.getQuantite()));
 			affichage.setEffect(new GaussianBlur());
 			affichage.setDisable(true);
-			createpanel.setVisible(true);
+			qtepanel.setVisible(true);
 		}
-
 	}
+
+
 	/*
 	 * modifier quantité
 	 */
-	
 	@FXML
-	public void modifierQte(){
+	public void modifierQte() {
 		if (quantite.getText() == "" || quantite.getText() == null || taille.getText() == null
 				|| couleur.getText() == null || quantite.getText() == null) {
-			msgerreurQTE.setText("Les données introduites ne permettent pas d'ajouter une quantité à cet article.");
+			msgerreurQTE.setText("Les données introduites ne permettent pas de modifier cette quantité .");
 			msgerreurQTE.setVisible(true);
 		} else {
 			// focus = article selectionne
 			Article focus = selection.get(0);
-			for (Quantite q : focus.getQuantites()) {
-				if (q.getCouleur().equals(couleur.getText()) && q.getTaille().equals(taille.getText())) {
-					msgerreurQTE.setText("Cette association taille-couleur-quantité existe déjà.");
-					msgerreurQTE.setVisible(true);
-					return;
-				}
-			}
 			focus.modifierQuantite(taille.getText(), couleur.getText(), Integer.parseInt(quantite.getText()));
 			Article.articlesUpdate();
 			qtepanel.setVisible(false);
 			affichage.setDisable(false);
 			affichage.setEffect(null);
 			affichage.setVisible(true);
-
 		}
-		
+		cardDefault();
+
 	}
+
 
 	@FXML
 	public void annuler() {

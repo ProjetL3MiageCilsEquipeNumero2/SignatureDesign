@@ -116,6 +116,8 @@
                                 <items>
                                   <MenuItem fx:id="modifier" mnemonicParsing="false" onAction="#modifierPanel" text="Modifier" />
                                     <SeparatorMenuItem mnemonicParsing="false" />
+                                    <MenuItem fx:id="modifierqte" mnemonicParsing="false" onAction="#modifierQtePanel" text="Modifier Quantité" />
+                                    <SeparatorMenuItem mnemonicParsing="false" />
                                     <MenuItem fx:id="ajoutQT" mnemonicParsing="false" onAction="#qtePanel" text="Ajout Quantite" />
                                     <SeparatorMenuItem mnemonicParsing="false" />
                                   <MenuItem fx:id="supprimer" mnemonicParsing="false" onAction="#supprimer" text="Supprimer" />
@@ -156,7 +158,7 @@
             </AnchorPane>
             <AnchorPane fx:id="qtepanel" layoutX="135.0" layoutY="86.0" prefHeight="294.0" prefWidth="300.0" styleClass="createPanel" visible="false" AnchorPane.bottomAnchor="86.0" AnchorPane.rightAnchor="133.79999999999995">
                <children>
-                  <Label layoutX="88.0" layoutY="14.0" styleClass="label1" text="Ajout de Quantité" />
+                  <Label fx:id="optionqte" layoutX="88.0" layoutY="14.0" styleClass="label1" text="Ajout de Quantité" />
                   <Label layoutX="44.0" layoutY="48.0" styleClass="label1" text="Taille:" />
                   <Label layoutX="26.0" layoutY="85.0" styleClass="label1" text="Couleur:" />
                   <Label layoutX="23.0" layoutY="126.0" styleClass="label1" text="Quantité:" />
@@ -164,8 +166,9 @@
                   <TextField fx:id="couleur" layoutX="93.0" layoutY="81.0" prefHeight="26.0" prefWidth="175.0" />
                   <TextField fx:id="quantite" layoutX="95.0" layoutY="122.0" prefHeight="26.0" prefWidth="175.0" />
                   <Button fx:id="validerAjoutQte" layoutX="95.0" layoutY="157.0" mnemonicParsing="false" onAction="#ajoutQte" prefHeight="40.0" prefWidth="80.0" text="Valider" />
-                  <Button fx:id="validerModifQte" layoutX="183.0" layoutY="157.0" mnemonicParsing="false" onAction="#modifierQte" prefHeight="40.0" prefWidth="80.0" text="Annuler" />
+                  <Button fx:id="annulerqte" layoutX="183.0" layoutY="157.0" mnemonicParsing="false" onAction="#annuler" prefHeight="40.0" prefWidth="80.0" text="Annuler" />
                   <Label fx:id="msgerreurQTE" alignment="TOP_CENTER" layoutX="31.0" layoutY="210.0" prefHeight="69.0" prefWidth="243.0" text="Label" visible="false" wrapText="true" />
+                  <Button fx:id="validerModifQte" layoutX="95.0" layoutY="157.0" mnemonicParsing="false" onAction="#modifierQte" prefHeight="40.0" prefWidth="80.0" text="Valider" visible="false" />
                </children>
             </AnchorPane>
             <AnchorPane fx:id="rhpanel" layoutY="156.0" prefHeight="148.0" prefWidth="78.0" styleClass="barre" visible="false" AnchorPane.bottomAnchor="162.39999999999998" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="156.0">
