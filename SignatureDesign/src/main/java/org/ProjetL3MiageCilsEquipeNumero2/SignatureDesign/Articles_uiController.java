@@ -34,6 +34,12 @@ public class Articles_uiController {
 	@FXML
 	private Button rh;
 	@FXML
+	private AnchorPane rhpanel;
+	@FXML
+	private Button clientsbutton;
+	@FXML
+	private Button vendeursbutton;
+	@FXML
 	private Button sales;
 	@FXML
 	private Button stats;
@@ -350,7 +356,27 @@ public class Articles_uiController {
 	// Event Listener on Button[#rh].onAction
 	@FXML
 	public void afficheRH(ActionEvent event) throws IOException {
+		if (rhpanel.isVisible()) {
+			rhpanel.setVisible(false);
+			affichage.setDisable(false);
+			affichage.setEffect(null);
+			affichage.setVisible(true);
+		} else {
+			rhpanel.setVisible(true);
+			affichage.setEffect(new GaussianBlur());
+			affichage.setDisable(true);
+
+		}
+	}
+
+	@FXML
+	public void afficheClients(ActionEvent event) throws IOException {
 		App.setRoot("Clients_ui");
+	}
+
+	@FXML
+	public void afficheVendeurs(ActionEvent event) throws IOException {
+		App.setRoot("Vendeurs_ui");
 	}
 
 	// Event Listener on Button[#sales].onAction

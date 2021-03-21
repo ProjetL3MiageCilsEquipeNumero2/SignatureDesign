@@ -11,6 +11,7 @@ import java.util.Set;
 
 import org.ProjetL3MiageCilsEquipeNumero2.Magasin.Article;
 import org.ProjetL3MiageCilsEquipeNumero2.Magasin.Client;
+import org.ProjetL3MiageCilsEquipeNumero2.Magasin.Vendeur;
 
 public class DataBase {
 	private Connection connexion;
@@ -317,7 +318,10 @@ public class DataBase {
 		Client.addClient("nom1", "prenom1", 123456789, "adr1", "mail@test.com");
 		Client.addClient("nom2", "prenom2", 125757, "adr2", "mail22@test.com");
 		Client.addClient("nom3", "prenom3", 1447289, "adr3", "mail47.7@test.com");
-		
+		Vendeur.addVendeur("nom1", "prenom1", 1500.25);
+		Vendeur.addVendeur("nom2", "prenom2", 1585.55);
+		Vendeur.addVendeur("nom3", "prenom3", 1820.0);
+
 	}
 
 	/*
@@ -362,9 +366,11 @@ public class DataBase {
 	public void createAjoutClientProc() {
 		String drop = "DROP PROCEDURE IF EXISTS AJOUT_CLIENT";
 		String createProcedure = " create procedure AJOUT_CLIENT(IN vnom_client varchar(45), IN vprenom_client varchar(45),"
-				+ " IN vnumtel_client int," + " IN vadr_client varchar(60), IN vmail_client varchar(45)" + ")" + "begin "
+				+ " IN vnumtel_client int," + " IN vadr_client varchar(60), IN vmail_client varchar(45)" + ")"
+				+ "begin "
 				+ "INSERT INTO CLIENTS ( nom_client ,  prenom_client , ntel_client , adresse_client, email_client ) "
-				+ "VALUES ( vnom_client ,  vprenom_client , vnumtel_client , vadr_client, vmail_client)" + "; " + "end  ";
+				+ "VALUES ( vnom_client ,  vprenom_client , vnumtel_client , vadr_client, vmail_client)" + "; "
+				+ "end  ";
 		// createProcedure
 		try (Statement stmt = connexion.createStatement()) {
 			stmt.execute(drop);
@@ -373,8 +379,25 @@ public class DataBase {
 			e.printStackTrace();
 		}
 	}
-	
-	
+
+	/*
+	 * cree une procedure de creation de client
+	 */
+	public void createAjoutVendeurProc() {
+		String drop = "DROP PROCEDURE IF EXISTS AJOUT_VENDEUR";
+		String createProcedure = " create procedure AJOUT_VENDEUR(IN vnom_vendeur varchar(45), IN vprenom_vendeur varchar(45),"
+				+ " IN vsalaire_vendeur double" + ")" + "begin "
+				+ "INSERT INTO VENDEURS ( nom_vendeur ,  prenom_vendeur , salaire_vendeur ) "
+				+ "VALUES ( vnom_vendeur ,  vprenom_vendeur , vsalaire_vendeur )" + "; " + "end  ";
+		// createProcedure
+		try (Statement stmt = connexion.createStatement()) {
+			stmt.execute(drop);
+			stmt.executeUpdate(createProcedure);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
 	/*
 	 * cree des procedures qui permettent de populer une table ie.
 	 * AJOUT_ARTICLE("nom", prix, "marque", "cat")
@@ -383,6 +406,7 @@ public class DataBase {
 		createAjoutArticleProc();
 		createAjoutQuantiteProc();
 		createAjoutClientProc();
+		createAjoutVendeurProc();
 	}
 
 	/*

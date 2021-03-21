@@ -146,6 +146,12 @@
                   <Label alignment="CENTER_RIGHT" layoutX="37.0" layoutY="200.0" prefHeight="18.0" prefWidth="51.0" styleClass="label1" text="Email:" />
                </children>
             </AnchorPane>
+            <AnchorPane fx:id="rhpanel" layoutY="156.0" prefHeight="148.0" prefWidth="78.0" styleClass="barre" visible="false" AnchorPane.bottomAnchor="162.39999999999998" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="156.0">
+               <children>
+                  <Button fx:id="clientsbutton" layoutY="35.0" mnemonicParsing="false" onAction="#afficheClients" styleClass="buttonmenu" text="Clients" />
+                  <Button fx:id="vendeursbutton" layoutY="83.0" mnemonicParsing="false" onAction="#afficheVendeurs" styleClass="buttonmenu" text="Vendeurs" />
+               </children>
+            </AnchorPane>
          </children>
       </AnchorPane>
    </center>

@@ -99,10 +99,6 @@ public class Client {
 		}
     }
 
-    public static void suppClient(){
-
-    }
-
     public void modifierClient(String nom, String prenom, int portable, String adr, String mail){
     	
     	try {
