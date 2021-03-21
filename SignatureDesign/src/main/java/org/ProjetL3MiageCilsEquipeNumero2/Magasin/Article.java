@@ -143,14 +143,14 @@ public class Article {
 	/*
 	 * modifier l'article
 	 */
-	public void modifierArticle() {
+	public void modifierArticle(String nom, double prix, String marque, String cat) {
 		try {
 			PreparedStatement ps = App.db.getConnection().prepareStatement("UPDATE ARTICLES SET Nom_Article = ?,"
 					+ " Prix_Article = ?, Marque_Article = ? , Categorie_Article = ? WHERE Id_Article = ?");
-			ps.setString(1, this.getNom());
-			ps.setDouble(2,this.getPrix());
-			ps.setString(3,this.getMarque());
-			ps.setString(4, this.getCategorie());
+			ps.setString(1,nom);
+			ps.setDouble(2,prix);
+			ps.setString(3,marque);
+			ps.setString(4,cat);
 			ps.setInt(5,this.getId());
 			ps.executeUpdate();
 		} catch (SQLException e) {

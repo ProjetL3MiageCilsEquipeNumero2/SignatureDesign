@@ -232,7 +232,7 @@ public class Articles_uiController {
 		}
 	}
 
-	// TODO: procedure modifier
+	// ouvre un panel modifier
 	@FXML
 	public void modifierPanel() {
 		if (!selection.isEmpty()) {
@@ -248,8 +248,34 @@ public class Articles_uiController {
 			marque.setText(focus.getMarque());
 			categorie.setText(focus.getCategorie());
 			createpanel.setVisible(true);
+			
+			
+			
 		}
 
+	}
+	
+	/*
+	 *  modifie un article
+	 */
+	public void modifierArticle() {		
+		if (prix.getText() == "" || prix.getText() == null || nom.getText() == null || marque.getText() == null
+				|| categorie.getText() == null) {
+			// prix n'est pas un chiffre
+			msgerreur.setVisible(true);
+		} else {
+		Article focus = selection.get(0);
+		focus.modifierArticle(nom.getText(), Double.parseDouble(prix.getText()), marque.getText(),
+				categorie.getText());
+		Article.articlesUpdate();
+		createpanel.setVisible(false);
+		affichage.setDisable(false);
+		affichage.setEffect(null);
+		affichage.setVisible(true);
+		
+		// on met à jour le panel avec des valeurs N/A car aucun article est selectionne
+		cardDefault();
+		}
 	}
 
 	/*
