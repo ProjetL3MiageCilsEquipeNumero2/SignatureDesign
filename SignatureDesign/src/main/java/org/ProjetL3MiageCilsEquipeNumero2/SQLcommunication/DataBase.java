@@ -10,6 +10,9 @@ import java.util.Map;
 import java.util.Set;
 
 import org.ProjetL3MiageCilsEquipeNumero2.Magasin.Article;
+import org.ProjetL3MiageCilsEquipeNumero2.Magasin.Client;
+import org.ProjetL3MiageCilsEquipeNumero2.Magasin.Vendeur;
+import org.ProjetL3MiageCilsEquipeNumero2.Magasin.Vente;
 
 public class DataBase {
 	private Connection connexion;
@@ -163,9 +166,8 @@ public class DataBase {
 	 */
 	public void createTableVentes() {
 		String create = "CREATE TABLE IF NOT EXISTS `VENTES` (" + "`Id_Vente` int NOT NULL AUTO_INCREMENT,"
-				+ "`Id_Vendeur` int NOT NULL," + "`Id_Client` int NOT NULL," + "`PrixTotal` double NOT NULL,"
-				+ "`Date` datetime NOT NULL," + "PRIMARY KEY (`Id_Vente`),"
-				+ "FOREIGN KEY (`Id_Client`) REFERENCES `CLIENTS` (`Id_Client`),"
+				+ "`Id_Vendeur` int NOT NULL," + "`Id_Client` int NOT NULL," + "`Date` DATETIME NOT NULL,"
+				+ "PRIMARY KEY (`Id_Vente`)," + "FOREIGN KEY (`Id_Client`) REFERENCES `CLIENTS` (`Id_Client`),"
 				+ "FOREIGN KEY (`Id_Vendeur`) REFERENCES `VENDEURS` (`Id_Vendeur`)" + ");";
 		try (Statement stmt = connexion.createStatement()) {
 			stmt.executeUpdate(create);
@@ -178,10 +180,10 @@ public class DataBase {
 	 * cree la table VenntesARTICLES qui associe les produits à une vente
 	 */
 	public void createTableVenteArticles() {
-		String create = "CREATE TABLE IF NOT EXISTS `VENTES_ARTICLES` (" + "`Id_Produit` int NOT NULL,"
+		String create = "CREATE TABLE IF NOT EXISTS `VENTES_ARTICLES` (" + "`Id_Article` int NOT NULL,"
 				+ "`Id_Vente` int NOT NULL," + "`Taille` varchar(45) NOT NULL," + "`Couleur` varchar(45) NOT NULL,"
-				+ "`Quantite` int NOT NULL," + "PRIMARY KEY (`Id_Produit`,`Id_Vente`,`Taille`,`Couleur`),"
-				+ "FOREIGN KEY (`Id_Produit`) REFERENCES `ARTICLES` (`Id_Article`),"
+				+ "`Quantite` int NOT NULL," + "PRIMARY KEY (`Id_Article`,`Id_Vente`,`Taille`,`Couleur`),"
+				+ "FOREIGN KEY (`Id_Article`) REFERENCES `ARTICLES` (`Id_Article`),"
 				+ "FOREIGN KEY (`Id_Vente`) REFERENCES `VENTES` (`Id_Vente`)" + " ); ";
 		try (Statement stmt = connexion.createStatement()) {
 			stmt.executeUpdate(create);
@@ -258,7 +260,7 @@ public class DataBase {
 	 */
 	public void createGetProcedures() {
 		String[] nom_tables = { "ARTICLES", "CLIENTS", "VENDEURS", "FOURNISSEURS", "DEPENSES", "APPROVISIONNEMENTS",
-				"COMMANDES" };
+				"COMMANDES", "VENTES" };
 		// pour chacune de ces tables on cree une procedure qui renvoi toute la table
 		for (String s : nom_tables) {
 			// on supprime la procedure si elle existe deja
@@ -313,6 +315,19 @@ public class DataBase {
 		Article.createQuantite(1, "S", "vert", 20);
 		Article.createQuantite(1, "S", "rouge", 15);
 		Article.createQuantite(2, "M", "jaune", 20);
+		Client.addClient("nom1", "prenom1", 123456789, "adr1", "mail@test.com");
+		Client.addClient("nom2", "prenom2", 125757, "adr2", "mail22@test.com");
+		Client.addClient("nom3", "prenom3", 1447289, "adr3", "mail47.7@test.com");
+		Vendeur.addVendeur("nom1", "prenom1", 1500.25);
+		Vendeur.addVendeur("nom2", "prenom2", 1585.55);
+		Vendeur.addVendeur("nom3", "prenom3", 1820.0);
+		Vente.addVente(1, 1);
+		Vente.addVente(1, 2);
+		Vente.addArticleVente(1, 2, "S", "vert", 2);
+		Vente.addArticleVente(2, 1, "M", "jaune", 4);
+		
+		
+
 	}
 
 	/*
@@ -352,12 +367,89 @@ public class DataBase {
 	}
 
 	/*
+	 * cree une procedure de creation de client
+	 */
+	public void createAjoutClientProc() {
+		String drop = "DROP PROCEDURE IF EXISTS AJOUT_CLIENT";
+		String createProcedure = " create procedure AJOUT_CLIENT(IN vnom_client varchar(45), IN vprenom_client varchar(45),"
+				+ " IN vnumtel_client int," + " IN vadr_client varchar(60), IN vmail_client varchar(45)" + ")"
+				+ "begin "
+				+ "INSERT INTO CLIENTS ( nom_client ,  prenom_client , ntel_client , adresse_client, email_client ) "
+				+ "VALUES ( vnom_client ,  vprenom_client , vnumtel_client , vadr_client, vmail_client)" + "; "
+				+ "end  ";
+		// createProcedure
+		try (Statement stmt = connexion.createStatement()) {
+			stmt.execute(drop);
+			stmt.executeUpdate(createProcedure);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
+	/*
+	 * cree une procedure de creation de client
+	 */
+	public void createAjoutVendeurProc() {
+		String drop = "DROP PROCEDURE IF EXISTS AJOUT_VENDEUR";
+		String createProcedure = " create procedure AJOUT_VENDEUR(IN vnom_vendeur varchar(45), IN vprenom_vendeur varchar(45),"
+				+ " IN vsalaire_vendeur double" + ")" + "begin "
+				+ "INSERT INTO VENDEURS ( nom_vendeur ,  prenom_vendeur , salaire_vendeur ) "
+				+ "VALUES ( vnom_vendeur ,  vprenom_vendeur , vsalaire_vendeur )" + "; " + "end  ";
+		// createProcedure
+		try (Statement stmt = connexion.createStatement()) {
+			stmt.execute(drop);
+			stmt.executeUpdate(createProcedure);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
+	/*
+	 * cree une procedure de creation de vente
+	 */
+	public void createAjoutVenteProc() {
+		String drop = "DROP PROCEDURE IF EXISTS AJOUT_VENTE";
+		String createProcedure = " create procedure AJOUT_VENTE(IN vid_vendeur int, IN vid_client int" + ")" + "begin "
+				+ "INSERT INTO VENTES ( id_vendeur ,  id_client, date ) "
+				+ "VALUES ( vid_vendeur ,  vid_client , NOW() )" + "; " + "end  ";
+		// createProcedure
+		try (Statement stmt = connexion.createStatement()) {
+			stmt.execute(drop);
+			stmt.executeUpdate(createProcedure);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
+	/*
+	 * cree une procedure d'ajout d'articles vendus à une vente
+	 */
+	public void createAjoutVenteArticlesProc() {
+		String drop = "DROP PROCEDURE IF EXISTS AJOUT_VENTE_ARTICLES";
+		String createProcedure = " create procedure AJOUT_VENTE_ARTICLES(IN vid_vente int, IN vid_article int, IN vtaille varchar(45),"
+				+ " IN vcouleur varchar(45), IN vqte int" + ")" + "begin "
+				+ "INSERT INTO VENTES_ARTICLES ( id_vente ,  id_article, taille, couleur, quantite ) "
+				+ "VALUES ( vid_vente ,  vid_article , vtaille, vcouleur, vqte )" + "; " + "end  ";
+		// createProcedure
+		try (Statement stmt = connexion.createStatement()) {
+			stmt.execute(drop);
+			stmt.executeUpdate(createProcedure);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
+	/*
 	 * cree des procedures qui permettent de populer une table ie.
 	 * AJOUT_ARTICLE("nom", prix, "marque", "cat")
 	 */
 	public void createAjoutProcedures() {
 		createAjoutArticleProc();
 		createAjoutQuantiteProc();
+		createAjoutClientProc();
+		createAjoutVendeurProc();
+		createAjoutVenteProc();
+		createAjoutVenteArticlesProc();
 	}
 
 	/*
