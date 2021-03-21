@@ -105,6 +105,8 @@ public class Articles_uiController {
 	private Label msgerreurQTE;
 	@FXML
 	private Button validerAjoutQte;
+	@FXML
+	private Button validerModifQte;
 
 	// Panel Create/modif article
 	@FXML
@@ -285,6 +287,8 @@ public class Articles_uiController {
 	public void qtePanel() {
 		if (!selection.isEmpty()) {
 			msgerreurQTE.setVisible(false);
+			validerModifQte.setVisible(false);
+			validerAjoutQte.setVisible(true);
 			taille.setText(null);
 			couleur.setText(null);
 			quantite.setText(null);
@@ -319,6 +323,59 @@ public class Articles_uiController {
 			affichage.setVisible(true);
 
 		}
+	}
+	/*
+	 * ouvre un panel modifierqte
+	 */
+	@FXML
+	public void modifierQtePanel() {
+		if (!selection.isEmpty()) {
+			msgerreurQTE.setVisible(false);
+			validerModifQte.setVisible(true);
+			validerAjoutQte.setVisible(false);
+			taille.setText(null);
+			couleur.setText(null);
+			quantite.setText(null);
+			Article focus = selection.get(0);
+			
+			taille.setText(focus.getTaille());
+			couleur.setText(focus.getCouleur());
+			quantite.setText(Integer.parseInt(focus.getQuantites()));
+			affichage.setEffect(new GaussianBlur());
+			affichage.setDisable(true);
+			createpanel.setVisible(true);
+		}
+
+	}
+	/*
+	 * modifier quantité
+	 */
+	
+	@FXML
+	public void modifierQte(){
+		if (quantite.getText() == "" || quantite.getText() == null || taille.getText() == null
+				|| couleur.getText() == null || quantite.getText() == null) {
+			msgerreurQTE.setText("Les données introduites ne permettent pas d'ajouter une quantité à cet article.");
+			msgerreurQTE.setVisible(true);
+		} else {
+			// focus = article selectionne
+			Article focus = selection.get(0);
+			for (Quantite q : focus.getQuantites()) {
+				if (q.getCouleur().equals(couleur.getText()) && q.getTaille().equals(taille.getText())) {
+					msgerreurQTE.setText("Cette association taille-couleur-quantité existe déjà.");
+					msgerreurQTE.setVisible(true);
+					return;
+				}
+			}
+			focus.modifierQuantite(taille.getText(), couleur.getText(), Integer.parseInt(quantite.getText()));
+			Article.articlesUpdate();
+			qtepanel.setVisible(false);
+			affichage.setDisable(false);
+			affichage.setEffect(null);
+			affichage.setVisible(true);
+
+		}
+		
 	}
 
 	@FXML

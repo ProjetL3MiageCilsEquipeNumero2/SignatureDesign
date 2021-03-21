@@ -162,7 +162,7 @@ public class Article {
 	/*
 	 * modifier la quantité d'un article
 	 */
-	public void modifierQte(int id, String taille, String couleur, int qte) {
+	public void modifierQuantite(String taille, String couleur, int qte) {
 		try {
 			PreparedStatement ps = App.db.getConnection().prepareStatement("UPDATE QUANTITES SET taille = ?,"
 					+ " couleur = ? , Quantite = ? WHERE Id_Article = ?");
@@ -274,5 +274,7 @@ public class Article {
 	public final void setQuantites(final ObservableList<Quantite> quantites) {
 		this.quantitesProperty().set(quantites);
 	}
+	
+	
 
 }

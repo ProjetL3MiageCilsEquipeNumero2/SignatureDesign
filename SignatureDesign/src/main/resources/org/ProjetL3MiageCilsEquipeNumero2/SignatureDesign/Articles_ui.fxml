@@ -164,7 +164,7 @@
                   <TextField fx:id="couleur" layoutX="93.0" layoutY="81.0" prefHeight="26.0" prefWidth="175.0" />
                   <TextField fx:id="quantite" layoutX="95.0" layoutY="122.0" prefHeight="26.0" prefWidth="175.0" />
                   <Button fx:id="validerAjoutQte" layoutX="95.0" layoutY="157.0" mnemonicParsing="false" onAction="#ajoutQte" prefHeight="40.0" prefWidth="80.0" text="Valider" />
-                  <Button layoutX="183.0" layoutY="157.0" mnemonicParsing="false" onAction="#annuler" prefHeight="40.0" prefWidth="80.0" text="Annuler" />
+                  <Button fx:id="validerModifQte" layoutX="183.0" layoutY="157.0" mnemonicParsing="false" onAction="#modifierQte" prefHeight="40.0" prefWidth="80.0" text="Annuler" />
                   <Label fx:id="msgerreurQTE" alignment="TOP_CENTER" layoutX="31.0" layoutY="210.0" prefHeight="69.0" prefWidth="243.0" text="Label" visible="false" wrapText="true" />
                </children>
             </AnchorPane>
