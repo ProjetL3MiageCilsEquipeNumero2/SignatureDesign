@@ -82,6 +82,8 @@ public class DataBase {
 		createGetProceduresId();
 		createAjoutProcedures();
 		createDeleteIdProcedures();
+		// triggers
+		createApprovisionnementTrigger();
 
 		// populer la bdd
 		populateBdd();
@@ -474,6 +476,24 @@ public class DataBase {
 				e.printStackTrace();
 			}
 		}
+	}
+
+	/*
+	 *
+	 * Création d'un trigger de réapprovisionnement
+	 * 
+	 */
+	public void createApprovisionnementTrigger() {
+		// creation du trigger en sql
+		string createTrigger = "CREATE TRIGGER IF NOT EXISTS `reapprovisionnement` AFTER UPDATE ON QUANTITES"
+			 + " FOR EACH ROW SET IF Quantite < 10 THEN BEGIN UPDATE Quantite set 50; END;";
+		
+		try (Statement stmt = connexion.createStatement()) {
+			stmt.executeUpdate(createTrigger);
+		} catch (SQLException ee) {
+			e.printStackTrace();
+		}
+
 	}
 
 	/**
