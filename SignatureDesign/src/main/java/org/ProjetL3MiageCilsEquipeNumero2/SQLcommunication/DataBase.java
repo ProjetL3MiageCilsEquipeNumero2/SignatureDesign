@@ -485,14 +485,14 @@ public class DataBase {
 	 */
 	public void createApprovisionnementTrigger() {
 		// creation du trigger en sql
-		string drop = "DROP TRIGGER IF EXISTS REAPPROVISIONEMENT";
-		string createTrigger = "CREATE TRIGGER REAPPROVISIONEMENT BEFORE UPDATE ON QUANTITES"
+		String drop = "DROP TRIGGER IF EXISTS REAPPROVISIONEMENT";
+		String createTrigger = "CREATE TRIGGER REAPPROVISIONEMENT BEFORE UPDATE ON QUANTITES"
 			 + " FOR EACH ROW BEGIN IF New.Quantite < 10 THEN set new.Quantite = 50; END IF; END;";
 		
 		try (Statement stmt = connexion.createStatement()) {
 			stmt.executeUpdate(drop);
 			stmt.executeUpdate(createTrigger);
-		} catch (SQLException ee) {
+		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 

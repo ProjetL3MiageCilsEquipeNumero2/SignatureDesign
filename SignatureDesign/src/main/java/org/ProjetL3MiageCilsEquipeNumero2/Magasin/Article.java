@@ -164,18 +164,19 @@ public class Article {
 	 */
 	public void modifierQuantite(String taille, String couleur, int qte) {
 		try {
-			PreparedStatement ps = App.db.getConnection().prepareStatement("UPDATE QUANTITES SET taille = ?,"
-					+ " couleur = ? , Quantite = ? WHERE Id_Article = ?");
-			ps.setString(1,taille);
-			ps.setString(2,couleur);
-			ps.setInt(3,qte);
-			ps.setInt(4,this.getId());
+			PreparedStatement ps = App.db.getConnection().prepareStatement("UPDATE QUANTITES SET "
+					+ "  Quantite = ? WHERE Id_Article = ? AND taille = ? AND couleur = ?");
+			ps.setInt(1, qte);
+			ps.setInt(2,this.getId());
+			ps.setString(3, taille);
+			ps.setString(4, couleur);
 			ps.executeUpdate();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
+
 
 	/**
 	 * retourne les quantites d'un article à partir de son id
