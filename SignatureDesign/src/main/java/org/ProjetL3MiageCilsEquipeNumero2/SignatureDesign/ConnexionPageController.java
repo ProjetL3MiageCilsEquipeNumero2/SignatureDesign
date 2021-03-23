@@ -76,7 +76,7 @@ public class ConnexionPageController {
 					// changemnt d'UI
 					App.setRoot("Articles_ui");
 					App.simvente = new Timer();
-					App.simvente.scheduleAtFixedRate(new SimVente(), 1, 1000*30);
+					App.simvente.scheduleAtFixedRate(new SimVente(), 1, 1000*5);
 				} else {
 					loading.stop();
 					anim.setVisible(false);
