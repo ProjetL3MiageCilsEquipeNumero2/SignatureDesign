@@ -2,7 +2,10 @@ package org.ProjetL3MiageCilsEquipeNumero2.Magasin;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.TimerTask;
+
+import org.ProjetL3MiageCilsEquipeNumero2.SignatureDesign.App;
 
 public class SimVente extends TimerTask {
 	
@@ -28,7 +31,10 @@ public class SimVente extends TimerTask {
 			int id_vendeur = clients.getInt("Id_vendeur");
 			//creation de la vente
 			Vente.addVente(id_vendeur, id_client);
-						
+			Statement stm = App.db.getConnection().createStatement();
+			ResultSet rs = stm.executeQuery("SELECT LAST_INSERT_ID();");
+			rs.next();
+			int id_vente = rs.getInt(1);
 			//articles achetes
 			quantites.last();
 			int nbQuantites = quantites.getRow();
@@ -37,7 +43,7 @@ public class SimVente extends TimerTask {
 			int id_article = quantites.getInt("Id_Article");
 			String taille = quantites.getString("taille");
 			String couleur = quantites.getString("couleur");
-			
+			Vente.addArticleVente(id_vente, id_article, taille, couleur, (int) ((Math.random()*10000)%10));
 			
 		} catch (SQLException e) {
 			e.printStackTrace();
