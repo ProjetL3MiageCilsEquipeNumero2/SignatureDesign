@@ -325,8 +325,8 @@ public class DataBase {
 		Vendeur.addVendeur("nom3", "prenom3", 1820.0);
 		Vente.addVente(1, 1);
 		Vente.addVente(1, 2);
-		Vente.addArticleVente(1, 2, "S", "vert", 2);
-		Vente.addArticleVente(2, 1, "M", "jaune", 4);
+		Vente.addArticleVente(1, 1, "S", "vert", 2);
+		Vente.addArticleVente(2, 2, "M", "jaune", 4);
 		
 		
 
@@ -431,7 +431,8 @@ public class DataBase {
 		String createProcedure = " create procedure AJOUT_VENTE_ARTICLES(IN vid_vente int, IN vid_article int, IN vtaille varchar(45),"
 				+ " IN vcouleur varchar(45), IN vqte int" + ")" + "begin "
 				+ "INSERT INTO VENTES_ARTICLES ( id_vente ,  id_article, taille, couleur, quantite ) "
-				+ "VALUES ( vid_vente ,  vid_article , vtaille, vcouleur, vqte )" + "; " + "end  ";
+				+ "VALUES ( vid_vente ,  vid_article , vtaille, vcouleur, vqte )" + "; " +
+				"Update QUANTITES SET quantite = quantite - vqte WHERE Id_article = vid_article AND taille = vtaille AND couleur = vcouleur ;"+"end  ";
 		// createProcedure
 		try (Statement stmt = connexion.createStatement()) {
 			stmt.execute(drop);
