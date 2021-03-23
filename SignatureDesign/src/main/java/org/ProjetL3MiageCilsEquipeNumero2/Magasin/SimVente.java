@@ -44,6 +44,10 @@ public class SimVente extends TimerTask {
 			String taille = quantites.getString("taille");
 			String couleur = quantites.getString("couleur");
 			Vente.addArticleVente(id_vente, id_article, taille, couleur, (int) ((Math.random()*10000)%10));
+			Article.articlesUpdate();
+			Client.clientsUpdate();
+			Vendeur.vendeursUpdate();
+			Vente.ventesUpdate();
 			
 		} catch (SQLException e) {
 			e.printStackTrace();
