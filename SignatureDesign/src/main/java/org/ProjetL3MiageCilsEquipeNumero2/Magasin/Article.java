@@ -67,6 +67,20 @@ public class Article {
 		}
 		return rs;
 	}
+	
+	/**
+	 * retourne la table ARTICLES
+	 */
+	public static ResultSet getTableQuantites() {
+		ResultSet rs = null;
+		try {
+			CallableStatement cs = App.db.getConnection().prepareCall("{call GET_QUANTITES}");
+			rs = cs.executeQuery();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return rs;
+	}
 
 	/**
 	 * ajoute 1 article a la bdd

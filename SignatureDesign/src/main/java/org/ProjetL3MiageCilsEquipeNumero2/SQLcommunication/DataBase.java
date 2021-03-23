@@ -261,7 +261,7 @@ public class DataBase {
 	 * cree des procedures GET<NOMTABLE>() qui retournent une table entiere
 	 */
 	public void createGetProcedures() {
-		String[] nom_tables = { "ARTICLES", "CLIENTS", "VENDEURS", "FOURNISSEURS", "DEPENSES", "APPROVISIONNEMENTS",
+		String[] nom_tables = { "ARTICLES", "QUANTITES", "CLIENTS", "VENDEURS", "FOURNISSEURS", "DEPENSES", "APPROVISIONNEMENTS",
 				"COMMANDES", "VENTES" };
 		// pour chacune de ces tables on cree une procedure qui renvoi toute la table
 		for (String s : nom_tables) {
