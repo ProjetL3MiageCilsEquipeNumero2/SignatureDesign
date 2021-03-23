@@ -7,6 +7,9 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.util.Timer;
+
+import org.ProjetL3MiageCilsEquipeNumero2.Magasin.SimVente;
 import org.ProjetL3MiageCilsEquipeNumero2.SQLcommunication.DataBase;
 /**
  * JavaFX App
@@ -14,6 +17,7 @@ import org.ProjetL3MiageCilsEquipeNumero2.SQLcommunication.DataBase;
 public class App extends Application {
 
 	public static DataBase db = new DataBase();
+	public static Timer simvente;
 	private static Scene scene;
 
 	@Override
@@ -38,6 +42,7 @@ public class App extends Application {
 		boolean succes = db.close();
 		if (succes)
 			System.out.println("Connexion fermee avec succes");
+		simvente.cancel();
 		super.stop();
 	}
 
@@ -65,27 +70,6 @@ public class App extends Application {
 
 	public static void main(String[] args) {
 		launch();
-		//test creation bdd
-		/*Scanner input = new Scanner(System.in);
-		System.out.println("Nom?");
-		String nom = input.nextLine();
-		input = new Scanner(System.in);
-		System.out.println("Password?");
-		String pass = input.nextLine();
-		input.close();
-		DataBase db = new DataBase(nom, pass);
-		ResultSet rs = Article.getQuantitesId(1);
-		try {
-			while (rs.next()) {
-			    String id = rs.getString("Id_Article");
-			    String t = rs.getString("taille");
-			    System.out.println(id);
-			    System.out.println(t);
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		System.out.println("FIN");*/
 	}
 
 }

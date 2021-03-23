@@ -61,7 +61,7 @@ public class Client {
 	public static ResultSet getTableClient() {
 		ResultSet rs = null;
 		try {
-			CallableStatement cs = App.db.getConnection().prepareCall("{call GET_CLIENTS}");
+			CallableStatement cs = App.db.getConnection().prepareCall("{call GET_CLIENTS}",ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
 			rs = cs.executeQuery();
 		} catch (SQLException e) {
 			e.printStackTrace();

@@ -74,7 +74,7 @@ public class Article {
 	public static ResultSet getTableQuantites() {
 		ResultSet rs = null;
 		try {
-			CallableStatement cs = App.db.getConnection().prepareCall("{call GET_QUANTITES}");
+			CallableStatement cs = App.db.getConnection().prepareCall("{call GET_QUANTITES}",ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
 			rs = cs.executeQuery();
 		} catch (SQLException e) {
 			e.printStackTrace();
