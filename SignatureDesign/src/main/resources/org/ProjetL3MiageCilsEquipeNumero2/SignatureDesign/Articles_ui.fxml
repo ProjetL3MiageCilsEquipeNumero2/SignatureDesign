@@ -45,14 +45,6 @@
                      </image>
                   </ImageView>
                </graphic></Button>
-            <Button fx:id="stats" contentDisplay="TOP" mnemonicParsing="false" onAction="#afficheStats" prefHeight="50.0" prefWidth="121.0" styleClass="buttonmenu" stylesheets="@articlesUI.css" text="STATS" wrapText="true">
-               <graphic>
-                  <ImageView>
-                     <image>
-                        <Image url="@stats.png" />
-                     </image>
-                  </ImageView>
-               </graphic></Button>
          </children></VBox>
    </left>
    <center>
