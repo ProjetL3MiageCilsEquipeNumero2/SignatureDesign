@@ -497,12 +497,10 @@ public class DataBase {
 	}
 
 	/*
-	 *
 	 * Création d'un trigger de réapprovisionnement
-	 * 
 	 */
 	public void createApprovisionnementTrigger() {
-		// creation du trigger en sql
+		// creation du trigger en SQL
 		String drop = "DROP TRIGGER IF EXISTS REAPPROVISIONEMENT";
 		String createTrigger = "CREATE TRIGGER REAPPROVISIONEMENT BEFORE UPDATE ON QUANTITES"
 			 + " FOR EACH ROW BEGIN IF New.Quantite < 10 THEN set new.Quantite = 50; END IF; END;";
@@ -514,6 +512,23 @@ public class DataBase {
 			e.printStackTrace();
 		}
 
+	}
+
+	/*
+	 * Création d'un trigger supprimant les ventes datant de plus de 2 mois
+	 */ 
+	public void suppressionVenteTrigger() {
+		// creation du trigger en SQL
+		String drop = "DROP TRIGGER IF EXISTS SUPPRESSION_VENTE";
+		String createTrigger = "CREATE TRIGGER SUPPRESSION_VENTE AFTER INSERT ON VENTES "
+			+ "BEGIN DROP * FROM Ventes WHERE MONTH(Date) < MONTH(CAST(NOW () AS DATE)) - 2; END;";
+		
+		try (Statement stmt = connexion.createStatement()) {
+			stmt.executeUpdate(drop);
+			stmt.executeUpdate(createTrigger);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 	}
 
 	/**
