@@ -1,7 +1,9 @@
 package org.ProjetL3MiageCilsEquipeNumero2.SignatureDesign;
 
 import java.io.IOException;
+import java.util.Timer;
 
+import org.ProjetL3MiageCilsEquipeNumero2.Magasin.SimVente;
 import org.ProjetL3MiageCilsEquipeNumero2.SQLcommunication.DataBase;
 
 import javafx.animation.FadeTransition;
@@ -73,6 +75,8 @@ public class ConnexionPageController {
 					loading.stop();
 					// changemnt d'UI
 					App.setRoot("Articles_ui");
+					App.simvente = new Timer();
+					App.simvente.scheduleAtFixedRate(new SimVente(), 1, 1000*60);
 				} else {
 					loading.stop();
 					anim.setVisible(false);

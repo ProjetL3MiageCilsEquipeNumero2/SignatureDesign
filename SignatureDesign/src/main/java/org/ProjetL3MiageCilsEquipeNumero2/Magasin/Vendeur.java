@@ -58,7 +58,7 @@ public class Vendeur {
 	public static ResultSet getTableVendeur() {
 		ResultSet rs = null;
 		try {
-			CallableStatement cs = App.db.getConnection().prepareCall("{call GET_VENDEURS}");
+			CallableStatement cs = App.db.getConnection().prepareCall("{call GET_VENDEURS}", ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
 			rs = cs.executeQuery();
 		} catch (SQLException e) {
 			e.printStackTrace();

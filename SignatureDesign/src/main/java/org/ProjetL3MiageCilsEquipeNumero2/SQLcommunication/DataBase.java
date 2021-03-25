@@ -261,7 +261,7 @@ public class DataBase {
 	 * cree des procedures GET<NOMTABLE>() qui retournent une table entiere
 	 */
 	public void createGetProcedures() {
-		String[] nom_tables = { "ARTICLES", "CLIENTS", "VENDEURS", "FOURNISSEURS", "DEPENSES", "APPROVISIONNEMENTS",
+		String[] nom_tables = { "ARTICLES", "QUANTITES", "CLIENTS", "VENDEURS", "FOURNISSEURS", "DEPENSES", "APPROVISIONNEMENTS",
 				"COMMANDES", "VENTES" };
 		// pour chacune de ces tables on cree une procedure qui renvoi toute la table
 		for (String s : nom_tables) {
@@ -312,22 +312,39 @@ public class DataBase {
 	 * 
 	 */
 	public void populateBdd() {
+		//articles
 		Article.createArticle("article1", 12.5, "marque1", "categorie1");
-		Article.createArticle("article2", 50.40, "marque1", "categorie2");
+		Article.createArticle("article2", 10.99, "marque1", "categorie2");
+		Article.createArticle("article3", 5.60, "marque2", "categorie1");
+		Article.createArticle("article4", 50.40, "marque3", "categorie2");
+		Article.createArticle("article5", 32.40, "marque1", "categorie3");
+		Article.createArticle("article6", 120.00, "marque2", "categorie3");
+		Article.createArticle("article7", 25, "marque1", "categorie2");
+		Article.createArticle("article8", 19, "marque4", "categorie4");
 		Article.createQuantite(1, "S", "vert", 20);
 		Article.createQuantite(1, "S", "rouge", 15);
-		Article.createQuantite(2, "M", "jaune", 20);
+		Article.createQuantite(2, "M", "jaune", 79);
+		Article.createQuantite(3, "L", "vert", 14);
+		Article.createQuantite(4, "XL", "noir", 35);
+		Article.createQuantite(6, "XS", "orange", 16);
+		Article.createQuantite(6, "S", "bleu", 46);
+		Article.createQuantite(7, "M", "rouge", 120);
+		Article.createQuantite(8, "M", "jaune", 80);
+		Article.createQuantite(8, "L", "vert", 60);
+		Article.createQuantite(5, "XL", "noir", 25);
+		
+		//clients
 		Client.addClient("nom1", "prenom1", 123456789, "adr1", "mail@test.com");
-		Client.addClient("nom2", "prenom2", 125757, "adr2", "mail22@test.com");
-		Client.addClient("nom3", "prenom3", 1447289, "adr3", "mail47.7@test.com");
+		Client.addClient("nom2", "prenom2", 575172, "adr2", "mail2@test.com");
+		Client.addClient("nom3", "prenom3", 27587357, "adr3", "mail3@test.com");
+		Client.addClient("nom4", "prenom4", 7634782, "adr4", "mail4@test.com");
+		Client.addClient("nom5", "prenom5", 695523, "adr5", "mail5@test.com");
+		Client.addClient("nom6", "prenom6", 1447289, "adr6", "mail6@test.com");
+		
+		//vendeurs
 		Vendeur.addVendeur("nom1", "prenom1", 1500.25);
 		Vendeur.addVendeur("nom2", "prenom2", 1585.55);
-		Vendeur.addVendeur("nom3", "prenom3", 1820.0);
-		Vente.addVente(1, 1);
-		Vente.addVente(1, 2);
-		Vente.addArticleVente(1, 1, "S", "vert", 2);
-		Vente.addArticleVente(2, 2, "M", "jaune", 4);
-		
+		Vendeur.addVendeur("nom3", "prenom3", 1820.0);		
 		
 
 	}
